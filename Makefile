@@ -91,7 +91,7 @@ start-dev: ## Start dev workflow with strict database readiness check
 		sleep 2; \
 	done
 	@echo "Backend is ready! Running migrations and setup..."
-	$(MAKE) env-prod
+	$(MAKE) env
 	$(MAKE) migration-dev
 	$(MAKE) migrate-dev
 # 	$(MAKE) superuser-auto-dev
