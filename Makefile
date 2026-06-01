@@ -1,4 +1,4 @@
-.PHONY: help up-dev up-prod clean purge restart rebuild migrate-dev migrate-prod migration-dev migration-prod superuser-dev superuser-auto-dev superuser-prod check-dev check-prod backend-test-dev backend-test-prod frontend-test
+.PHONY: help up-dev up-prod clean purge restart rebuild migrate-dev migrate-prod migration-dev migration-prod superuser-dev superuser-auto-dev superuser-prod check-dev check-prod backend-test-dev backend-test-prod frontend-test logs-backend-dev logs-backend-prod logs-pytest-dev logs-pytest-prod convert
 
 help: ## Show this help message
 	@echo "Available commands:"
