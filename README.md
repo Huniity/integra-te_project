@@ -1,8 +1,8 @@
 # integra-te_project
 Official Repo for Integra-te ONG from Loulé
 
-[![CI-MAIN](https://github.com/Huniity/integra-te_project/actions/workflows/ci.yaml/badge.svg?branch=main)](https://github.com/Huniity/integra-te_project/actions/workflows/ci.yaml)
-[![CI-DEV](https://github.com/Huniity/integra-te_project/actions/workflows/ci.yaml/badge.svg?branch=dev)](https://github.com/Huniity/integra-te_project/actions/workflows/ci.yaml)
+[![CI MAIN](https://github.com/Huniity/integra-te_project/actions/workflows/ci.yaml/badge.svg?branch=main&label=CI%20MAIN)](https://github.com/Huniity/integra-te_project/actions/workflows/ci.yaml)
+[![CI DEV](https://github.com/Huniity/integra-te_project/actions/workflows/ci.yaml/badge.svg?branch=dev&label=CI%20DEV)](https://github.com/Huniity/integra-te_project/actions/workflows/ci.yaml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Python](https://img.shields.io/badge/Python-3.14-blue?logo=python)](https://www.python.org/)
 [![Django](https://img.shields.io/badge/Django-6.0-092E20?logo=django)](https://www.djangoproject.com/)
