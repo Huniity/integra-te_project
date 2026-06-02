@@ -145,3 +145,5 @@ vite.config.ts.timestamp-*
 
 __pycache__/
 .venv
+
+.ruff_cache/
