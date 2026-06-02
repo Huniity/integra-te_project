@@ -84,7 +84,7 @@ start-dev: ## Start dev workflow with strict database readiness check
 	@read -p "⚠️  Are you starting development environment? Type 'yes' to confirm: " ans && [ "$$ans" = "yes" ] || (echo "Aborted."; exit 1)
 	@read -p "⚠️  Keep in mind that development environment CLEARS database and injects sample data. Type 'yes' to confirm: " ans && [ "$$ans" = "yes" ] || (echo "Aborted."; exit 1)
 	@echo "Starting Docker containers in background..."
-	docker compose -f compose.dev.yaml up --build -d 
+	docker compose -f compose.dev.yaml up --build -d
 	@echo "Waiting for PostgreSQL and Django backend to be fully ready..."
 	@until docker compose -f compose.dev.yaml exec backend python manage.py check > /dev/null 2>&1; do \
 		echo "Backend not ready yet... checking again in 2 seconds"; \
@@ -104,7 +104,7 @@ start-prod: ## Start production workflow with strict database readiness check
 	@read -p "⚠️  Are you starting production environment? Type 'yes' to confirm: " ans && [ "$$ans" = "yes" ] || (echo "Aborted."; exit 1)
 	@read -p "⚠️  Keep in mind that production environment injects ONLY main pages data (title, desc, dates and CTA buttons and links), doesn't erase the database.. Type 'yes' to confirm: " ans && [ "$$ans" = "yes" ] || (echo "Aborted."; exit 1)
 	@echo "Starting Docker containers in background..."
-	docker compose -f compose.prod.yaml up --build -d 
+	docker compose -f compose.prod.yaml up --build -d
 	@echo "Waiting for PostgreSQL and Django backend to be fully ready..."
 	@until docker compose -f compose.prod.yaml exec backend python manage.py check > /dev/null 2>&1; do \
 		echo "Backend not ready yet... checking again in 2 seconds"; \
@@ -120,7 +120,7 @@ start-prod: ## Start production workflow with strict database readiness check
 	docker compose -f compose.prod.yaml logs -f
 
 sync-dev: ## Sync local code changes to dev containers (useful if you edit files outside of mounted volumes)
-	cd srcs/frontend && npm install && cd ../../ && cd srcs/backend && uv sync && cd ../../
+	cd srcs/frontend && npm install && cd ../../ && cd srcs/backend && uv sync && uv run pre-commit install && cd ../../
 
 up-dev: ## Start development environment
 	docker compose -f compose.dev.yaml up
@@ -154,7 +154,7 @@ rebuild: ## Rebuild and restart all dev containers
 	done
 	$(MAKE) migrate-dev
 	@echo "Rebuild complete. Use 'docker compose -f compose.dev.yaml logs -f' to follow logs."
-	
+
 
 rebuild-prod: ## Rebuild and restart all prod containers
 	docker compose -f compose.prod.yaml up --build -d
@@ -169,7 +169,7 @@ rebuild-prod: ## Rebuild and restart all prod containers
 migrate-dev: ## Run database migrations in development environment
 	docker compose -f compose.dev.yaml exec backend python manage.py migrate
 
-migrate-prod: ## Run database migrations in production environment	
+migrate-prod: ## Run database migrations in production environment
 	docker compose -f compose.prod.yaml exec backend python manage.py migrate
 
 migration-dev: ## Create new database migrations in development environment
