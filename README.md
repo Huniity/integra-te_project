@@ -108,3 +108,5 @@ make start-dev
 | `make convert` | Convert PNG/JPG assets to WebP |
 
 > Run `make help` to see all available commands in the terminal.
+
+You're right. Here's the updated version with full HTTP methods on every API endpoint:
