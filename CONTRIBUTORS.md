@@ -112,7 +112,7 @@
 - Read section (`/read`) — frontend lead
 - `<YearFilter>` and `<DisciplineCard>` (contributor)
 - `<VideoEmbed>` and `<DownloadButton>` (contributor)
-- Contact page (`/contact`) — contributor
+- Contact page (`/contact`) — (contributor)
 
 ### Backend — CMS & Admin
 - Django Admin customisation and CMS configuration — (lead)
@@ -127,8 +127,8 @@
 - GitHub Actions CI configuration (with Adrien) — automated lint and test runs on every PR
 
 ### Documentation & Delivery
-- Product demo recording (contributor)
-- Final presentation (contributor)
+- Product demo recording — (contributor)
+- Final presentation — (contributor)
 
 ---
 
@@ -147,20 +147,20 @@
 
 ### Styling & Accessibility
 - Tailwind CSS and responsive CSS contributions — (lead)
-- WCAG AA accessibility checks (contributor)
+- WCAG AA accessibility checks — (contributor)
 
 ### Compliance
 - EU visibility and Portugal 2030 logo compliance — (lead)
-- `<CookieBanner>` (contributor)
-- Privacy policy page (contributor)
+- `<CookieBanner>` — (contributor)
+- Privacy policy page — (contributor)
 
 ### Documentation
 - `README.md` (contributor)
 - `CONTRIBUTING.md` (contributor)
 - CMS user guide — (lead)
 - Installation and operations docs — (lead)
-- `.env.example` and environment docs (contributor)
-- Architecture diagram (contributor)
+- `.env.example` and environment docs — (contributor)
+- Architecture diagram — (contributor)
 
 ---
 
