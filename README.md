@@ -108,3 +108,41 @@ make start-dev
 | `make convert` | Convert PNG/JPG assets to WebP |
 
 > Run `make help` to see all available commands in the terminal.
+
+---
+
+## Continuous Integration
+
+CI runs automatically via **GitHub Actions** (`.github/workflows/ci.yaml`) on every pull request targeting `main`. A PR cannot be merged until all checks pass.
+
+### What the pipeline runs
+
+| Step | Tool | Local equivalent |
+|------|------|-----------------|
+| Python lint | Ruff | `make check` |
+| Python format check | Ruff | `make format` |
+| Pre-commit hooks | pre-commit | `make pre-commit-all` |
+| Backend tests | pytest (inside Docker) | `make backend-test-dev` |
+| Frontend tests | ESLint + Vitest | `make frontend-test` |
+
+### Before opening a PR
+
+Run the full check suite locally to avoid a failed pipeline on your first push:
+
+```bash
+# Lint and format
+make fullCheck
+
+# Run all pre-commit hooks
+make pre-commit-all
+
+# Run all tests
+make backend-test-dev
+make frontend-test
+```
+
+All of the above must exit cleanly before your PR will be approved.
+
+### Reviewing a PR
+
+When reviewing someone else's work, the CI badge on the PR must be green before you start a code review. If it is red, leave a comment asking the author to fix the pipeline first — do not approve a PR with a failing CI run regardless of the code quality.
