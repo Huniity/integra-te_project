@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     "corsheaders",
     "drf_spectacular",
     "integrate",
+    "voice_search",
 ]
 
 REST_FRAMEWORK = {
