@@ -63,3 +63,4 @@ pytest-django>=4.9.0
 --extra-index-url https://download.pytorch.org/whl/cpu
 torch
 openai-whisper
+pgvector
