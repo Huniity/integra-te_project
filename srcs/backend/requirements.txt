@@ -58,3 +58,6 @@ sqlparse==0.5.5
     # via django
 uritemplate==4.2.0
     # via drf-spectacular
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch
+openai-whisper
