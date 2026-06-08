@@ -199,10 +199,10 @@ check-prod: ## Check for any issues in production environment
 	docker compose -f compose.prod.yaml exec backend python manage.py check
 
 backend-test-dev: ## Run backend tests in development environment
-	docker compose -f compose.dev.yaml exec backend pytest
+	docker compose -f compose.dev.yaml exec backend python -m pytest tests/ --log-file=/app/logs/pytest.log --log-level=DEBUG
 
 backend-test-prod: ## Run backend tests in production environment
-	docker compose -f compose.prod.yaml exec backend pytest
+	docker compose -f compose.prod.yaml exec backend pytest  srcs/backend/tests/ --log-file=/app/logs/pytest.log --log-level=DEBUG
 
 frontend-test: ## Run frontend tests
 	cd srcs/frontend && npm run test
