@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     "drf_spectacular",
     "integrate",
     "voice_search",
+    "core",
 ]
 
 REST_FRAMEWORK = {
