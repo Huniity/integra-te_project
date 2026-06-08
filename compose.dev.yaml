@@ -36,6 +36,7 @@ services:
       - ./scripts:/scripts
       - django_logs:/app/logs
       - media_files:/app/staticfiles/media
+      - whisper_cache:/root/.cache/whisper
     ports:
       - "8000:8000"
     depends_on:
@@ -60,3 +61,4 @@ volumes:
   django_logs:
   frontend_logs:
   media_files:
+  whisper_cache:
