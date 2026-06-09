@@ -35,6 +35,16 @@ DIFICULDADE = (  # fixed typo
     ("avancado", "Avançado"),
 )
 
+TIPOS_JOGO = (
+    ("online", "Online"),
+    ("imprimivel", "Imprimível"),
+)
+
+TEMAS = (
+    ("comma", "Comma"),
+    ("separated", "Separated"),
+)
+
 
 class Disciplina(models.Model):  # fixed — singular
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
