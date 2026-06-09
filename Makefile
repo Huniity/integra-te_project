@@ -172,6 +172,10 @@ migrate-dev: ## Run database migrations in development environment
 migrate-prod: ## Run database migrations in production environment
 	docker compose -f compose.prod.yaml exec backend python manage.py migrate
 
+migrate-voice:
+	docker compose -f compose.dev.yaml exec backend python manage.py makemigrations voice_search
+	docker compose -f compose.dev.yaml exec backend python manage.py migrate
+
 migration-dev: ## Create new database migrations in development environment
 	docker compose -f compose.dev.yaml exec backend python manage.py makemigrations
 

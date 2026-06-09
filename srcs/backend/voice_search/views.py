@@ -8,15 +8,55 @@ from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 from rest_framework.decorators import permission_classes
 
+from pgvector.django import CosineDistance
+from voice_search.models import ObjectVector
+
 
 @lru_cache(maxsize=1)
-def get_whisper():
+def load_embedder():
+    """
+    Load the sentence transformer model for embedding generation with caching to improve performance (Only loads once, subsequent calls return the cached model. Model is 384 dimension, 50+ languages and works with cosine-similarity ).
+    """
+    from sentence_transformers import SentenceTransformer
+
+    return SentenceTransformer("paraphrase-multilingual-MiniLM-L12-v2")
+
+
+@lru_cache(maxsize=1)
+def load_whisper():
     """
     Load the Whisper model with caching to improve performance (Only loads once, subsequent calls return the cached model. Base is 74M Parameters, 1GB VRAM).
     """
     import whisper
 
     return whisper.load_model("base")
+
+
+@api_view(["POST"])
+@permission_classes([AllowAny])
+def reroute(request):
+    transcript = request.data.get("transcript", "").strip()
+    if not transcript:
+        return Response({"error": "No transcript."}, status=400)
+
+    vector = load_embedder().encode(transcript, normalize_embeddings=True).tolist()
+
+    result = (
+        ObjectVector.objects.annotate(distance=CosineDistance("embedding", vector))
+        .order_by("distance")
+        .first()
+    )
+
+    if not result:
+        return Response({"route": "/"})
+
+    return Response(
+        {
+            "route": result.route,
+            "label": result.label,
+            "distance": round(result.distance, 4),
+        }
+    )
 
 
 @api_view(["POST"])
@@ -36,7 +76,7 @@ def transcribe(request):
         tmp_path = tmp.name
 
     try:
-        result = get_whisper().transcribe(
+        result = load_whisper().transcribe(
             tmp_path,
             language="pt",
             fp16=False,
