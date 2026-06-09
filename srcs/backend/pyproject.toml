@@ -18,6 +18,7 @@ dependencies = [
     "pgvector>=0.2.0",
     "openai-whisper",
     "torch",
+    "sentence-transformers"
 ]
 
 [dependency-groups]
