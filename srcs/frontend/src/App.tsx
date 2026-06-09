@@ -5,6 +5,8 @@ import Read from './pages/Read'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import Homepage from './pages/Homepage'
 import Resolver from './pages/Resolver'
+import './App.css'
+import Read from './pages/Read'
 
 function App() {
   return (
