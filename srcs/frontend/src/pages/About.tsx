@@ -1,6 +1,14 @@
 export default function About() {
   return (
-    <main className="relative overflow-hidden bg-[#c8e8ff] font-['Nunito',sans-serif] min-h-screen">
+    <main
+      className="relative overflow-hidden font-['Nunito',sans-serif] min-h-screen"
+      style={{
+        backgroundImage: 'url(./src/assets/jardim.jpeg)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundAttachment: 'fixed'
+      }}
+    >
 
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;900&family=Fredoka+One&display=swap');
@@ -95,12 +103,8 @@ export default function About() {
         }
       `}</style>
 
-
-
+      {/* Fundo Decorativo */}
       <div aria-hidden="true" className="pointer-events-none select-none absolute inset-0 overflow-hidden">
-
-
-
         <div className="absolute -top-10 -right-10 w-44 h-44 opacity-20">
           <svg viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg">
             <g style={{ animation: 'sunRays 40s linear infinite', transformOrigin: '80px 80px' }}>
@@ -117,7 +121,6 @@ export default function About() {
           </svg>
         </div>
 
-
         <div className="cloud-1 absolute top-16">
           <svg width="200" height="80" viewBox="0 0 200 80" fill="none" xmlns="http://www.w3.org/2000/svg">
             <ellipse cx="100" cy="56" rx="90" ry="28" fill="white" fillOpacity="0.55"/>
@@ -127,7 +130,6 @@ export default function About() {
           </svg>
         </div>
 
-
         <div className="cloud-2 absolute top-48">
           <svg width="130" height="52" viewBox="0 0 130 52" fill="none" xmlns="http://www.w3.org/2000/svg">
             <ellipse cx="65"  cy="36" rx="58" ry="18" fill="white" fillOpacity="0.45"/>
@@ -135,7 +137,6 @@ export default function About() {
             <ellipse cx="86"  cy="30" rx="26" ry="20" fill="white" fillOpacity="0.45"/>
           </svg>
         </div>
-
 
         <div className="cloud-3 absolute top-80">
           <svg width="170" height="66" viewBox="0 0 170 66" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -146,59 +147,50 @@ export default function About() {
           </svg>
         </div>
 
-
         <div className="absolute bottom-1/3 left-8  w-40 h-40 rounded-full bg-[#3db8f5]/08 blur-2xl" />
         <div className="absolute top-1/2  right-12 w-56 h-56 rounded-full bg-[#9b59b6]/06 blur-3xl" />
         <div className="absolute bottom-20 left-1/3 w-32 h-32 rounded-full bg-[#f9c74f]/08 blur-2xl" />
       </div>
 
+      <section className="mascot-zone relative max-w-5xl mx-auto px-6 pt-16 pb-6 text-center">
 
 
-      <section className="mascot-zone relative max-w-5xl mx-auto px-6 pt-16 pb-6">
-        <div className="relative flex items-start gap-0">
+        {/* IMPLEMENTAÇÃO DA IDEIA 3: Bi-Tom Estilo Marcador */}
+        <h1 className="animate-slideUp delay-100 font-['Fredoka_One',cursive] text-5xl md:text-6xl leading-tight mb-8 text-[#0c447c] tracking-wide backdrop-blur-sm bg-white/40 inline-block px-4 py-2 rounded-3xl">
+          Sobre o{' '}
+          <span
+            className="inline-block px-6 py-2 text-white bg-[#f76c6c] rounded-2xl transform -rotate-2 shadow-xl border-2 border-white"
+            style={{ textShadow: '0 2px 4px rgba(0,0,0,0.2)' }}
+          >
+            Projeto
+          </span>
+        </h1>
 
+        <div className="animate-scaleIn delay-200 mx-auto w-28 h-1.5 bg-gradient-to-r from-[#3db8f5] via-[#9b59b6] to-[#f76c6c] rounded-full mb-8" />
 
-          <div className="flex-1 text-center relative z-10 pr-4">
-            <div className="animate-slideUp inline-flex items-center gap-2 bg-[#3a6bc8] text-white text-xs font-bold tracking-wider uppercase px-5 py-2 rounded-full mb-6 shadow-lg">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-              História do Projeto
-            </div>
-
-            <h1
-              className="animate-slideUp delay-100 font-['Fredoka_One',cursive] text-5xl md:text-6xl leading-tight mb-4"
-              style={{ color: '#0c447c', textShadow: '0 3px 0 rgba(255,255,255,0.7), 0 6px 16px rgba(12,68,124,0.12)' }}
-            >
-              Sobre o Projeto
-            </h1>
-
-            <div className="animate-scaleIn delay-200 mx-auto w-28 h-1.5 bg-gradient-to-r from-[#3db8f5] via-[#9b59b6] to-[#f76c6c] rounded-full mb-8" />
-
-            <div className="animate-fadeIn delay-300 max-w-2xl mx-auto space-y-4 text-[#1a3a6a] text-base md:text-[17px] leading-[1.85]">
-              <p>
-                O projeto{' '}
-                <strong className="text-[#3a6bc8] font-extrabold">iNTEGRA-TE</strong>{' '}
-                nasceu da necessidade urgente de combater o absentismo escolar e a
-                discriminação social vivida por crianças e jovens das comunidades do
-                concelho de Loulé.
-              </p>
-              <p>
-                A iniciativa propõe uma abordagem inovadora: uma{' '}
-                <span className="font-extrabold text-[#f76c6c]">caravana itinerante</span>{' '}
-                que funciona como espaço educativo, seguro e adaptado às necessidades
-                das crianças — do infantário ao 4.º ciclo.
-              </p>
-              <p>
-                O projeto cria pontes entre escola, família e comunidade, promovendo
-                a inclusão, o sucesso educativo e a igualdade de oportunidades no
-                território do Algarve.
-              </p>
-            </div>
-          </div>
+        <div className="animate-fadeIn delay-300 max-w-2xl mx-auto space-y-4 text-[#1a3a6a] text-base md:text-[17px] leading-[1.85] bg-white/80 backdrop-blur-sm p-6 rounded-3xl shadow-sm border border-white/60">
+          <p>
+            O projeto{' '}
+            <strong className="text-[#3a6bc8] font-extrabold">iNTEGRA-TE</strong>{' '}
+            nasceu da necessidade urgente de combater o absentismo escolar e a
+            discriminação social vivida por crianças e jovens das comunidades do
+            concelho de Loulé.
+          </p>
+          <p>
+            A iniciativa propõe uma abordagem inovadora: uma{' '}
+            <span className="font-extrabold text-[#f76c6c]">caravana itinerante</span>{' '}
+            que funciona como espaço educativo, seguro e adaptado às necessidades
+            das crianças — do infantário ao 4.º ciclo.
+          </p>
+          <p>
+            O projeto cria pontes entre escola, família e comunidade, promovendo
+            a inclusão, o sucesso educativo e a igualdade de oportunidades no
+            território do Algarve.
+          </p>
         </div>
       </section>
 
-
-
+      {/* Grid de Cards Pilares */}
       <section className="max-w-5xl mx-auto px-6 pb-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {[
@@ -259,29 +251,22 @@ export default function About() {
           ].map(({ color, gradFrom, gradTo, bg, delay, shadowColor, icon, title, desc, tag, tagBg, tagColor }) => (
             <div
               key={title}
-
-              className={`group animate-slideUp ${delay} card-shine relative bg-white/85 backdrop-blur-sm border-2 border-white/60 rounded-3xl p-8 text-center cursor-default
+              className={`group animate-slideUp ${delay} card-shine relative bg-white/90 backdrop-blur-sm border-2 border-white/70 rounded-3xl p-8 text-center cursor-default
                 hover:-translate-y-3 transition-all duration-300 ease-out overflow-hidden`}
-              style={{
-                boxShadow: '0 4px 24px rgba(0,0,0,0.06)'
-              }}
-
+              style={{ boxShadow: '0 4px 24px rgba(0,0,0,0.06)' }}
               onMouseEnter={e => {
                 e.currentTarget.style.boxShadow = `0 20px 60px ${shadowColor}`
                 e.currentTarget.style.borderColor = color + '60'
               }}
               onMouseLeave={e => {
                 e.currentTarget.style.boxShadow = '0 4px 24px rgba(0,0,0,0.06)'
-                e.currentTarget.style.borderColor = 'rgba(255,255,255,0.6)'
+                e.currentTarget.style.borderColor = 'rgba(255,255,255,0.7)'
               }}
             >
-
-
               <div
                 className="absolute top-0 left-0 right-0 h-1.5 rounded-t-3xl"
                 style={{ background: `linear-gradient(to right, ${gradFrom}, ${gradTo})` }}
               />
-
 
               <div
                 className="relative mb-5 inline-flex items-center justify-center w-20 h-20 rounded-2xl transition-all duration-300 group-hover:scale-110 group-hover:rotate-3"
@@ -292,7 +277,6 @@ export default function About() {
 
               <h3 className="font-['Fredoka_One',cursive] text-xl text-[#0c447c] mb-2">{title}</h3>
               <p className="text-sm text-[#4a5a7a] leading-relaxed">{desc}</p>
-
 
               <div
                 className="mt-5 inline-block text-[10px] font-bold tracking-wider uppercase px-3 py-1.5 rounded-full"
@@ -305,17 +289,16 @@ export default function About() {
         </div>
       </section>
 
-
-
+      {/* Estatísticas */}
       <section className="max-w-5xl mx-auto px-6 pb-10">
-        <div className="bg-white/60 backdrop-blur-sm border border-white/70 rounded-3xl overflow-hidden"
+        <div className="bg-white/85 backdrop-blur-sm border border-white/80 rounded-3xl overflow-hidden"
           style={{ boxShadow: '0 4px 32px rgba(58,107,200,0.10)' }}
         >
           <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-y md:divide-y-0 divide-[#dbeeff]">
             {[
               { num: '70%',   color: '#3db8f5', label: 'Redução do abandono',  icon: <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg> },
               { num: '4',      color: '#f76c6c', label: 'Ciclos abrangidos',     icon: <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg> },
-              { num: '100%',  color: '#8bc34a', label: 'Gratuito p/ famílias',  icon: <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg> },
+              { num: '100%',  color: '#8bc34a', label: 'Gratuito p/ famílias',  icon: <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 0 0 0 0-7.78z"/></svg> },
               { num: 'Loulé', color: '#9b59b6', label: 'Território de impacto', icon: <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> },
             ].map(({ num, color, label, icon }) => (
               <div key={label} className="py-6 px-4 text-center group hover:bg-white/50 transition-colors duration-200">
@@ -330,10 +313,9 @@ export default function About() {
         </div>
       </section>
 
-
-
+      {/* Missão Timeline */}
       <section className="max-w-5xl mx-auto px-6 pb-10">
-        <div className="bg-white/60 backdrop-blur-sm border border-white/70 rounded-3xl p-8 md:p-12"
+        <div className="bg-white/85 backdrop-blur-sm border border-white/80 rounded-3xl p-8 md:p-12"
           style={{ boxShadow: '0 4px 32px rgba(58,107,200,0.08)' }}
         >
           <div className="text-center mb-10">
@@ -345,9 +327,7 @@ export default function About() {
             </h2>
           </div>
           <div className="relative">
-
             <div className="absolute left-[22px] top-0 bottom-0 w-0.5 bg-gradient-to-b from-[#3db8f5] via-[#9b59b6] to-[#8bc34a] md:left-1/2 md:-translate-x-px" />
-
             <div className="space-y-8">
               {[
                 { color: '#3db8f5', bg: '#E6F1FB', side: 'right', num: 1, title: 'Reduzir o abandono',   desc: 'Diminuir o abandono escolar em 20% entre os grupos-alvo, promovendo assiduidade e permanência.' },
@@ -358,19 +338,14 @@ export default function About() {
                 <div
                   key={title}
                   className={`relative flex items-start gap-4 pl-14 md:pl-0
-                    ${side === 'left'
-                      ? 'md:flex-row-reverse md:pr-[calc(50%+28px)]'
-                      : 'md:pl-[calc(50%+28px)]'
-                    }`}
+                    ${side === 'left' ? 'md:flex-row-reverse md:pr-[calc(50%+28px)]' : 'md:pl-[calc(50%+28px)]'}`}
                 >
-
                   <div
                     className="absolute left-3 md:left-1/2 md:-translate-x-1/2 w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-black shadow-lg z-10"
                     style={{ background: color }}
                   >
                     {num}
                   </div>
-
                   <div className="flex-1 rounded-2xl p-5 border transition-all duration-300 hover:shadow-md" style={{ background: bg, borderColor: color + '35' }}>
                     <h3 className="font-['Fredoka_One',cursive] text-base mb-1" style={{ color }}>{title}</h3>
                     <p className="text-sm text-[#4a5a7a] leading-relaxed">{desc}</p>
@@ -382,54 +357,10 @@ export default function About() {
         </div>
       </section>
 
-
-
-      <section className="max-w-5xl mx-auto px-6 pb-10">
-        <div className="text-center mb-8">
-          <span className="inline-block bg-[#9b59b6] text-white text-xs font-bold tracking-wider uppercase px-4 py-1.5 rounded-full mb-4">
-            Público-alvo
-          </span>
-          <h2 className="font-['Fredoka_One',cursive] text-3xl text-[#0c447c]">
-            Para quem existe o projeto?
-          </h2>
-        </div>
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-          {[
-            { icon: <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>, color: '#3db8f5', bg: '#E6F1FB', title: 'Famílias',           desc: 'Participação ativa no percurso escolar dos filhos.' },
-            { icon: <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>, color: '#f76c6c', bg: '#FBEAF0', title: 'Educadores',         desc: 'Ferramentas e estratégias adaptadas a cada criança.' },
-            { icon: <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><circle cx="12" cy="8" r="4"/><path d="M6 20v-2a6 6 0 0 1 12 0v2"/></svg>, color: '#9b59b6', bg: '#EEEDFE', title: 'Crianças 0–6 anos', desc: 'Atividades lúdicas e pedagógicas desde cedo.' },
-            { icon: <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v11m0 0H3m6 0h6m6 0h-6m0 0V3m0 11v7"/></svg>, color: '#8bc34a', bg: '#EAF3DE', title: 'Técnicos',            desc: 'Boas práticas validadas e adaptáveis ao contexto.' },
-            { icon: <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>, color: '#f9c74f', bg: '#FAEEDA', title: 'Comunidade',         desc: 'Sensibilização e inclusão além das paredes da escola.' },
-            { icon: <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>, color: '#48cae4', bg: '#E1F5EE', title: 'Algarve',             desc: 'Impacto direto nas comunidades do concelho de Loulé.' },
-          ].map(({ icon, color, bg, title, desc }) => (
-            <div
-              key={title}
-              className="group bg-white/70 backdrop-blur-sm rounded-2xl p-5 border-2 border-transparent hover:-translate-y-1 transition-all duration-200 cursor-default"
-              onMouseEnter={e => (e.currentTarget.style.borderColor = color + '70')}
-              onMouseLeave={e => (e.currentTarget.style.borderColor = 'transparent')}
-            >
-              <div
-                className="w-11 h-11 rounded-xl flex items-center justify-center mb-3 transition-transform group-hover:scale-110 duration-200"
-                style={{ background: bg, color }}
-              >
-                {icon}
-              </div>
-              <h3 className="font-bold text-sm text-[#0c447c] mb-1">{title}</h3>
-              <p className="text-xs text-[#6677aa] leading-relaxed">{desc}</p>
-              <div className="mt-3 h-0.5 rounded-full w-0 group-hover:w-full transition-all duration-300" style={{ background: color }} />
-            </div>
-          ))}
-        </div>
-      </section>
-
-
-
+      {/* Secção Impacto Final */}
       <section className="max-w-5xl mx-auto px-6 pb-16">
         <div className="text-center mb-8">
-          <span className="inline-block bg-[#f76c6c] text-white text-xs font-bold tracking-wider uppercase px-4 py-1.5 rounded-full mb-4">
-            Impacto
-          </span>
-          <h2 className="font-['Fredoka_One',cursive] text-3xl text-[#0c447c]">
+          <h2 className="font-['Fredoka_One',cursive] text-3xl text-[#0c447c] backdrop-blur-sm bg-white/40 inline-block px-4 py-1 rounded-full">
             O que muda com o iNTEGRA-TE?
           </h2>
         </div>
@@ -442,7 +373,7 @@ export default function About() {
           ].map(({ color, title, desc }) => (
             <div
               key={title}
-              className="group bg-white/70 backdrop-blur-sm border-l-4 border border-[#dbeeff] rounded-2xl p-6 hover:shadow-lg transition-all duration-300 cursor-default"
+              className="group bg-white/90 backdrop-blur-sm border-l-4 border border-[#dbeeff] rounded-2xl p-6 hover:shadow-lg transition-all duration-300 cursor-default"
               style={{ borderLeftColor: color }}
             >
               <h3 className="font-['Fredoka_One',cursive] text-lg mb-2" style={{ color }}>{title}</h3>
