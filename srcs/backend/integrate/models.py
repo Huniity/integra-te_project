@@ -29,6 +29,16 @@ DIFICULDADE = (
     ("avancado", "Avançado"),
 )
 
+TIPOS_JOGO = (
+    ("online", "Online"),
+    ("imprimivel", "Imprimível"),
+)
+
+TEMAS = (
+    ("comma", "Comma"),
+    ("separated", "Separated"),
+)
+
 
 class Disciplinas(models.Model):
     """
@@ -103,3 +113,73 @@ class Properties(models.Model):
 
     has_file = models.BooleanField(default=False)
     is_video = models.BooleanField(default=False)
+
+
+class Jogo(models.Model):
+    """
+    Modelo para os jogos
+    """
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    disciplina = models.ForeignKey(
+        Disciplinas, on_delete=models.CASCADE, null=True, blank=True
+    )
+    titulo = models.CharField(max_length=200)
+    descricao = models.CharField(max_length=500)
+    faixa_etaria = models.CharField(max_length=200)
+    url_externa = models.URLField(max_length=500, null=True, blank=True)
+    ficheiro = models.FileField(upload_to="jogos/", null=True, blank=True)
+    tamanho_kb = models.FileSizeField()
+    publicado = models.BooleanField(default=False)
+
+    def __str__(self):
+        """
+        Método para retornar o título do jogo
+        """
+        return self.titulo
+
+
+class Livro(models.Model):
+    """
+    Modelo para os livros
+    """
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    titulo = models.CharField(max_length=200)
+    autor = models.CharField(max_length=200)
+    faixa_etaria = models.CharField(max_length=200)
+    resumo = models.CharField(max_length=1000)
+    temas = models.ManyToManyField(TEMAS, related_name="livros")
+    capa = models.ImageField(upload_to="capas/", null=True, blank=True)
+    ficheiro = models.FileField(upload_to="livros/", null=True, blank=True)
+
+    """
+    falta : publicado - temas_list property
+    """
+
+    def __str__(self):
+        """
+        Método para retornar o título do livro
+        """
+        return self.titulo
+
+
+class MaterialOriginal(models.Model):
+    """
+    Modelo para os materiais originais
+    """
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    titulo = models.CharField(max_length=200)
+    autor = models.CharField(max_length=200)
+    descricao = models.CharField(max_length=1000)
+    ficheiro = models.FileField(upload_to="materiais_originais/", null=True, blank=True)
+    url_externa = models.URLField(max_length=500, null=True, blank=True)
+    descarregavel = models.BooleanField(default=False)
+    publicado = models.BooleanField(default=False)
+
+    def __str__(self):
+        """
+        Método para retornar o título do material original
+        """
+        return self.titulo
