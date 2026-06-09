@@ -7,9 +7,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
     initial = True
 
-    dependencies = [
-        ("voice_search", "0001_initial"),
-    ]
+    dependencies: list[tuple[str, str]] = []
 
     operations = [
         migrations.RunSQL("CREATE EXTENSION IF NOT EXISTS vector;"),
