@@ -8,9 +8,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
     initial = True
 
-    dependencies = [
-        ("integrate", "0001_initial"),
-    ]
+    dependencies: list[tuple[str, str]] = []
 
     operations = [
         migrations.CreateModel(
