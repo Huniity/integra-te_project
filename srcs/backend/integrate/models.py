@@ -1,4 +1,5 @@
 from django.db import models
+import uuid
 
 ANO_ESCOLAR = (
     ("1º Ano", "1º Ano"),
@@ -16,13 +17,13 @@ SECCAO = (
 )
 
 TIPO = (
-    ("texto,", "Texto"),
+    ("texto", "Texto"),
     ("imagem", "Imagem"),
     ("video", "Vídeo"),
     ("pdf", "PDF"),
 )
 
-DIFICUADE = (
+DIFICULDADE = (
     ("basico", "Básico"),
     ("intermedio", "Intermédio"),
     ("avancado", "Avançado"),
@@ -34,7 +35,7 @@ class Disciplinas(models.Model):
     Modelo para as disciplinas
     """
 
-    id = models.UUIDField(primary_key=True)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=200)
     slug = models.SlugField(max_length=500)
     desc = models.CharField(max_length=500)
@@ -51,7 +52,7 @@ class Tema(models.Model):
     Modelo para os temas
     """
 
-    id = models.UUIDField(primary_key=True)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     disciplina = models.ForeignKey(Disciplinas, on_delete=models.CASCADE)
     titulo = models.CharField(max_length=200)
     desc = models.CharField(max_length=500)
@@ -73,7 +74,7 @@ class Conteudo(models.Model):
     Modelo para os conteúdos
     """
 
-    id = models.UUIDField(primary_key=True)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     tema = models.ForeignKey(Tema, on_delete=models.CASCADE)
     tipo = models.CharField(max_length=200, choices=TIPO)
     titulo = models.CharField(max_length=200)
@@ -82,7 +83,7 @@ class Conteudo(models.Model):
     url_externa = models.URLField(max_length=500, null=True, blank=True)
     thumbnail = models.ImageField(upload_to="thumbnails/", null=True, blank=True)
     dificuldade = models.CharField(
-        max_length=200, choices=DIFICUADE, null=True, blank=True
+        max_length=200, choices=DIFICULDADE, null=True, blank=True
     )
     descarregavel = models.BooleanField(default=False)
     publicado = models.BooleanField(default=False)
@@ -102,9 +103,3 @@ class Properties(models.Model):
 
     has_file = models.BooleanField(default=False)
     is_video = models.BooleanField(default=False)
-
-    def __str__(self):
-        """
-        Método para retornar a chave da propriedade
-        """
-        return self.key
