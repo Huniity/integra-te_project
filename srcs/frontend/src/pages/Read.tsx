@@ -77,7 +77,6 @@ export default function Learn() {
       style={{ backgroundImage: 'url(src/assets/jardim.jpeg)' }}
     >
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Nunito:wght@400;600;700;800;900&display=swap');
         .font-fredoka { font-family: 'Fredoka', sans-serif; }
         .cloud-shadow { filter: drop-shadow(0 8px 16px rgba(0,0,0,0.06)); }
         .inner-panel-inset { box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.08); }
@@ -131,9 +130,9 @@ export default function Learn() {
 
         {/* COLUNA ESQUERDA: Menu de Matérias */}
         <aside className="lg:col-span-3 space-y-6 relative">
-          <div className="bg-white/90 backdrop-blur-md rounded-[2.5rem] p-6 shadow-xl border-4 border-white cloud-shadow relative z-10">
-            <h2 className="font-fredoka text-2xl text-[#005bb7] font-black mb-6 flex items-center justify-center gap-2">
-              Matérias <span className="text-amber-400">⭐</span>
+          <div className="bg-white/85 backdrop-blur-md rounded-[2.5rem] p-6 shadow-xl border-4 border-white cloud-shadow relative z-10">
+            <h2 className="font-fredoka text-2xl md:text-3xl text-#3b82f6 font-bold mb-6 text-left tracking-wide">
+            Livros
             </h2>
 
             <div className="flex flex-col gap-3">
@@ -146,8 +145,7 @@ export default function Learn() {
                 }`}
               >
                 <div className="flex items-center gap-3">
-                  <span className="text-lg">🅰️</span>
-                  <span>Português</span>
+                  <span>Entre os 4 e 6 anos</span>
                 </div>
                 {activeSubject === 'portugues' && <span className="text-xs">▶</span>}
               </button>
@@ -161,8 +159,7 @@ export default function Learn() {
                 }`}
               >
                 <div className="flex items-center gap-3">
-                  <span className="text-lg">🔢</span>
-                  <span>Matemática</span>
+                  <span>Entre os 6 e 9 anos</span>
                 </div>
                 {activeSubject === 'matematica' && <span className="text-xs">▶</span>}
               </button>
@@ -176,104 +173,60 @@ export default function Learn() {
                 }`}
               >
                 <div className="flex items-center gap-3">
-                  <span className="text-lg">🌍</span>
-                  <span>Estudo do Meio</span>
+                  <span>Entre os 9 e 12 anos</span>
                 </div>
                 {activeSubject === 'estudo_meio' && <span className="text-xs">▶</span>}
               </button>
             </div>
           </div>
-
-          {/* Ilustração da Pilha de Livros abaixo do menu */}
-          <div className="pl-4 pt-2 hidden lg:block drop-shadow-md">
-            <div className="relative w-20 flex flex-col items-center">
-              <div className="w-16 h-3 bg-red-400 rounded-sm shadow-sm border-b-2 border-red-500"></div>
-              <div className="w-18 h-3.5 bg-blue-400 rounded-sm shadow-sm border-b-2 border-blue-500 -mt-1"></div>
-              <div className="w-14 h-3 bg-amber-400 rounded-sm shadow-sm border-b-2 border-amber-500 -mt-1"></div>
-              <span className="absolute -top-5 text-xl">🍎</span>
-            </div>
-          </div>
-
-          {/* PERSONAGEM: Rapaz acenando (Sobreposto entre a esquerda e o centro) */}
-          <div className="absolute -right-14 -bottom-10 w-40 md:w-48 z-20 pointer-events-none hidden xl:block">
+          <div className="absolute -right-50 top-60 -bottom-10 w-40  md:w-90 z-20 pointer-events-none hidden xl:block">
             <img
-              src="src/assets/rapaz.jpg"
+              src="src/assets/rapaz.png"
               alt="Rapaz iNTEGRA-TE"
               className="w-full h-auto object-contain drop-shadow-xl"
             />
           </div>
         </aside>
 
-        {/* COLUNA DIREITA: Grelha de Livros Principal */}
         <section className="lg:col-span-9 relative">
           <div className="bg-[#3483eb] rounded-[3rem] p-6 md:p-10 shadow-2xl border-4 border-white/30 relative z-10 inner-panel-inset">
-
-            {/* Título Interno */}
-            <h2 className="font-fredoka text-2xl md:text-3xl text-white font-bold mb-8 tracking-wide">
-              {activeSubject === 'portugues' && 'Português - Livros'}
-              {activeSubject === 'matematica' && 'Matemática - Recursos'}
-              {activeSubject === 'estudo_meio' && 'Estudo do Meio - Atividades'}
+            <h2 className="font-fredoka text-2xl md:text-2xl text-white font-bold mb-6 tracking-wide">
+                Livros Disponíveis
             </h2>
-
-            {/* Grelha de Recursos 3x2 igual ao Mockup */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
               {booksData.map((book) => (
                 <div
                   key={book.id}
                   className="flex flex-col items-center bg-transparent group text-center"
                 >
-                  {/* Contentor do Ícone do Livro 3D / Capa Animada */}
                   <div className="w-32 h-36 flex items-center justify-center relative mb-3 transform group-hover:scale-105 group-hover:rotate-2 transition-all">
                     <img
                       src={book.photoUrl}
                       alt={book.title}
                       className="w-full h-full object-contain drop-shadow-md"
                       onError={(e) => {
-                        // Fallback decorativo idêntico caso a imagem local ainda não exista
                         e.currentTarget.style.display = 'none';
                         e.currentTarget.parentElement!.className += " bg-white/10 rounded-2xl border-2 border-white/20 shadow-inner";
                         e.currentTarget.parentElement!.innerHTML = `<span class="text-6xl select-none">${book.iconType}</span>`;
                       }}
                     />
                   </div>
-
-                  {/* Rótulo do Nível */}
                   <h3 className="font-fredoka text-lg text-white font-semibold mb-1 tracking-wide">
                     {book.title}
                   </h3>
-
-                  {/* Pequena ligação de referência */}
-                  <span className="text-[11px] text-blue-100 font-medium mb-3 opacity-90 block truncate max-w-[180px]">
-                    Link para: {book.externalLink.replace('https://', '')}
-                  </span>
-
-                  {/* Botão de Acesso Estilo Pill Amarelo/Laranja */}
-                  <a
-                    href={book.externalLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 bg-[#ffb800] hover:bg-[#e6a600] text-[#1e3a8a] font-black text-xs px-5 py-2 rounded-full shadow-md border-b-4 border-[#cc9300] active:border-b-0 active:translate-y-[4px] transition-all uppercase tracking-wider"
-                  >
-                    <span>Amazon</span>
-                    <span className="text-[10px]">🛒</span>
-                  </a>
                 </div>
               ))}
             </div>
           </div>
-
-          {/* PERSONAGEM: Rapariga à direita com mochila */}
-          <div className="absolute -right-16 top-1/3 w-40 md:w-48 z-20 pointer-events-none hidden xl:block">
+          <div className="absolute -right-20 top-1/3 w-40 md:w-90 z-20 pointer-events-none hidden xl:block">
             <img
-              src="src/assets/image_1aad23.png"
+              src="src/assets/rapariga.png"
               alt="Rapariga iNTEGRA-TE"
               className="w-full h-auto object-contain drop-shadow-xl"
             />
           </div>
         </section>
       </div>
-
-      {/* --- RODAPÉ INSTITUCIONAL (LOGOS DE COFINANCIAMENTO) --- */}
       <footer className="w-full mt-16 flex justify-center relative z-20">
         <div className="bg-white/95 rounded-full px-8 py-3 shadow-lg border-2 border-white flex flex-wrap items-center justify-center gap-6 md:gap-8 max-w-4xl mx-auto">
           <div className="flex items-center gap-2 border-r border-gray-200 pr-6 last:border-0">
