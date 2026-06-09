@@ -65,3 +65,4 @@ torch
 openai-whisper
 pgvector
 pillow
+sentence-transformers
