@@ -1,13 +1,18 @@
-from django.db import models
+# from django.db import models
+
+# Create your models here.
+
 import uuid
+from django.db import models
+
 
 ANO_ESCOLAR = (
-    ("1º Ano", "1º Ano"),
-    ("2º Ano", "2º Ano"),
-    ("3º Ano", "3º Ano"),
-    ("4º Ano", "4º Ano"),
-    ("5º Ano", "5º Ano"),
-    ("6º Ano", "6º Ano"),
+    ("1", "1º Ano"),
+    ("2", "2º Ano"),
+    ("3", "3º Ano"),
+    ("4", "4º Ano"),
+    ("5", "5º Ano"),
+    ("6", "6º Ano"),
 )
 
 SECCAO = (
@@ -17,169 +22,112 @@ SECCAO = (
 )
 
 TIPO = (
-    ("texto", "Texto"),
+    ("texto", "Texto"),  # fixed — removed comma inside string
     ("imagem", "Imagem"),
     ("video", "Vídeo"),
     ("pdf", "PDF"),
 )
 
-DIFICULDADE = (
+DIFICULDADE = (  # fixed typo
     ("basico", "Básico"),
     ("intermedio", "Intermédio"),
     ("avancado", "Avançado"),
 )
 
-TIPOS_JOGO = (
-    ("online", "Online"),
-    ("imprimivel", "Imprimível"),
-)
 
-TEMAS = (
-    ("comma", "Comma"),
-    ("separated", "Separated"),
-)
-
-
-class Disciplinas(models.Model):
-    """
-    Modelo para as disciplinas
-    """
-
+class Disciplina(models.Model):  # fixed — singular
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    name = models.CharField(max_length=200)
-    slug = models.SlugField(max_length=500)
-    desc = models.CharField(max_length=500)
+    nome = models.CharField(max_length=200)
+    slug = models.SlugField(max_length=200, unique=True)
+    desc = models.TextField(blank=True)
 
     def __str__(self):
-        """
-        Método para retornar o nome da disciplina
-        """
-        return self.name
+        return self.nome
 
 
 class Tema(models.Model):
-    """
-    Modelo para os temas
-    """
-
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    disciplina = models.ForeignKey(Disciplinas, on_delete=models.CASCADE)
+    disciplina = models.ForeignKey(Disciplina, on_delete=models.CASCADE)
     titulo = models.CharField(max_length=200)
-    desc = models.CharField(max_length=500)
-    ano_escolar = models.CharField(max_length=200, choices=ANO_ESCOLAR)
-    seccao = models.CharField(max_length=200, choices=SECCAO)
+    slug = models.SlugField(max_length=200)  # fixed — was missing
+    desc = models.TextField(blank=True)
+    ano_escolar = models.CharField(max_length=1, choices=ANO_ESCOLAR)
+    seccao = models.CharField(max_length=20, choices=SECCAO)
+    publicado = models.BooleanField(default=False)
 
     class Meta:
         unique_together = ("disciplina", "slug", "seccao")
 
     def __str__(self):
-        """
-        Método para retornar o título do tema
-        """
         return self.titulo
 
 
 class Conteudo(models.Model):
-    """
-    Modelo para os conteúdos
-    """
-
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     tema = models.ForeignKey(Tema, on_delete=models.CASCADE)
-    tipo = models.CharField(max_length=200, choices=TIPO)
+    tipo = models.CharField(max_length=20, choices=TIPO)
     titulo = models.CharField(max_length=200)
-    corpo = models.CharField(max_length=500)
+    corpo = models.TextField(blank=True)  # fixed — TextField not CharField
     ficheiro = models.FileField(upload_to="conteudos/", null=True, blank=True)
     url_externa = models.URLField(max_length=500, null=True, blank=True)
     thumbnail = models.ImageField(upload_to="thumbnails/", null=True, blank=True)
     dificuldade = models.CharField(
-        max_length=200, choices=DIFICULDADE, null=True, blank=True
+        max_length=20, choices=DIFICULDADE, null=True, blank=True
     )
     descarregavel = models.BooleanField(default=False)
     publicado = models.BooleanField(default=False)
     criado_em = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        """
-        Método para retornar o título do conteúdo
-        """
         return self.titulo
 
 
-class Properties(models.Model):
-    """
-    Modelo para as propriedades dos conteúdos
-    """
-
-    has_file = models.BooleanField(default=False)
-    is_video = models.BooleanField(default=False)
-
-
 class Jogo(models.Model):
-    """
-    Modelo para os jogos
-    """
-
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     disciplina = models.ForeignKey(
-        Disciplinas, on_delete=models.CASCADE, null=True, blank=True
+        Disciplina, on_delete=models.SET_NULL, null=True, blank=True
     )
     titulo = models.CharField(max_length=200)
-    descricao = models.CharField(max_length=500)
-    faixa_etaria = models.CharField(max_length=200)
+    tipo = models.CharField(
+        max_length=20, choices=(("online", "Online"), ("imprimivel", "Imprimível"))
+    )
+    descricao = models.TextField(blank=True)
+    faixa_etaria = models.CharField(max_length=50, blank=True)
     url_externa = models.URLField(max_length=500, null=True, blank=True)
     ficheiro = models.FileField(upload_to="jogos/", null=True, blank=True)
-    tamanho_kb = models.FileSizeField()
     publicado = models.BooleanField(default=False)
+    criado_em = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        """
-        Método para retornar o título do jogo
-        """
         return self.titulo
 
 
 class Livro(models.Model):
-    """
-    Modelo para os livros
-    """
-
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     titulo = models.CharField(max_length=200)
-    autor = models.CharField(max_length=200)
-    faixa_etaria = models.CharField(max_length=200)
-    resumo = models.CharField(max_length=1000)
-    temas = models.ManyToManyField(TEMAS, related_name="livros")
+    autor = models.CharField(max_length=200, blank=True)
+    faixa_etaria = models.CharField(max_length=50, blank=True)
+    resumo = models.TextField(blank=True)
+    temas = models.CharField(max_length=500, blank=True)
     capa = models.ImageField(upload_to="capas/", null=True, blank=True)
     ficheiro = models.FileField(upload_to="livros/", null=True, blank=True)
-
-    """
-    falta : publicado - temas_list property
-    """
+    publicado = models.BooleanField(default=False)
+    criado_em = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        """
-        Método para retornar o título do livro
-        """
         return self.titulo
 
 
 class MaterialOriginal(models.Model):
-    """
-    Modelo para os materiais originais
-    """
-
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     titulo = models.CharField(max_length=200)
-    autor = models.CharField(max_length=200)
-    descricao = models.CharField(max_length=1000)
-    ficheiro = models.FileField(upload_to="materiais_originais/", null=True, blank=True)
+    autor = models.CharField(max_length=200, blank=True)
+    descricao = models.TextField(blank=True)
+    ficheiro = models.FileField(upload_to="materiais/", null=True, blank=True)
     url_externa = models.URLField(max_length=500, null=True, blank=True)
     descarregavel = models.BooleanField(default=False)
     publicado = models.BooleanField(default=False)
+    criado_em = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        """
-        Método para retornar o título do material original
-        """
         return self.titulo

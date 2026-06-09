@@ -64,3 +64,4 @@ pytest-django>=4.9.0
 torch
 openai-whisper
 pgvector
+pillow
