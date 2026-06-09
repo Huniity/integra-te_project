@@ -47,8 +47,7 @@ env: ## Create .env file if it doesn't exist
 	@echo "Environment variables:"
 	@cat .env
 
-env-prod:
-	env: ## Create .env file if it doesn't exist
+env-prod: ## Create .env file for production if it doesn't exist
 	@if [ ! -f .env ]; then \
 		echo "Creating .env file..."; \
 		printf "POSTGRES_DB=integrate_db\n" > .env; \
@@ -94,9 +93,9 @@ start-dev: ## Start dev workflow with strict database readiness check
 	$(MAKE) env
 	$(MAKE) migration-dev
 	$(MAKE) migrate-dev
-# 	$(MAKE) superuser-auto-dev
+#	$(MAKE) superuser-auto-dev
 	$(MAKE) superuser-dev
-#	$(MAKE) populate-dev
+	$(MAKE) populate-dev
 	@echo "Setup complete! Attaching to container logs..."
 	docker compose -f compose.dev.yaml logs -f
 
@@ -172,7 +171,7 @@ migrate-dev: ## Run database migrations in development environment
 migrate-prod: ## Run database migrations in production environment
 	docker compose -f compose.prod.yaml exec backend python manage.py migrate
 
-migrate-voice:
+migrate-voice: ## Run database migrations for voice_search app
 	docker compose -f compose.dev.yaml exec backend python manage.py makemigrations voice_search
 	docker compose -f compose.dev.yaml exec backend python manage.py migrate
 
@@ -182,13 +181,13 @@ migration-dev: ## Create new database migrations in development environment
 migration-prod: ## Create new database migrations in production environment
 	docker compose -f compose.prod.yaml exec backend python manage.py makemigrations
 
-# superuser-auto-dev: ## Auto-create default superuser from .env without prompting
-# 	@export $$(grep -v '^#' .env | xargs) && \
-# 	docker compose -f compose.dev.yaml exec \
-# 		-e DJANGO_SUPERUSER_USERNAME=$$DJANGO_SUPERUSER_USERNAME \
-# 		-e DJANGO_SUPERUSER_PASSWORD=$$DJANGO_SUPERUSER_PASSWORD \
-# 		-e DJANGO_SUPERUSER_EMAIL=$$DJANGO_SUPERUSER_EMAIL \
-# 		backend python manage.py createsuperuser --noinput || true
+superuser-auto-dev: ## Auto-create default superuser from .env without prompting
+	@export $$(grep -v '^#' .env | xargs) && \
+	docker compose -f compose.dev.yaml exec \
+		-e DJANGO_SUPERUSER_USERNAME=$$DJANGO_SUPERUSER_USERNAME \
+		-e DJANGO_SUPERUSER_PASSWORD=$$DJANGO_SUPERUSER_PASSWORD \
+		-e DJANGO_SUPERUSER_EMAIL=$$DJANGO_SUPERUSER_EMAIL \
+		backend python manage.py createsuperuser --noinput || true
 
 superuser-dev: ## Create a superuser in development environment (interactive)
 	docker compose -f compose.dev.yaml exec backend python manage.py createsuperuser
@@ -206,7 +205,7 @@ backend-test-dev: ## Run backend tests in development environment
 	docker compose -f compose.dev.yaml exec backend python -m pytest tests/ --log-file=/app/logs/pytest.log --log-level=DEBUG
 
 backend-test-prod: ## Run backend tests in production environment
-	docker compose -f compose.prod.yaml exec backend pytest  srcs/backend/tests/ --log-file=/app/logs/pytest.log --log-level=DEBUG
+	docker compose -f compose.prod.yaml exec backend python -m pytest srcs/backend/tests/ --log-file=/app/logs/pytest.log --log-level=DEBUG
 
 frontend-test: ## Run frontend tests
 	cd srcs/frontend && npm run test
@@ -223,8 +222,8 @@ logs-pytest-dev: ## Pytest logs in development environment
 logs-pytest-prod: ## Pytest logs in production environment
 	docker compose -f compose.prod.yaml exec backend cat /app/logs/pytest.log
 
-#populate-dev: ## Populate database with sample data in development environment
-#	docker compose -f compose.dev.yaml exec backend python /scripts/seed_db.py
+populate-dev: ## Populate database with sample data in development environment
+	docker compose -f compose.dev.yaml exec backend python /scripts/seed_db.py
 
 #populate-prod: ## Populate database with main pages data in production environment
 #	docker compose -f compose.prod.yaml exec backend python /scripts/seed_db_prod.py
