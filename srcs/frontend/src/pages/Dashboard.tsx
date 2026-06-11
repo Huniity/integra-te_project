@@ -49,7 +49,7 @@ const Dashboard = () => {
 
             <section className="flex flex-1 gap-6 px-16 py-8">
                 <aside className="relative hidden aspect-[941/1772] h-full shrink-0 p-4 lg:block">
-                    <img src={cloudMenu} alt="" className="absolute top-[0%] left-[0%] scale-110 object-cover" />
+                    <img src={cloudMenu} alt="" className="absolute top-[0%] left-[0%] scale-120 object-cover" />
                     <div className="relative top-[5%]">
                         <TabPanel activeTab={activeTab} onSelect={handleSelect} />
                     </div>
