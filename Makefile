@@ -230,3 +230,6 @@ populate-dev: ## Populate database with sample data in development environment
 
 convert: ## Convert PNG/JPG assets to WebP (runs from srcs/frontend)
 	cd srcs/frontend && node -e "const sharp = require('sharp'); const fs = require('fs'); const path = require('path'); const dir = 'src/assets'; const files = fs.readdirSync(dir).filter(f => f.endsWith('.png') || f.endsWith('.jpg') || f.endsWith('.jpeg')); Promise.all(files.map(f => { const input = path.join(dir, f); const output = path.join(dir, f.replace(/\.(png|jpg|jpeg)$$/,'.webp')); return sharp(input).webp({ quality: 80 }).toFile(output).then(() => console.log(f, '->', output)); })).then(() => console.log('Done!'));"
+
+embed:
+	docker compose -f compose.dev.yaml exec backend python manage.py embed_object

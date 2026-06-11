@@ -1,11 +1,11 @@
-import django
-from django.core.files.base import ContentFile
-from django.utils import timezone
-
 import os
 import sys
 from datetime import datetime
 from pathlib import Path
+from django.core.files.base import ContentFile
+from django.utils import timezone
+
+import django
 
 from integrate.models import (
     Disciplina,
