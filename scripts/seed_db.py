@@ -1,30 +1,33 @@
-import os
-import sys
-from datetime import datetime
-from pathlib import Path
-from django.core.files.base import ContentFile
-from django.utils import timezone
+import os  # noqa
+import sys  # noqa
+from datetime import datetime  # noqa
+from pathlib import Path  # noqa
+from django.core.files.base import ContentFile  # noqa
+from django.utils import timezone  # noqa
 
-import django
+import django  # noqa
 
-from integrate.models import (
-    Disciplina,
-    Tema,
-    Conteudo,
-    Jogo,
-    Livro,
-    MaterialOriginal,
-)
-
-# Make Django project importable inside Docker
-BACKEND_DIR = Path("/app")
-sys.path.insert(0, str(BACKEND_DIR))
 
 # Django settings
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "core.settings")
+
+# Make Django project importable inside Docker
+BACKEND_DIR = Path("/app")  # noqa
+sys.path.insert(0, str(BACKEND_DIR))  # noqa
+
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "core.settings")  # noqa
 
 
-django.setup()
+django.setup()  # noqa
+
+
+from integrate.models import (  # noqa
+    Disciplina,  # noqa
+    Tema,  # noqa
+    Conteudo,  # noqa
+    Jogo,  # noqa
+    Livro,  # noqa
+    MaterialOriginal,  # noqa
+)
 
 
 # Tiny valid 1x1 PNG image
