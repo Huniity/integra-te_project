@@ -55,7 +55,7 @@ const Dashboard = () => {
                     </div>
                 </aside>
 
-                <main className="flex-1 overflow-auto rounded-3xl bg-[#F9F7F8] border border-4 border-white p-6 shadow-md">
+                <main className="flex-1 overflow-auto rounded-3xl bg-blue-500/50 border border-4 border-white p-6 shadow-md">
                     <ActivePanel />
                 </main>
             </section>
