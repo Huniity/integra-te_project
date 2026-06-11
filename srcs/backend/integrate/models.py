@@ -40,10 +40,6 @@ TIPOS_JOGO = (
     ("imprimivel", "Imprimível"),
 )
 
-TEMAS = (
-    ("comma", "Comma"),
-    ("separated", "Separated"),
-)
 
 
 class Disciplina(models.Model):  # fixed — singular
