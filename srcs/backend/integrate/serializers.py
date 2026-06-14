@@ -49,3 +49,12 @@ class ContactoSerializers(serializers.Serializer):
     nome = serializers.CharField(max_length=100)
     email = serializers.EmailField()
     mensagem = serializers.CharField()
+
+
+class ResultSerializers(serializers.Serializer):
+    id = serializers.IntegerField()
+    tipo_conteudo = serializers.CharField(max_length=50)
+    titulo = serializers.CharField(max_length=200)
+    secao = serializers.CharField(max_length=100)
+    url_frotend = serializers.CharField(max_length=200)
+    thumbnail_url = serializers.CharField(max_length=200)
