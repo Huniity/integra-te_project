@@ -43,3 +43,9 @@ class MaterialOriginalSerializers(serializers.ModelSerializer):
     class Meta:
         model = MaterialOriginal
         fields = "ficheito_url", "url_externa", "descartavel"
+
+
+class ContactoSerializers(serializers.Serializer):
+    nome = serializers.CharField(max_length=100)
+    email = serializers.EmailField()
+    mensagem = serializers.CharField()
