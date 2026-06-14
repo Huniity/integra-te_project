@@ -4,8 +4,8 @@ from .models import (
     Tema,
     Conteudo,
     Jogo,
-    Livro,  # noqa
-    MaterialOriginal,  # noqa
+    Livro,
+    MaterialOriginal,
 )
 
 
@@ -31,3 +31,15 @@ class JogosSerializers(serializers.ModelSerializer):
     class Meta:
         model = Jogo
         fields = "ficheito_url", "disciplina (slug) (nome)"
+
+
+class LivroSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = Livro
+        fields = "temas (SerializermethodField)", "capa_url"
+
+
+class MaterialOriginalSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = MaterialOriginal
+        fields = "ficheito_url", "url_externa", "descartavel"
