@@ -2,7 +2,7 @@ from rest_framework import serializers
 from .models import (
     Disciplina,
     Tema,
-    Conteudo,  # noqa
+    Conteudo,
     Jogo,  # noqa
     Livro,  # noqa
     MaterialOriginal,  # noqa
@@ -19,3 +19,9 @@ class TemaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tema
         fields = "id", "nome", "slug", "desc"
+
+
+class ConteudoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Conteudo
+        fields = "ficheito_url", "thumbnail_url"
