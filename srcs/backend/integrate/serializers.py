@@ -3,7 +3,7 @@ from .models import (
     Disciplina,
     Tema,
     Conteudo,
-    Jogo,  # noqa
+    Jogo,
     Livro,  # noqa
     MaterialOriginal,  # noqa
 )
@@ -25,3 +25,9 @@ class ConteudoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Conteudo
         fields = "ficheito_url", "thumbnail_url"
+
+
+class JogosSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = Jogo
+        fields = "ficheito_url", "disciplina (slug) (nome)"
