@@ -6,17 +6,9 @@ import Aside from '../components/resolver/Aside';
 import type { SubjectId } from '../components/resolver/Aside';
 import MainContent from '../components/resolver/MainContent';
 import type { FilterType } from '../components/resolver/MainContent';
-import { subjects } from '../utils/resolver';
-
-interface Exercise {
-  id: number;
-  title: string;
-  level: number;
-  subjectId: string;
-  titleColor: string;
-  iconImg: string;
-  path: string;
-}
+import ExerciseModal from '../components/resolver/ExerciseModal';
+import type { Exercise } from '../components/resolver/ExerciseModal';
+import { getLevelBadgeClassName, subjects } from '../utils/resolver';
 
 export default function Resolver() {
   return (
@@ -32,6 +24,7 @@ function ResolverContent() {
   const [activeSubject, setActiveSubject] = useState<SubjectId>('todos');
   const [activeFilter, setActiveFilter] = useState<FilterType>('todos');
   const [selectedLevel, setSelectedLevel] = useState<number | 'todos'>('todos');
+  const [selectedExercise, setSelectedExercise] = useState<Exercise | null>(null);
 
   const handleSelectAllLevels = () => {
     setActiveFilter('todos');
@@ -57,6 +50,7 @@ function ResolverContent() {
       titleColor: 'text-orange-500',
       iconImg: './src/assets/book3.png',
       path: '/exercicios/letras-e-silabas',
+      description: 'Aprende a reconhecer as letras do alfabeto e a formar sílabas simples.',
     },
     {
       id: 2,
@@ -66,6 +60,7 @@ function ResolverContent() {
       titleColor: 'text-blue-500',
       iconImg: './src/assets/blue_book.webp',
       path: '/exercicios/leitura',
+      description: 'Pratica a leitura de pequenas frases e textos adequados ao teu nível.',
     },
     {
       id: 3,
@@ -75,6 +70,7 @@ function ResolverContent() {
       titleColor: 'text-green-500',
       iconImg: './src/assets/math.png',
       path: '/exercicios/numeros-e-contas',
+      description: 'Treina a contagem, a leitura de números e as operações básicas.',
     },
     {
       id: 4,
@@ -84,6 +80,7 @@ function ResolverContent() {
       titleColor: 'text-orange-500',
       iconImg: './src/assets/math2.png',
       path: '/exercicios/problemas',
+      description: 'Resolve pequenos problemas do dia a dia usando o que aprendeste em matemática.',
     },
     {
       id: 5,
@@ -93,6 +90,7 @@ function ResolverContent() {
       titleColor: 'text-green-600',
       iconImg: './src/assets/science.png',
       path: '/exercicios/ciencia-e-natureza',
+      description: 'Descobre curiosidades sobre os animais, as plantas e o mundo à tua volta.',
     },
     {
       id: 6,
@@ -102,6 +100,7 @@ function ResolverContent() {
       titleColor: 'text-teal-500',
       iconImg: './src/assets/puzzle.png',
       path: '/exercicios/memoria-e-jogos',
+      description: 'Joga e diverte-te enquanto exercitas a tua memória e concentração.',
     },
   ];
 
@@ -115,12 +114,6 @@ function ResolverContent() {
         (activeSubject === 'todos' || ex.subjectId === activeSubject) &&
         (activeFilter === 'nivel' ? selectedLevel === 'todos' || ex.level === selectedLevel : true),
     );
-
-  const getLevelBadgeClassName = (level: number) => {
-    if (level === 1) return 'bg-emerald-500 text-white';
-    if (level === 2) return 'bg-orange-500 text-white';
-    return 'bg-purple-500 text-white';
-  };
 
   return (
     <main
@@ -228,7 +221,7 @@ function ResolverContent() {
 
                 {/* Começar button */}
                 <button
-                  onClick={() => navigate(ex.path)}
+                  onClick={() => setSelectedExercise(ex)}
                   className="w-2/3 text-white font-extrabold text-xs py-1.5 rounded-full flex items-center justify-center gap-2 cursor-pointer bg-gradient-to-br from-blue-600 to-blue-700 shadow-[0_4px_12px_rgba(37,99,235,0.4)] transition-all duration-200 hover:-translate-y-px hover:shadow-[0_6px_16px_rgba(37,99,235,0.5)] active:translate-y-0"
                 >
                   Começar
@@ -246,6 +239,9 @@ function ResolverContent() {
           </div>
         </MainContent>
       </div>
+      {selectedExercise && (
+        <ExerciseModal exercise={selectedExercise} onClose={() => setSelectedExercise(null)} />
+      )}
       <NightModeToggle />
       {/* Footer */}
       <footer className="w-full mt-1 mb-1 flex justify-center relative z-20 shrink-0">
