@@ -1,40 +1,56 @@
-from rest_framework.views import ReadOnlyModelViewSet  # noqa
-from rest_framework.generics import CreateAPIView  # noqa
+from rest_framework.views import ReadOnlyModelViewSet
+# from rest_framework.generics import CreateAPIView
 
-from .models import (  # noqa
-    Disciplina,  # noqa
-    Tema,  # noqa
-    Jogo,  # noqa
-    Livro,  # noqa
-)  # noqa
+from .models import (
+    Disciplina,
+    Tema,
+    Jogo,
+    Livro,
+)
 
-from .serializers import (  # noqa
-    DisciplinaSerializer,  # noqa
-    TemaSerializer,  # noqa
-    JogosSerializers,  # noqa
-    LivroSerializers,  # noqa
+from .serializers import (
+    DisciplinaSerializer,
+    TemaSerializer,
+    JogosSerializers,
+    LivroSerializers,
 )
 
 
-class DisciplinaViewSet(ReadOnlyModelViewSet):  # noqa
-    queryset = Disciplina.objects.all()  # noqa
-    serializer_class = DisciplinaSerializer  # noqa
-    lookup_field = "slug"  # noqa
+class DisciplinaViewSet(ReadOnlyModelViewSet):
+    """
+    ViewSet para as disciplinas
+    """
+
+    queryset = Disciplina.objects.all()
+    serializer_class = DisciplinaSerializer
+    lookup_field = "slug"
 
 
-class TemaViewSet(ReadOnlyModelViewSet):  # noqa
-    queryset = Tema.objects.all()  # noqa
-    serializer_class = TemaSerializer  # noqa
-    lookup_field = "slug"  # noqa
+class TemaViewSet(ReadOnlyModelViewSet):
+    """
+    ViewSet para os temas
+    """
+
+    queryset = Tema.objects.all()
+    serializer_class = TemaSerializer
+    lookup_field = "slug"
 
 
-class JogoViewSet(ReadOnlyModelViewSet):  # noqa
-    queryset = Jogo.objects.all()  # noqa
-    serializer_class = JogosSerializers  # noqa
-    lookup_field = "slug"  # noqa
+class JogoViewSet(ReadOnlyModelViewSet):
+    """
+    ViewSet para os jogos
+    """
+
+    queryset = Jogo.objects.all()
+    serializer_class = JogosSerializers
+    lookup_field = "slug"
 
 
-class LivroViewSet(ReadOnlyModelViewSet):  # noqa
-    queryset = Livro.objects.all()  # noqa
-    serializer_class = LivroSerializers  # noqa
-    lookup_field = "slug"  # noqa
+class LivroViewSet(ReadOnlyModelViewSet):
+    """
+    ViewSet para os livros
+    """
+
+    queryset = Livro.objects.all()
+    serializer_class = LivroSerializers
+    lookup_field = "slug"
