@@ -90,7 +90,7 @@ export default function Home() {
   return (
     <main
       className="relative h-screen w-full bg-cover bg-center bg-no-repeat bg-fixed px-3 md:px-6 py-3 md:py-4 font-['Nunito',sans-serif] overflow-hidden flex flex-col"
-      style={{ backgroundImage: 'url(./src/assets/homepage.webp)' }}
+      style={{ backgroundImage: 'url(./src/assets/content2.png)' }}
     >
       <header className="max-w-7xl w-full mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 md:gap-3 mb-2 md:mb-3 relative z-30 shrink-0">
         <div className="bg-white/95 px-5 md:px-8 py-2 md:py-3 rounded-full shadow-lg border-2 border-white transform hover:scale-[1.02] transition-transform">

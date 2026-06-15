@@ -1,4 +1,4 @@
-import type { Subject } from '../components/resolver/Aside';
+import type { Subject } from '../components/core/Aside';
 
 export const getLevelBadgeClassName = (level: number) => {
   if (level === 1) return 'bg-emerald-500 text-white';
