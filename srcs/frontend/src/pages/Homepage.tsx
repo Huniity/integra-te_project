@@ -89,18 +89,12 @@ export default function Home() {
 
   return (
     <main
-      className="relative min-h-screen w-full bg-cover bg-center bg-no-repeat bg-fixed pt-6 pb-20 px-4 md:px-8 font-['Nunito',sans-serif] overflow-x-hidden flex flex-col justify-between"
+      className="relative h-screen w-full bg-cover bg-center bg-no-repeat bg-fixed px-3 md:px-6 py-3 md:py-4 font-['Nunito',sans-serif] overflow-hidden flex flex-col"
       style={{ backgroundImage: 'url(./src/assets/homepage.webp)' }}
     >
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Nunito:wght@400;600;700;800;900&display=swap');
-        .font-fredoka { font-family: 'Fredoka', sans-serif; }
-        .button-shadow { filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.2)); }
-      `}</style>
-
-      <header className="max-w-7xl w-full mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 mb-8 relative z-30">
-        <div className="bg-white/95 px-8 py-3 rounded-full shadow-lg border-2 border-white transform hover:scale-102 transition-transform">
-          <span className="font-fredoka text-2xl md:text-3xl font-black tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-[#005bb7] to-[#3b82f6]">
+      <header className="max-w-7xl w-full mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 md:gap-3 mb-2 md:mb-3 relative z-30 shrink-0">
+        <div className="bg-white/95 px-5 md:px-8 py-2 md:py-3 rounded-full shadow-lg border-2 border-white transform hover:scale-[1.02] transition-transform">
+          <span className="font-['Fredoka',sans-serif] text-xl md:text-3xl font-black tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-[#005bb7] to-[#3b82f6]">
             iNTEGRA-TE
           </span>
         </div>
@@ -117,13 +111,13 @@ export default function Home() {
         </div>
       </header>
 
-      <section className="max-w-5xl w-full mx-auto my-auto relative z-10 py-8 mt-7">
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-x-6 gap-y-16 justify-items-center items-end">
+      <section className="max-w-6xl w-full mx-auto flex-1 min-h-0 relative z-10 flex items-center py-1">
+        <div className="grid w-full h-full grid-cols-4 gap-x-2 sm:gap-x-4 md:gap-x-6 gap-y-4 md:gap-y-6 justify-items-center content-center items-end">
           {menuButtons.map((btn) => (
             <div key={btn.id} className="flex flex-col items-center relative w-full group">
 
 
-                <div className="absolute -top-16 bg-white/95 text-[#1e3a8a] text-[11px] font-extrabold px-5 py-2.5 rounded-full border-2 border-white shadow-md whitespace-nowrap z-20 pointer-events-none transition-all duration-300 ease-out
+                <div className="hidden md:block absolute -top-14 bg-white/95 text-[#1e3a8a] text-[11px] font-extrabold px-4 py-2 rounded-full border-2 border-white shadow-md whitespace-nowrap z-20 pointer-events-none transition-all duration-300 ease-out
                 invisible opacity-0 translate-y-2
                 group-hover:visible group-hover:opacity-100 group-hover:translate-y-0"
                 >
@@ -135,33 +129,33 @@ export default function Home() {
 
               <button
                 onClick={() => handleNavigation(btn)}
-                className="w-28 h-28 sm:w-36 sm:h-36 flex items-center justify-center relative button-shadow transform transition-all active:scale-95 duration-200 group-hover:-translate-y-4 cursor-pointer"
+                className="w-[clamp(4.2rem,10vw,8.6rem)] h-[clamp(4.2rem,10vw,8.6rem)] flex items-center justify-center relative drop-shadow-[0_10px_15px_rgba(0,0,0,0.2)] transform transition-all active:scale-95 duration-200 group-hover:-translate-y-2 md:group-hover:-translate-y-3 cursor-pointer"
               >
 
                 <img
                   src={btn.bgImg}
                   alt=""
-                  className="absolute inset-0 w-full h-full object-contain select-none"
+                  className="absolute inset-0 w-full h-full object-contain select-none scale-110"
                 />
 
 
                 <img
                   src={btn.iconImg}
                   alt={btn.label}
-                  className="absolute w-[52%] h-[52%] object-contain select-none z-10 transform group-hover:scale-110 transition-transform duration-200"
+                  className="absolute w-[62%] h-[62%] object-contain select-none z-10 transform group-hover:scale-110 transition-transform duration-200"
                 />
               </button>
 
 
-                <div className="mt-[-80px] relative w-[300px] h-[200px] flex items-center justify-center transform group-hover:scale-105 transition-transform z-10">
+                <div className="mt-[-20%] relative w-[clamp(6.6rem,16vw,12.8rem)] h-[clamp(4rem,10vw,7.4rem)] flex items-center justify-center transform group-hover:scale-105 transition-transform z-10">
                 <img
                     src="./src/assets/under_cloud.webp"
                     alt=""
-                    className="absolute inset-0 w-full h-full object-contain select-none drop-shadow-md max-w-none scale-110"
+                    className="absolute inset-0 w-full h-full object-contain select-none drop-shadow-md max-w-none scale-170"
                 />
 
 
-                <span className="relative z-10 font-fredoka text-base sm:text-lg text-[#1e3a8a] font-black tracking-wide pb-4">
+                <span className="relative z-10 font-['Fredoka',sans-serif] text-[clamp(0.62rem,1.9vw,1.15rem)] text-[#1e3a8a] font-black tracking-wide pb-2 sm:pb-3 text-center px-1">
                     {btn.label}
                 </span>
                 </div>
@@ -173,20 +167,18 @@ export default function Home() {
 
 
 
-      <footer className="w-full mt-12 flex justify-center relative z-20">
-        <div className="bg-white/95 rounded-full px-8 py-3 shadow-lg border-2 border-white flex flex-wrap items-center justify-center gap-6 md:gap-8 max-w-4xl mx-auto">
-          <div className="flex items-center gap-2 border-r border-gray-200 pr-6 last:border-0">
-            <div className="w-8 h-5 bg-blue-800 flex items-center justify-center text-[6px] text-yellow-400 font-bold rounded-sm">EU</div>
+      <footer className="w-full mt-2 md:mt-3 flex justify-center relative z-20 shrink-0">
+        <div className="bg-white/95 rounded-3xl sm:rounded-full px-3 sm:px-5 md:px-8 py-1.5 sm:py-2.5 shadow-lg border-2 border-white flex flex-wrap items-center justify-center gap-2 sm:gap-4 md:gap-6 max-w-4xl mx-auto">
+          <div className="flex items-center gap-2 sm:border-r border-gray-200 sm:pr-4 md:pr-6 last:border-0">
             <span className="text-[10px] font-black text-gray-500 leading-tight uppercase">Cofinanciado pela<br/>União Europeia</span>
           </div>
-          <div className="text-sm font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-green-500">
+          <div className="text-xs sm:text-sm font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-green-500">
             ALGARVE <span className="text-orange-500">2030</span>
           </div>
-          <div className="text-sm font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-green-600">
+          <div className="text-xs sm:text-sm font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-green-600">
             PORTUGAL <span className="text-amber-500">2030</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="text-xl">🏰</div>
             <span className="text-[10px] font-black text-gray-500 leading-tight uppercase">Loulé<br/>concelho</span>
           </div>
         </div>
