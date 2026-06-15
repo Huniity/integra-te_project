@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { NightModeBackground, NightModeProvider, NightModeToggle, useNightMode } from '../components/core/NightMode';
 import Searchbar from '../components/core/Searchbar';
@@ -9,6 +9,8 @@ import type { FilterType } from '../components/resolver/MainContent';
 import ExerciseModal from '../components/resolver/ExerciseModal';
 import type { Exercise } from '../components/resolver/ExerciseModal';
 import { getLevelBadgeClassName, subjects } from '../utils/resolver';
+
+import { exercicioApi } from '../services/api/resolver.api';
 
 export default function Resolver() {
   return (
@@ -41,68 +43,8 @@ function ResolverContent() {
     }
   };
 
-  const exercises: Exercise[] = [
-    {
-      id: 1,
-      title: 'Letras e Sílabas',
-      level: 1,
-      subjectId: 'portugues',
-      titleColor: 'text-orange-500',
-      iconImg: './src/assets/book3.png',
-      path: '/exercicios/letras-e-silabas',
-      description: 'Aprende a reconhecer as letras do alfabeto e a formar sílabas simples.',
-    },
-    {
-      id: 2,
-      title: 'Leitura',
-      level: 1,
-      subjectId: 'portugues',
-      titleColor: 'text-blue-500',
-      iconImg: './src/assets/blue_book.webp',
-      path: '/exercicios/leitura',
-      description: 'Pratica a leitura de pequenas frases e textos adequados ao teu nível.',
-    },
-    {
-      id: 3,
-      title: 'Números e Contas',
-      level: 2,
-      subjectId: 'matematica',
-      titleColor: 'text-green-500',
-      iconImg: './src/assets/math.png',
-      path: '/exercicios/numeros-e-contas',
-      description: 'Treina a contagem, a leitura de números e as operações básicas.',
-    },
-    {
-      id: 4,
-      title: 'Problemas',
-      level: 2,
-      subjectId: 'matematica',
-      titleColor: 'text-orange-500',
-      iconImg: './src/assets/math2.png',
-      path: '/exercicios/problemas',
-      description: 'Resolve pequenos problemas do dia a dia usando o que aprendeste em matemática.',
-    },
-    {
-      id: 5,
-      title: 'Ciência e Natureza',
-      level: 3,
-      subjectId: 'estudo-do-meio',
-      titleColor: 'text-green-600',
-      iconImg: './src/assets/science.png',
-      path: '/exercicios/ciencia-e-natureza',
-      description: 'Descobre curiosidades sobre os animais, as plantas e o mundo à tua volta.',
-    },
-    {
-      id: 6,
-      title: 'Memória e Jogos',
-      level: 1,
-      subjectId: 'portugues',
-      titleColor: 'text-teal-500',
-      iconImg: './src/assets/puzzle.png',
-      path: '/exercicios/memoria-e-jogos',
-      description: 'Joga e diverte-te enquanto exercitas a tua memória e concentração.',
-    },
-  ];
+  const [exercises, setExercises] = useState<Exercise[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const navItems = [
     { iconImg: './src/assets/lock.png', label: 'Admin', path: '/login' },
@@ -114,6 +56,25 @@ function ResolverContent() {
         (activeSubject === 'todos' || ex.subjectId === activeSubject) &&
         (activeFilter === 'nivel' ? selectedLevel === 'todos' || ex.level === selectedLevel : true),
     );
+
+  useEffect(() => {
+      const loadExercises = async () => {
+        try {
+          setIsLoading(true);
+          const data = await exercicioApi.getExercicios();
+
+          setExercises(data);
+        } catch (error) {
+          console.error("Erro ao carregar os exercícios:", error);
+        } finally {
+          setIsLoading(false);
+        }
+      };
+
+      loadExercises();
+    }, []);
+
+
 
   return (
     <main
@@ -193,13 +154,25 @@ function ResolverContent() {
           onSelectAll={handleSelectAllLevels}
           onSelectLevel={handleSelectLevel}
         >
-          <div className="grid grid-cols-2 min-[640px]:grid-cols-3 gap-3 sm:gap-4 items-stretch rounded-2xl">
-            {filteredExercises.map((ex) => (
-              <div
-                key={ex.id}
+          {isLoading ? (
+            <div className="flex items-center justify-center h-64">
+              <div className="text-center">
+                <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mb-4"></div>
+                <p className="text-gray-500 font-semibold">Carregando exercícios...</p>
+              </div>
+            </div>
+          ) : filteredExercises.length === 0 ? (
+            <div className="flex items-center justify-center h-64">
+              <p className="text-gray-400 text-lg font-semibold">Nenhum exercício disponível</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 min-[640px]:grid-cols-3 gap-3 sm:gap-4 items-stretch rounded-2xl">
+              {filteredExercises.map((ex) => (
+                <div
+                  key={ex.id}
 
-                className="rounded-2xl min-h-[210px] bg-white border border-gray-100 flex flex-col items-center p-3 group hover:-translate-y-1 transition-transform duration-200"
-              >
+                  className="rounded-2xl min-h-[210px] bg-white border border-gray-100 flex flex-col items-center p-3 group hover:-translate-y-1 transition-transform duration-200"
+                >
                 {/* Title */}
                 <p className={`font-['Fredoka',sans-serif] text-lg font-semibold text-center mb-1.5 leading-tight ${ex.titleColor}`}>
                   {ex.title}
@@ -236,7 +209,8 @@ function ResolverContent() {
                 </button>
               </div>
             ))}
-          </div>
+            </div>
+          )}
         </MainContent>
       </div>
       {selectedExercise && (
