@@ -1,24 +1,55 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { NightModeBackground, NightModeProvider, NightModeToggle, useNightMode } from '../components/core/NightMode';
+import Searchbar from '../components/core/Searchbar';
 
-interface Book {
+// Definição estrita de tipos para evitar quebras
+export type AgeFilterId = 'todos' | '4-6' | '6-9' | '9-12';
+
+export interface AgeSubject {
+  id: AgeFilterId;
+  label: string;
+  iconImg: string;
+}
+
+export interface BookType {
   id: string;
   title: string;
-  level: number;
+  ageGroup: string;
   abstract: string;
   externalLink: string;
   photoUrl: string;
   iconType: string;
 }
 
-export default function Learn() {
-  const [activeSubject, setActiveSubject] = useState<string>('portugues');
+export default function Read() {
+  return (
+    <NightModeProvider>
+      <ReadContent />
+    </NightModeProvider>
+  );
+}
 
-  // Dados adaptados para corresponder perfeitamente aos 6 níveis exibidos na imagem institucional
-  const booksData: Book[] = [
+function ReadContent() {
+  const navigate = useNavigate();
+  const { isNightMode } = useNightMode();
+
+  const [activeSubject, setActiveSubject] = useState<AgeFilterId>('todos');
+  const [selectedBook, setSelectedBook] = useState<BookType | null>(null);
+
+  // Mapeamento dos botões com ícones ilustrativos mantendo a estrutura visual limpa
+  const ageSubjects: AgeSubject[] = [
+    { id: 'todos', label: 'Todos os Livros', iconImg: './src/assets/star.png' },
+    { id: '4-6', label: 'Entre os 4 e 6 anos', iconImg: './src/assets/star.png' },
+    { id: '6-9', label: 'Entre os 6 e 9 anos', iconImg: './src/assets/star.png' },
+    { id: '9-12', label: 'Entre os 9 e 12 anos', iconImg: './src/assets/star.png' },
+  ];
+
+  const booksData: BookType[] = [
     {
       id: '1',
       title: 'Nível 1',
-      level: 1,
+      ageGroup: '4-6',
       abstract: 'Uma aventura mágica adaptada sobre a inclusão social.',
       externalLink: 'https://www.amazon.com',
       photoUrl: 'src/assets/capas/capa-1.png',
@@ -27,7 +58,7 @@ export default function Learn() {
     {
       id: '2',
       title: 'Nível 2',
-      level: 2,
+      ageGroup: '4-6',
       abstract: 'Desafios lúdicos para treinar a lógica.',
       externalLink: 'https://www.amazon.com',
       photoUrl: 'src/assets/capas/capa-2.png',
@@ -36,7 +67,7 @@ export default function Learn() {
     {
       id: '3',
       title: 'Nível 3',
-      level: 3,
+      ageGroup: '6-9',
       abstract: 'Contos interativos contra o absentismo.',
       externalLink: 'https://www.amazon.com',
       photoUrl: 'src/assets/capas/capa-3.png',
@@ -45,7 +76,7 @@ export default function Learn() {
     {
       id: '4',
       title: 'Nível 4',
-      level: 4,
+      ageGroup: '6-9',
       abstract: 'Livro focado na igualdade de oportunidades.',
       externalLink: 'https://www.amazon.com',
       photoUrl: 'src/assets/capas/capa-4.png',
@@ -54,7 +85,7 @@ export default function Learn() {
     {
       id: '5',
       title: 'Nível 5',
-      level: 5,
+      ageGroup: '9-12',
       abstract: 'Guia prático e divertido sobre o uso seguro da internet.',
       externalLink: 'https://www.amazon.com',
       photoUrl: 'src/assets/capas/capa-5.png',
@@ -63,7 +94,7 @@ export default function Learn() {
     {
       id: '6',
       title: 'Nível 6',
-      level: 6,
+      ageGroup: '9-12',
       abstract: 'Uma narrativa densa baseada em inteligência emocional.',
       externalLink: 'https://www.amazon.com',
       photoUrl: 'src/assets/capas/capa-6.png',
@@ -71,167 +102,145 @@ export default function Learn() {
     }
   ];
 
+  const navItems = [
+    { iconImg: './src/assets/lock.png', label: 'Admin', path: '/login' },
+  ];
+
+  const filteredBooks = booksData.filter(
+    (book) => activeSubject === 'todos' || book.ageGroup === activeSubject
+  );
+
   return (
-    <main
-      className="relative min-h-screen w-full bg-cover bg-center bg-no-repeat bg-fixed pt-6 pb-24 px-4 md:px-8 font-['Nunito',sans-serif] overflow-x-hidden selection:bg-blue-200"
-      style={{ backgroundImage: 'url(src/assets/jardim.jpeg)' }}
-    >
-      <style>{`
-        .font-fredoka { font-family: 'Fredoka', sans-serif; }
-        .cloud-shadow { filter: drop-shadow(0 8px 16px rgba(0,0,0,0.06)); }
-        .inner-panel-inset { box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.08); }
-      `}</style>
+    /* lg:overflow-y-hidden retira o scroll vertical geral do ecrã em ecrãs grandes */
+    <main className="relative min-h-screen lg:h-screen w-full px-3 md:px-5 py-2 font-['Nunito',sans-serif] overflow-x-hidden overflow-y-auto lg:overflow-y-hidden flex flex-col">
 
-      {/* --- MENU SUPERIOR (HEADER) --- */}
-      <header className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 mb-8 relative z-30">
-        {/* Logótipo iNTEGRA-TE na Nuvem */}
-        <div className="bg-white/95 px-8 py-3 rounded-full shadow-lg border-2 border-white flex items-center justify-center pointer-events-pointer transition-transform hover:scale-102">
-          <span className="font-fredoka text-2xl md:text-3xl font-black tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-[#005bb7] to-[#3b82f6]">
-            iNTEGRA-TE
+      {/* Elementos de Interface do Fundo */}
+      <img
+        src="./src/assets/bush.webp"
+        alt=""
+        aria-hidden="true"
+        className="pointer-events-none fixed bottom-[-9%] left-[-5%] z-2 w-28 sm:w-36 md:w-44 lg:w-52 object-contain"
+      />
+      <img
+        src="./src/assets/bush2.webp"
+        alt=""
+        aria-hidden="true"
+        className="pointer-events-none fixed bottom-[-9%] right-[-4%] z-2 w-28 sm:w-36 md:w-44 lg:w-52 object-contain"
+      />
+      <img
+        src="./src/assets/books.webp"
+        alt=""
+        aria-hidden="true"
+        className="pointer-events-none fixed bottom-[0%] left-[0%] z-1 w-28 sm:w-36 md:w-44 lg:w-36 object-contain"
+      />
+      <img
+        src="./src/assets/rainbow.png"
+        alt=""
+        aria-hidden="true"
+        className={`pointer-events-none fixed top-[14%] left-[-5%] z-1 w-28 sm:w-36 md:w-44 lg:w-100 object-contain rotate-24 transition-opacity duration-700 ${
+          isNightMode ? 'opacity-0' : 'opacity-100'
+        }`}
+      />
+
+      <NightModeBackground dayImage="./src/assets/content2.png" nightImage="./src/assets/noite.png" />
+
+      {/* Header com a tua Navbar e Logótipo */}
+      <header className="max-w-[95%] w-full mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 mb-2 relative z-30 shrink-0">
+        <button
+          onClick={() => navigate('/')}
+          className="h-18 w-[225px] flex items-center justify-center bg-center bg-no-repeat bg-[length:100%_100%] transform hover:scale-105 transition-transform cursor-pointer"
+          style={{ backgroundImage: 'url(./src/assets/cloud_logo.png)' }}
+        >
+          <span className="font-['Fredoka',sans-serif] text-xl md:text-[1.5rem] font-black tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-[#005bb7] to-[#3b82f6]">
+            INTEGRA-TE
           </span>
-        </div>
+        </button>
 
-        {/* Botões Centrais Redondos de Categorias */}
-        <div className="flex items-center gap-3 bg-white/60 backdrop-blur-sm p-2 rounded-full border border-white/40 shadow-sm">
-          <button className="w-12 h-12 rounded-full bg-gradient-to-b from-purple-400 to-purple-600 text-white flex items-center justify-center text-xl shadow-md transform hover:scale-110 transition-all">
-            📚
-          </button>
-          <button className="w-12 h-12 rounded-full bg-gradient-to-b from-red-400 to-red-500 text-white flex items-center justify-center text-xl shadow-md transform hover:scale-110 transition-all opacity-80 hover:opacity-100">
-            ▶️
-          </button>
-          <button className="w-12 h-12 rounded-full bg-gradient-to-b from-green-400 to-green-500 text-white flex items-center justify-center text-xl shadow-md transform hover:scale-110 transition-all opacity-80 hover:opacity-100">
-            🖼️
-          </button>
-          <button className="w-12 h-12 rounded-full bg-gradient-to-b from-blue-400 to-blue-500 text-white flex items-center justify-center text-xl shadow-md transform hover:scale-110 transition-all opacity-80 hover:opacity-100">
-            ℹ️
-          </button>
-        </div>
+        <Searchbar />
 
-        {/* Barra de Pesquisa e Perfil do Utilizador */}
-        <div className="flex items-center gap-4 w-full md:w-auto">
-          <div className="relative flex-1 md:w-64">
-            <input
-              type="text"
-              placeholder="O que procuras?"
-              className="w-full bg-[#005bb7] text-white placeholder-white/80 pl-12 pr-4 py-2.5 rounded-full font-bold text-sm outline-none border-2 border-white/20 focus:border-white shadow-md"
-            />
-            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-white text-base">🔍</span>
-          </div>
-
-          <div className="bg-[#005bb7] text-white px-5 py-2 rounded-full flex items-center gap-3 border-2 border-white/20 shadow-md">
-            <div className="w-7 h-7 bg-orange-400 rounded-full flex items-center justify-center text-sm shadow-inner">🧑‍🦱</div>
-            <span className="font-black text-sm tracking-wide">Diogo</span>
-          </div>
-        </div>
+        <nav className="flex flex-wrap items-center justify-center gap-2">
+          {navItems.map((item) => (
+            <button
+              key={item.path}
+              onClick={() => navigate(item.path)}
+              aria-label={item.label}
+              className="w-9 h-9 bg-white/30 rounded-full flex items-center justify-center shadow-md border-2 border-white/20 hover:scale-110 active:scale-95 transition-transform cursor-pointer backdrop-blur-xs"
+            >
+              <img src={item.iconImg} alt={item.label} className="w-7 h-7 object-contain" />
+            </button>
+          ))}
+        </nav>
       </header>
 
-      {/* --- CORPO PRINCIPAL DA PÁGINA --- */}
-      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6 items-start relative z-10">
+      {/* Layout Principal Dividido */}
+      <div className="max-w-[95%] w-full mx-auto flex flex-col lg:flex-row gap-3 lg:gap-20 relative z-10 pb-2 flex-1 min-h-0">
 
-        {/* COLUNA ESQUERDA: Menu de Matérias */}
-        <aside className="lg:col-span-3 space-y-6 relative">
-          <div className="bg-white/85 backdrop-blur-md rounded-[2.5rem] p-6 shadow-xl border-4 border-white cloud-shadow relative z-10">
-            <h2 className="font-fredoka text-2xl md:text-3xl text-#3b82f6 font-bold mb-6 text-left tracking-wide">
-            Livros
-            </h2>
+        <AsideLer subjects={ageSubjects} activeSubject={activeSubject} onSelectSubject={setActiveSubject} />
 
-            <div className="flex flex-col gap-3">
-              <button
-                onClick={() => setActiveSubject('portugues')}
-                className={`w-full py-3.5 px-5 rounded-2xl font-black text-sm transition-all flex items-center justify-between shadow-md border-b-4 ${
-                  activeSubject === 'portugues'
-                    ? 'bg-gradient-to-r from-[#1d4ed8] to-[#3b82f6] text-white border-blue-700'
-                    : 'bg-white text-[#005bb7] border-gray-200 hover:bg-gray-50'
-                }`}
-              >
-                <div className="flex items-center gap-3">
-                  <span>Entre os 4 e 6 anos</span>
-                </div>
-                {activeSubject === 'portugues' && <span className="text-xs">▶</span>}
-              </button>
+        <MainContentLer title="Livros Disponíveis">
+          <div className="relative w-full h-full">
+            {/* Fotos do Menino e Menina Removidas Daqui Permanentemente */}
 
-              <button
-                onClick={() => setActiveSubject('matematica')}
-                className={`w-full py-3.5 px-5 rounded-2xl font-black text-sm transition-all flex items-center justify-between shadow-md border-b-4 ${
-                  activeSubject === 'matematica'
-                    ? 'bg-gradient-to-r from-[#1d4ed8] to-[#3b82f6] text-white border-blue-700'
-                    : 'bg-white text-[#005bb7] border-gray-200 hover:bg-gray-50'
-                }`}
-              >
-                <div className="flex items-center gap-3">
-                  <span>Entre os 6 e 9 anos</span>
-                </div>
-                {activeSubject === 'matematica' && <span className="text-xs">▶</span>}
-              </button>
-
-              <button
-                onClick={() => setActiveSubject('estudo_meio')}
-                className={`w-full py-3.5 px-5 rounded-2xl font-black text-sm transition-all flex items-center justify-between shadow-md border-b-4 ${
-                  activeSubject === 'estudo_meio'
-                    ? 'bg-gradient-to-r from-[#1d4ed8] to-[#3b82f6] text-white border-blue-700'
-                    : 'bg-white text-[#005bb7] border-gray-200 hover:bg-gray-50'
-                }`}
-              >
-                <div className="flex items-center gap-3">
-                  <span>Entre os 9 e 12 anos</span>
-                </div>
-                {activeSubject === 'estudo_meio' && <span className="text-xs">▶</span>}
-              </button>
-            </div>
-          </div>
-          <div className="absolute -right-50 top-60 -bottom-10 w-40  md:w-90 z-20 pointer-events-none hidden xl:block">
-            <img
-              src="src/assets/rapaz.png"
-              alt="Rapaz iNTEGRA-TE"
-              className="w-full h-auto object-contain drop-shadow-xl"
-            />
-          </div>
-        </aside>
-
-        <section className="lg:col-span-9 relative">
-          <div className="bg-[#3483eb] rounded-[3rem] p-6 md:p-10 shadow-2xl border-4 border-white/30 relative z-10 inner-panel-inset">
-            <h2 className="font-fredoka text-2xl md:text-2xl text-white font-bold mb-6 tracking-wide">
-                Livros Disponíveis
-            </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-              {booksData.map((book) => (
+            {/* Grelha de Exibição dos Livros */}
+            <div className="grid grid-cols-2 min-[640px]:grid-cols-3 gap-3 sm:gap-4 items-stretch rounded-2xl relative z-10">
+              {filteredBooks.map((book) => (
                 <div
                   key={book.id}
-                  className="flex flex-col items-center bg-transparent group text-center"
+                  className="rounded-2xl min-h-[220px] bg-white border border-gray-100 flex flex-col items-center justify-between p-3 group hover:-translate-y-1 transition-transform duration-200 shadow-sm"
                 >
-                  <div className="w-32 h-36 flex items-center justify-center relative mb-3 transform group-hover:scale-105 group-hover:rotate-2 transition-all">
+                  <p className="font-['Fredoka',sans-serif] text-base md:text-lg font-semibold text-center mb-1 leading-tight text-blue-600">
+                    {book.title}
+                  </p>
+
+                  <div className="w-24 h-24 flex items-center justify-center my-1 transform group-hover:scale-105 transition-transform duration-200">
                     <img
                       src={book.photoUrl}
                       alt={book.title}
                       className="w-full h-full object-contain drop-shadow-md"
                       onError={(e) => {
                         e.currentTarget.style.display = 'none';
-                        e.currentTarget.parentElement!.className += " bg-white/10 rounded-2xl border-2 border-white/20 shadow-inner";
-                        e.currentTarget.parentElement!.innerHTML = `<span class="text-6xl select-none">${book.iconType}</span>`;
+                        if (e.currentTarget.parentElement) {
+                          e.currentTarget.parentElement.className += " bg-gray-50 rounded-xl border border-gray-200 shadow-inner";
+                          e.currentTarget.parentElement.innerHTML = `<span class="text-4xl select-none">${book.iconType}</span>`;
+                        }
                       }}
                     />
                   </div>
-                  <h3 className="font-fredoka text-lg text-white font-semibold mb-1 tracking-wide">
-                    {book.title}
-                  </h3>
+
+                  <button
+                    onClick={() => setSelectedBook(book)}
+                    className="w-full sm:w-5/6 text-white font-extrabold text-xs py-1.5 rounded-full flex items-center justify-center gap-1.5 cursor-pointer bg-gradient-to-br from-blue-600 to-blue-700 shadow-[0_4px_12px_rgba(37,99,235,0.3)] transition-all duration-200 hover:-translate-y-px hover:shadow-[0_6px_16px_rgba(37,99,235,0.4)] active:translate-y-0"
+                  >
+                    Ver Livro
+                    <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M8 5v14l11-7z" />
+                    </svg>
+                  </button>
                 </div>
               ))}
             </div>
+
+            {filteredBooks.length === 0 && (
+              <div className="text-center py-16 font-semibold text-white/90 bg-white/5 rounded-2xl border border-white/10 backdrop-blur-xs">
+                Nenhum livro disponível para esta faixa etária.
+              </div>
+            )}
           </div>
-          <div className="absolute -right-20 top-1/3 w-40 md:w-90 z-20 pointer-events-none hidden xl:block">
-            <img
-              src="src/assets/rapariga.png"
-              alt="Rapariga iNTEGRA-TE"
-              className="w-full h-auto object-contain drop-shadow-xl"
-            />
-          </div>
-        </section>
+        </MainContentLer>
       </div>
-      <footer className="w-full mt-16 flex justify-center relative z-20">
-        <div className="bg-white/95 rounded-full px-8 py-3 shadow-lg border-2 border-white flex flex-wrap items-center justify-center gap-6 md:gap-8 max-w-4xl mx-auto">
-          <div className="flex items-center gap-2 border-r border-gray-200 pr-6 last:border-0">
+
+      {selectedBook && (
+        <BookModal book={selectedBook} onClose={() => setSelectedBook(null)} />
+      )}
+
+      <NightModeToggle />
+
+      {/* Rodapé Padrão */}
+      <footer className="w-full mt-1 mb-1 flex justify-center relative z-20 shrink-0">
+        <div className="w-full sm:w-auto bg-white/95 rounded-3xl sm:rounded-full px-4 sm:px-7 py-2 sm:py-2.5 shadow-lg border-2 border-white flex flex-wrap items-center justify-center gap-3 sm:gap-5 md:gap-7 max-w-4xl mx-auto">
+          <div className="flex items-center gap-2 sm:border-r border-gray-200 sm:pr-5 last:border-0">
             <div className="w-8 h-5 bg-blue-800 flex items-center justify-center text-[6px] text-yellow-400 font-bold rounded-sm">EU</div>
-            <span className="text-[10px] font-black text-gray-500 leading-tight uppercase">Cofinanciado pela<br/>União Europeia</span>
+            <span className="text-[10px] font-black text-gray-500 leading-tight uppercase">Cofinanciado pela<br />União Europeia</span>
           </div>
           <div className="text-sm font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-green-500">
             ALGARVE <span className="text-orange-500">2030</span>
@@ -240,11 +249,171 @@ export default function Learn() {
             PORTUGAL <span className="text-amber-500">2030</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="text-xl">🏰</div>
-            <span className="text-[10px] font-black text-gray-500 leading-tight uppercase">Loulé<br/>concelho</span>
+            <span className="text-[10px] font-black text-gray-500 leading-tight uppercase">Loulé<br />concelho</span>
           </div>
         </div>
       </footer>
     </main>
+  );
+}
+
+interface AsideLerProps {
+  subjects: AgeSubject[];
+  activeSubject: AgeFilterId;
+  onSelectSubject: (id: AgeFilterId) => void;
+}
+
+// Alterado o nome da função interna para evitar colisões de exportação
+function AsideLer({ subjects, activeSubject, onSelectSubject }: AsideLerProps) {
+  return (
+    <>
+      {/* Mobile + Tablet */}
+      <section className="lg:hidden bg-white/90 rounded-2xl p-2.5 shadow-lg border border-white/60 backdrop-blur-sm w-full">
+        <h2 className="font-['Fredoka',sans-serif] text-sm font-black text-[#1e3a8a] mb-2 flex items-center justify-center gap-1 text-center">
+          Idades
+        </h2>
+        <div className="flex flex-wrap justify-center gap-1.5 pb-1 overflow-x-hidden">
+          {subjects.map((subj) => (
+            <button
+              key={`mobile-${subj.id}`}
+              onClick={() => onSelectSubject(subj.id)}
+              className={`flex items-center gap-1.5 px-2 py-1.5 rounded-lg font-bold text-xs transition-all cursor-pointer border-2 shadow-[0_4px_12px_rgba(15,23,42,0.08)] max-w-full ${
+                activeSubject === subj.id
+                  ? 'border-transparent bg-gradient-to-br from-blue-700 to-blue-600 text-white shadow-[0_4px_16px_rgba(37,99,235,0.4)]'
+                  : 'bg-gray-50 text-[#1e3a8a] border-transparent hover:bg-blue-50 hover:border-blue-200'
+              }`}
+            >
+              <span className="font-extrabold">{subj.label}</span>
+            </button>
+          ))}
+        </div>
+      </section>
+
+      {/* Desktop - Ajustado com a nuvem de fundo esticada e títulos posicionados */}
+      <aside className="hidden lg:flex flex-col justify-center items-center h-full w-64 shrink-0 relative z-20">
+        <div className="relative w-full h-[320px] flex items-center justify-center">
+          <img
+            src="./src/assets/cloud_menu.png"
+            alt=""
+            aria-hidden="true"
+            className="pointer-events-none absolute left-1/2 top-1/2 h-[135%] w-[150%] -translate-x-1/2 -translate-y-1/2 object-contain opacity-95"
+          />
+          <div className="relative z-10 w-[85%] px-2 pt-2 pb-4">
+            <h2 className="justify-center font-['Fredoka',sans-serif] text-2xl font-black text-[#005bb7] mb-4 flex items-center gap-1">
+              Idades
+            </h2>
+            <div className="flex flex-col gap-1.5">
+              {subjects.map((subj) => (
+                <button
+                  key={subj.id}
+                  onClick={() => onSelectSubject(subj.id)}
+                  className={`w-full flex items-center justify-center text-center px-3 py-2 rounded-xl font-bold text-xs transition-all cursor-pointer border-2 shadow-sm ${
+                    activeSubject === subj.id
+                      ? 'border-transparent bg-gradient-to-br from-blue-600 to-blue-500 text-white shadow-[0_3px_10px_rgba(37,99,235,0.3)]'
+                      : 'bg-white/40 text-[#1e3a8a] border-transparent hover:bg-blue-50/60 hover:border-blue-200'
+                  }`}
+                >
+                  <span className="font-['Fredoka',sans-serif] font-black tracking-wide">{subj.label}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      </aside>
+    </>
+  );
+}
+
+interface BookModalProps {
+  book: BookType;
+  onClose: () => void;
+}
+
+function BookModal({ book, onClose }: BookModalProps) {
+  return (
+    <div
+      onClick={onClose}
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm px-4"
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="relative flex w-full max-w-sm flex-col items-center rounded-3xl bg-white p-6 shadow-2xl"
+      >
+        <button
+          type="button"
+          onClick={onClose}
+          className="absolute top-3 right-3 flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 text-gray-500 hover:bg-gray-200 transition-colors cursor-pointer"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M6 6l12 12M18 6L6 18" />
+          </svg>
+        </button>
+
+        <div className="w-28 h-36 flex items-center justify-center my-2">
+          <img
+            src={book.photoUrl}
+            alt={book.title}
+            className="w-full h-full object-contain drop-shadow-md"
+            onError={(e) => {
+              e.currentTarget.style.display = 'none';
+              e.currentTarget.parentElement!.innerHTML = `<span class="text-6xl">${book.iconType}</span>`;
+            }}
+          />
+        </div>
+
+        <h3 className="font-['Fredoka',sans-serif] text-2xl font-black text-center text-blue-600 mb-2 mt-2">
+          {book.title}
+        </h3>
+
+        <p className="text-sm text-gray-500 font-medium text-center leading-relaxed mb-6 px-4">
+          {book.abstract}
+        </p>
+
+        <a
+          href={book.externalLink}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="w-full text-center text-white font-extrabold text-sm py-3 rounded-full bg-gradient-to-br from-blue-600 to-blue-700 shadow-md hover:scale-102 active:scale-98 transition-all cursor-pointer"
+        >
+          Começar Leitura 📖
+        </a>
+      </div>
+    </div>
+  );
+}
+
+interface MainContentLerProps {
+  title: string;
+  children: React.ReactNode;
+}
+
+function MainContentLer({ title, children }: MainContentLerProps) {
+  return (
+    <div className="flex-1 min-h-0 bg-blue-600/30 backdrop-blur-xs rounded-3xl shadow-[0_18px_45px_rgba(31,38,135,0.28)] border border-white/30 ring-1 ring-white/20 overflow-hidden flex flex-col">
+      <div className="relative px-5 pt-4 pb-3 flex flex-col items-center sm:flex-row sm:items-center justify-between gap-2 overflow-visible">
+        <img
+          src="./src/assets/stars.png"
+          alt=""
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-[-50] top-1/2 h-[100%] w-2/3 -translate-y-2/3 mx-auto object-contain"
+        />
+        <div className="relative z-10 flex items-center gap-3">
+          <h1
+            className="font-['Fredoka',sans-serif] text-3xl font-black text-white"
+            style={{
+              textShadow:
+                '-1px 0 #2563eb, 0 1px #2563eb, 1px 0 #2563eb, 0 -1px #2563eb, 1px 1px #2563eb, -1px -1px #2563eb',
+            }}
+          >
+            {title}
+          </h1>
+        </div>
+      </div>
+
+      {/* Espaço interno para os livros com scroll interno isolado da aplicação */}
+      <div className="flex-1 min-h-0 px-5 py-4 overflow-y-auto custom-scrollbar">
+        {children}
+      </div>
+    </div>
   );
 }
