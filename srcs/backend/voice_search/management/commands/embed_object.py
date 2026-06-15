@@ -25,7 +25,11 @@ def build_rows():
             }
         )
 
+<<<<<<< HEAD
     for obj in Tema.objects.filter(publicado=True).select_related("disciplina"):
+=======
+    for obj in Tema.objects.all().select_related("disciplina"):
+>>>>>>> origin/dev
         rows.append(
             {
                 "model_type": "tema",
