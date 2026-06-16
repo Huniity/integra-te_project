@@ -1,10 +1,9 @@
-export type SubjectId = 'todos' | 'portugues' | 'matematica' | 'estudo-do-meio';
+export type SubjectId = string;
 
 export interface Subject {
   id: SubjectId;
   label: string;
   iconImg: string;
-//   iconBg: string;
   path?: string;
 }
 

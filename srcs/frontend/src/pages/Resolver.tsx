@@ -3,11 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import { NightModeBackground, NightModeProvider, NightModeToggle, useNightMode } from '../components/core/NightMode';
 import Searchbar from '../components/core/Searchbar';
 import Aside from '../components/core/Aside';
-import type { SubjectId } from '../components/core/Aside';
 import MainContent from '../components/resolver/MainContent';
 import type { FilterType } from '../components/resolver/MainContent';
-import ExerciseModal from './../components/resolver/ExerciseModal';
-import type { Exercise } from './../components/resolver/ExerciseModal';
+import ExerciseModal from '../components/resolver/ExerciseModal';
+import type { Exercise } from '../components/resolver/ExerciseModal';
 import { getLevelBadgeClassName, subjects } from '../utils/resolver';
 
 import { exercicioApi } from '../services/api/resolver.api';
@@ -23,7 +22,7 @@ export default function Resolver() {
 function ResolverContent() {
   const navigate = useNavigate();
   const { isNightMode } = useNightMode();
-  const [activeSubject, setActiveSubject] = useState<SubjectId>('todos');
+  const [activeSubject, setActiveSubject] = useState('todos');
   const [activeFilter, setActiveFilter] = useState<FilterType>('todos');
   const [selectedLevel, setSelectedLevel] = useState<number | 'todos'>('todos');
   const [selectedExercise, setSelectedExercise] = useState<Exercise | null>(null);
