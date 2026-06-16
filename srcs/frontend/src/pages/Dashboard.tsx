@@ -11,21 +11,15 @@ import ExerciciosPanel from './dashboard/ExerciciosPanel'
 import VideosPanel from './dashboard/VideosPanel'
 import FicheirosPanel from './dashboard/FicheirosPanel'
 import AulasPanel from './dashboard/AulasPanel'
-import GaleriaPanel from './dashboard/GaleriaPanel'
-import CategoriasPanel from './dashboard/CategoriasPanel'
-import DefinicoesPanel from './dashboard/DefinicoesPanel'
 import LivrosPanel from './dashboard/LivrosPanel'
 
 const TAB_PANELS: Record<string, ComponentType> = {
     dashboard: OverviewPanel,
-    exercicios: ExerciciosPanel,
-    videos: VideosPanel,
-    ficheiros: FicheirosPanel,
     aulas: AulasPanel,
-    galeria: GaleriaPanel,
-    categorias: CategoriasPanel,
-    definicoes: DefinicoesPanel,
+    exercicios: ExerciciosPanel,
     livros: LivrosPanel,
+    ficheiros: FicheirosPanel,
+    videos: VideosPanel,
 }
 
 const DASHBOARD_SUBJECTS = TABS.map((tab) => ({
