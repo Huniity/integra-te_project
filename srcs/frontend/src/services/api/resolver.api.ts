@@ -1,5 +1,5 @@
 import { fetchWithConfig } from './index';
-import { Exercicio } from '../../api/contracts/resolver';
+import type { Exercicio } from '../../api/contracts/resolver';
 
 type GetExerciciosResponse = Exercicio[];
 
