@@ -5,6 +5,8 @@ import Read from './pages/Read'
 import Homepage from './pages/Homepage'
 import Resolver from './pages/Resolver'
 import './App.css'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import Home from './pages/Home'
 
 
 function App() {
