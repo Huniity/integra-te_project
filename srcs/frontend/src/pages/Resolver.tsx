@@ -6,8 +6,8 @@ import Aside from '../components/core/Aside';
 import type { SubjectId } from '../components/core/Aside';
 import MainContent from '../components/resolver/MainContent';
 import type { FilterType } from '../components/resolver/MainContent';
-import ExerciseModal from '../components/resolver/ExerciseModal';
-import type { Exercise } from '../components/resolver/ExerciseModal';
+import ExerciseModal from './../components/resolver/ExerciseModal';
+import type { Exercise } from './../components/resolver/ExerciseModal';
 import { getLevelBadgeClassName, subjects } from '../utils/resolver';
 
 import { exercicioApi } from '../services/api/resolver.api';
@@ -47,7 +47,7 @@ function ResolverContent() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const navItems = [
-    { iconImg: './src/assets/lock.png', label: 'Admin', path: '/login' },
+    { iconImg: './src/assets/lock.png', label: 'Admin', path: '/dashboard' },
   ];
 
   const filteredExercises =
