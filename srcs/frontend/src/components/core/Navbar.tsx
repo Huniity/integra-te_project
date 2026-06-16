@@ -14,7 +14,6 @@ import {
 } from 'lucide-react'
 
 /* Types */
-
 interface NavItem {
   id       : string
   label    : string
@@ -33,7 +32,6 @@ interface NavItem {
 
 /* Navigation data
    Matches scope doc: Aprender · Exercícios · Jogos · Ler · Sobre · Contactos */
-
 const NAV: NavItem[] = [
   {
     id    : 'learn',
@@ -114,6 +112,12 @@ const NAV: NavItem[] = [
     ariaLabel    : 'Contactos — falar connosco',
   },
 ]
+
+/*
+ * Set to the logo path once the final asset is ready.
+ * To activate: drop logo.svg into /public and change null to '/logo.svg'
+ */
+const LOGO_SRC: string | null = null
 
 /* Animation constants */
 
@@ -322,15 +326,14 @@ function MobileNavRow({
 }
 
 /* Mobile drawer panel */
-
 interface MobileDrawerProps {
   isOpen          : boolean
   onClose         : () => void
-  firstItemRef    : React.RefObject<HTMLElement | null>
 }
 
 function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
   const navigate = useNavigate()
+  const listRef = useRef<HTMLUListElement>(null)
 
   /* Escape key closes drawer */
   useEffect(() => {
@@ -341,6 +344,13 @@ function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
   }, [isOpen, onClose])
+
+  /* Moves focus into the drawer when it opens */
+  useEffect(() => {
+    if (!isOpen) return
+    const first = listRef.current?.querySelector<HTMLElement>('a, button')
+    first?.focus()
+  }, [isOpen])
 
   return (
     <AnimatePresence>
@@ -355,7 +365,7 @@ function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
             transition={{ duration: 0.2 }}
             onClick={onClose}
             aria-hidden="true"
-            className="fixed inset-0 top-[72px] z-40 bg-black/25 backdrop-blur-sm md:hidden"
+            className="fixed inset-0 top-[var(--nav-h)] z-40 bg-black/25 backdrop-blur-sm md:hidden"
           />
 
           {/* Drawer panel */}
@@ -375,7 +385,7 @@ function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
               md:hidden
             "
           >
-            <ul role="list" className="flex flex-col">
+            <ul ref={listRef} role="list" className="flex flex-col">
               {NAV.map((item, i) => (
                 <MobileNavRow
                   key={item.id}
@@ -416,11 +426,9 @@ function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
 }
 
 /* Main Navbar export */
-
 export function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false)
   const burgerRef    = useRef<HTMLButtonElement>(null)
-  const firstItemRef = useRef<HTMLElement>(null)
   const navigate     = useNavigate()
 
   const closeMenu = useCallback(() => setMenuOpen(false), [])
@@ -446,8 +454,21 @@ export function Navbar() {
         shadow-sm
       "
     >
+     < a 
+      href="#main-content"
+        className="
+          sr-only focus:not-sr-only
+          absolute left-4 top-4 z-[100]
+          rounded-pill bg-brand-blue-500 px-4 py-2
+          font-display font-bold text-sm text-white
+          focus:outline-2 focus:outline-white
+        "
+      >
+        Saltar para o conteúdo principal
+      </a>
+
       <div className="
-        relative mx-auto flex h-[72px] max-w-6xl
+        relative mx-auto flex h-[var(--nav-h)] max-w-6xl
         items-center justify-between gap-4 px-4 sm:px-6
       ">
 
@@ -467,17 +488,27 @@ export function Navbar() {
               shadow-sm
             "
           >
-            <span
-              aria-hidden="true"
-              className="font-display text-base font-black text-white tracking-tight leading-none"
-            >
-              INTEGRA‑TE
-            </span>
-            <span aria-hidden="true" className="text-brand-blue-200 text-sm leading-none">⭐</span>
+            {LOGO_SRC ? (
+              <img
+                src={LOGO_SRC}
+                alt=""
+                className="h-8 w-auto"
+              />
+            ) : (
+              <>
+                <span
+                  aria-hidden="true"
+                  className="font-display text-base font-black text-white tracking-tight leading-none"
+                >
+                  INTEGRA‑TE
+                </span>
+                <span aria-hidden="true" className="text-brand-blue-200 text-sm leading-none">⭐</span>
+              </>
+            )}
           </motion.div>
         </NavLink>
 
-        {/* ── Desktop navigation ─────────────────────────────── */}
+        {/* Desktop navigation */}
         <nav
           role="navigation"
           aria-label="Navegação principal"
@@ -510,7 +541,7 @@ export function Navbar() {
             <span className="hidden lg:inline whitespace-nowrap">O que procuras?</span>
           </motion.button>
 
-          {/* Burger — mobile only */}
+          {/* Burger - mobile only */}
           <BurgerButton
             isOpen={menuOpen}
             onClick={() => setMenuOpen((v) => !v)}
@@ -523,7 +554,6 @@ export function Navbar() {
       <MobileDrawer
         isOpen={menuOpen}
         onClose={closeMenu}
-        firstItemRef={firstItemRef}
       />
     </header>
   )

@@ -1,4 +1,5 @@
 import HeroBrand from '../components/branding/HeroBrand'
+import heroBg   from '../assets/hero.webp'
 
 /*
    Home page - root route "/"
@@ -10,8 +11,8 @@ import HeroBrand from '../components/branding/HeroBrand'
 export default function Home() {
   return (
     <main id="main-content">
-      {/* Pass logoSrc="/logo.svg" and bgSrc="/hero.png" once assets land */}
-      <HeroBrand />
+      <HeroBrand bgSrc={heroBg} />
+      {/* <NavIconGrid /> */}
     </main>
   )
 }

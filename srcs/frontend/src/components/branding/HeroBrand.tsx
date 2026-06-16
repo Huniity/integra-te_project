@@ -21,14 +21,13 @@ const DEFAULT_SUBTITLE = 'Explora, brinca e descobre o mundo do conhecimento.'
 
 /* Types */
 interface HeroBrandProps {
-  /** Path to final logo asset. Omit to render text wordmark placeholder. */
-  logoSrc?  : string
-  /** Path to hero background illustration. Omit to render gradient placeholder. */
-  bgSrc?    : string
-  /** Primary heading — update when copy is finalised */
-  tagline?  : string
-  /** Supporting subtitle — update when copy is finalised */
-  subtitle? : string
+  logoSrc?      : string
+  bgSrc?        : string
+  tagline?      : string
+  subtitle?     : string
+  /** Heading level - pass 1 on the homepage, 2 on any other page.
+   *  Defaults to 1 so Home.tsx needs no change. */
+  headingLevel? : 1 | 2
 }
 
 /* Animation variants */
@@ -57,9 +56,11 @@ const SLIDE_UP: Variants = {
 export function HeroBrand({
   logoSrc,
   bgSrc,
-  tagline  = DEFAULT_TAGLINE,
-  subtitle = DEFAULT_SUBTITLE,
+  tagline      = DEFAULT_TAGLINE,
+  subtitle     = DEFAULT_SUBTITLE,
+  headingLevel = 1,
 }: HeroBrandProps) {
+  const Heading = headingLevel === 2 ? motion.h2 : motion.h1
   return (
     <section
       aria-label="INTEGRA-TE — apresentação"
@@ -71,7 +72,7 @@ export function HeroBrand({
            Mobile:  fills viewport below navbar (72 px)
            Tablet:  caps at 80 vh so page content below stays visible
            Desktop: 85 vh — prominent without overwhelming wide screens  */
-        min-h-[calc(100svh-72px)]
+        min-h-[calc(100svh-var(--nav-h))]
         sm:min-h-[80vh]
         lg:min-h-[85vh]
 
@@ -166,7 +167,7 @@ export function HeroBrand({
             ─────────────────────────────────────────────────────────
             TYPOGRAPHY: sizes below are placeholder scale.
             Swap text-{size} classes once type ramp is finalised.
-            Kept as h1 for correct document outline on the home page. */}
+            Level controlled by headingLevel prop - defaults to h1 for homepage.*/}
         <motion.h1
           variants={SLIDE_UP}
           className="

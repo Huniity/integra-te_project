@@ -23,9 +23,10 @@ export default function App() {
         <Route path="/"  element={<Home />} />
 
         {/* Learn section */}
-        <Route path="/learn"                                  element={<PageStub title="Aprender"  emoji="📚" />} />
-        <Route path="/learn/:disciplinaSlug"                  element={<PageStub title="Disciplina" emoji="📖" />} />
-        <Route path="/learn/:disciplinaSlug/:temaSlug"        element={<TopicDetail />} />
+        <Route path="/learn"                              element={<PageStub title="Aprender"  emoji="📚" />} />
+        <Route path="/learn/:disciplinaSlug"              element={<PageStub title="Disciplina" emoji="📖" />} />
+        <Route path="/learn/:disciplinaSlug/:temaSlug"    element={<TopicDetail />} />
+        <Route path="/styleguide"                         element={<Styleguide />} />
 
         {/* Other sections — stubs until pages are built */}
         <Route path="/practice"  element={<PageStub title="Exercícios"            emoji="💪" />} />

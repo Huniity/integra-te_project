@@ -1,38 +1,37 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Nunito:wght@400;600;700;800;900&display=swap');
 
 /* ════════════════════════════════════════════════════════════════════
-   INTEGRA-TE — Design System Tokens
+   INTEGRA-TE - Design System Tokens
    Tailwind CSS v4  ·  @theme configuration
    ════════════════════════════════════════════════════════════════════
 
    All tokens defined here automatically generate Tailwind utilities:
 
-     --color-brand-blue-500   →  bg-brand-blue-500  text-brand-blue-500
-                                 border-brand-blue-500  ring-brand-blue-500
+     --color-brand-blue-500   ->  bg-brand-blue-500  text-brand-blue-500
+                                  border-brand-blue-500  ring-brand-blue-500
 
-     --font-display           →  font-display
-     --font-body              →  font-body
-     --font-mono              →  font-mono
+     --font-display           ->  font-display
+     --font-body              ->  font-body
+     --font-mono              ->  font-mono
 
-     --radius-pill            →  rounded-pill
-     --radius-card            →  rounded-card
-     --radius-chip            →  rounded-chip
+     --radius-pill            ->  rounded-pill
+     --radius-card            ->  rounded-card
+     --radius-chip            ->  rounded-chip
 
    ════════════════════════════════════════════════════════════════════ */
 
 @theme {
-
-  /* ─── Typefaces ────────────────────────────────────────────────── */
-
+  /* Typefaces */
+  --font-fredoka : 'Fredoka', ui-rounded, system-ui, sans-serif;
   --font-display : 'Nunito', ui-rounded, system-ui, sans-serif;
   --font-body    : 'Nunito', ui-rounded, system-ui, sans-serif;
   --font-mono    : ui-monospace, 'Cascadia Code', 'Fira Code', monospace;
 
-  /* ─── Border-radius ────────────────────────────────────────────── */
-
+  /* Border-radius */
   --radius-pill : 9999px;   /* pill / CTA buttons  */
-  --radius-card : 1rem;     /* content cards        */
-  --radius-chip : 0.5rem;   /* badges, chips, tags  */
+  --radius-card : 1rem;     /* content cards       */
+  --radius-chip : 0.5rem;   /* badges, chips, tags */
 
   /* ════════════════════════════════════════════════════════════════
      COLOUR PALETTE
@@ -40,8 +39,7 @@
      colour sheets + Tints & Shades sheets + Neutral Colours sheet)
      ════════════════════════════════════════════════════════════════ */
 
-  /* ─── Primary — Blue ───────────────────────────────────────────── */
-
+  /*  Primary - Blue */
   --color-brand-blue-600 : #1F3C6E;  /* darkest  */
   --color-brand-blue-500 : #2E5BAA;  /* base     */
   --color-brand-blue-400 : #4C7ED3;
@@ -49,8 +47,7 @@
   --color-brand-blue-200 : #AFCDF5;
   --color-brand-blue-100 : #E6F1FF;  /* lightest */
 
-  /* ─── Secondary — Green ────────────────────────────────────────── */
-
+  /* Secondary - Green */
   --color-brand-green-600 : #0F8A3B;
   --color-brand-green-500 : #17A44A;
   --color-brand-green-400 : #4BCB73;
@@ -58,8 +55,7 @@
   --color-brand-green-200 : #CFF8DA;
   --color-brand-green-100 : #EAFDF0;
 
-  /* ─── Secondary — Yellow ───────────────────────────────────────── */
-
+  /* Secondary - Yellow */
   --color-brand-yellow-600 : #C4CC00;
   --color-brand-yellow-500 : #DDE600;
   --color-brand-yellow-400 : #EBF400;
@@ -67,8 +63,7 @@
   --color-brand-yellow-200 : #FAFF66;
   --color-brand-yellow-100 : #FDFFCC;
 
-  /* ─── Secondary — Orange ───────────────────────────────────────── */
-
+  /* Secondary - Orange */
   --color-brand-orange-600 : #CC5F00;
   --color-brand-orange-500 : #E66C00;
   --color-brand-orange-400 : #FF8A3A;
@@ -76,8 +71,7 @@
   --color-brand-orange-200 : #FFB380;
   --color-brand-orange-100 : #FFE3D8;
 
-  /* ─── Secondary — Red ──────────────────────────────────────────── */
-
+  /* Secondary - Red */
   --color-brand-red-600 : #8F0000;
   --color-brand-red-500 : #A80000;
   --color-brand-red-400 : #FF6A6A;
@@ -85,8 +79,7 @@
   --color-brand-red-200 : #FFB3B3;
   --color-brand-red-100 : #FFE6E6;
 
-  /* ─── Neutral — Gray ───────────────────────────────────────────── */
-
+  /* Neutral - Gray */
   --color-neutral-900 : #121212;
   --color-neutral-800 : #1E1E1E;
   --color-neutral-700 : #2C2C2C;
@@ -97,11 +90,10 @@
   --color-neutral-200 : #E0E0E0;
   --color-neutral-100 : #F5F5F5;
   --color-neutral-50  : #FAFAFA;
-
 }
 
 /* ════════════════════════════════════════════════════════════════════
-   SEMANTIC ALIASES  (raw CSS variables — not Tailwind utilities)
+   SEMANTIC ALIASES  (raw CSS variables - not Tailwind utilities)
    Use these in component CSS for role-based styling.
    ════════════════════════════════════════════════════════════════════ */
 
@@ -144,7 +136,6 @@
 /* ════════════════════════════════════════════════════════════════════
    BASE LAYER — global resets & defaults
    ════════════════════════════════════════════════════════════════════ */
-
 @layer base {
   *, *::before, *::after {
     box-sizing: border-box;
@@ -207,9 +198,6 @@
     border-radius  : 4px;
   }
 }
-
-@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Nunito:wght@400;600;700;800;900&display=swap');
-@import "tailwindcss";
 
 @layer components {
   .font-fredoka {
