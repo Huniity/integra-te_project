@@ -5,8 +5,8 @@ import Searchbar from '../components/core/Searchbar';
 import Aside from '../components/core/Aside';
 import MainContent from '../components/resolver/MainContent';
 import type { FilterType } from '../components/resolver/MainContent';
-import ExerciseModal from '../components/resolver/ExerciseModal';
-import type { Exercise } from '../components/resolver/ExerciseModal';
+import ExerciseModal from './../components/resolver/ExerciseModal';
+import type { Exercise } from './../components/resolver/ExerciseModal';
 import { getLevelBadgeClassName, subjects } from '../utils/resolver';
 
 import { exercicioApi } from '../services/api/resolver.api';
