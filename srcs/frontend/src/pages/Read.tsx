@@ -52,7 +52,7 @@ function ReadContent() {
       ageGroup: '4-6',
       abstract: 'Uma aventura mágica adaptada sobre a inclusão social.',
       externalLink: 'https://www.amazon.com',
-      photoUrl: 'src/assets/capas/capa-1.png',
+      photoUrl: 'src/assets/blue_book.webp',
       iconType: '📘'
     },
     {
@@ -61,7 +61,7 @@ function ReadContent() {
       ageGroup: '4-6',
       abstract: 'Desafios lúdicos para treinar a lógica.',
       externalLink: 'https://www.amazon.com',
-      photoUrl: 'src/assets/capas/capa-2.png',
+      photoUrl: 'src/assets/blue_book.webp',
       iconType: '📙'
     },
     {
@@ -70,7 +70,7 @@ function ReadContent() {
       ageGroup: '6-9',
       abstract: 'Contos interativos contra o absentismo.',
       externalLink: 'https://www.amazon.com',
-      photoUrl: 'src/assets/capas/capa-3.png',
+      photoUrl: 'src/assets/blue_book.webp',
       iconType: '📕'
     },
     {
@@ -79,7 +79,7 @@ function ReadContent() {
       ageGroup: '6-9',
       abstract: 'Livro focado na igualdade de oportunidades.',
       externalLink: 'https://www.amazon.com',
-      photoUrl: 'src/assets/capas/capa-4.png',
+      photoUrl: 'src/assets/blue_book.webp',
       iconType: '📗'
     },
     {
@@ -88,7 +88,7 @@ function ReadContent() {
       ageGroup: '9-12',
       abstract: 'Guia prático e divertido sobre o uso seguro da internet.',
       externalLink: 'https://www.amazon.com',
-      photoUrl: 'src/assets/capas/capa-5.png',
+      photoUrl: 'src/assets/blue_book.webp',
       iconType: '📒'
     },
     {
@@ -97,7 +97,7 @@ function ReadContent() {
       ageGroup: '9-12',
       abstract: 'Uma narrativa densa baseada em inteligência emocional.',
       externalLink: 'https://www.amazon.com',
-      photoUrl: 'src/assets/capas/capa-6.png',
+      photoUrl: 'src/assets/blue_book.webp',
       iconType: '📔'
     }
   ];
@@ -111,7 +111,6 @@ function ReadContent() {
   );
 
   return (
-    /* lg:overflow-y-hidden retira o scroll vertical geral do ecrã em ecrãs grandes */
     <main className="relative min-h-screen lg:h-screen w-full px-3 md:px-5 py-2 font-['Nunito',sans-serif] overflow-x-hidden overflow-y-auto lg:overflow-y-hidden flex flex-col">
 
       {/* Elementos de Interface do Fundo */}
