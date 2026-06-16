@@ -136,7 +136,7 @@ export default function MainContent({
       </div>
 
       {/* Content */}
-      <div className="flex-1 min-h-0 px-4 py-3">
+      <div className="flex-1 min-h-0 px-4 py-3 flex flex-col">
         {children}
       </div>
     </div>
