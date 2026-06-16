@@ -98,6 +98,9 @@
    ════════════════════════════════════════════════════════════════════ */
 
 :root {
+  /* Layout */
+  --nav-h: 72px;
+  
   /* Primary */
   --clr-primary        : var(--color-brand-blue-500);
   --clr-primary-hover  : var(--color-brand-blue-400);
@@ -200,10 +203,6 @@
 }
 
 @layer components {
-  .font-fredoka {
-    font-family: 'Fredoka', sans-serif;
-  }
-
   .button-shadow {
     filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.2));
   }

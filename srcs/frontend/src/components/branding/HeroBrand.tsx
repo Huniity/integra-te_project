@@ -168,7 +168,7 @@ export function HeroBrand({
             TYPOGRAPHY: sizes below are placeholder scale.
             Swap text-{size} classes once type ramp is finalised.
             Level controlled by headingLevel prop - defaults to h1 for homepage.*/}
-        <motion.h1
+        <Heading
           variants={SLIDE_UP}
           className="
             font-display font-black leading-tight
@@ -180,7 +180,7 @@ export function HeroBrand({
           "
         >
           {tagline}
-        </motion.h1>
+        </Heading>
 
         {/* Subtitle - supporting copy
             ─────────────────────────────────────────────────────────

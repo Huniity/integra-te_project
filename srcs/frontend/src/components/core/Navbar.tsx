@@ -454,7 +454,7 @@ export function Navbar() {
         shadow-sm
       "
     >
-     < a 
+     <a 
       href="#main-content"
         className="
           sr-only focus:not-sr-only

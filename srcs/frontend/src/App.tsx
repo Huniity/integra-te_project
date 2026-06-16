@@ -2,6 +2,7 @@ import { Routes, Route } from 'react-router-dom'
 import Navbar      from './components/core/Navbar'
 import Home        from './pages/Home'
 import TopicDetail from './pages/learn/TopicDetail'
+import Styleguide  from './pages/Styleguide'
 import './App.css'
 
 function PageStub({ title, emoji }: { title: string; emoji: string }) {
