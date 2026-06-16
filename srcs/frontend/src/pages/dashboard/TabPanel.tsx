@@ -4,11 +4,12 @@ import {
     PlayCircle,
     Download,
     GraduationCap,
-    Image,
-    Folder,
-    Settings,
+    // Image,
+    // Folder,
+    // Settings,
     ChevronRight,
     type LucideIcon,
+    Book,
 } from 'lucide-react'
 
 
@@ -21,13 +22,14 @@ export interface Tab {
 
 export const TABS: Tab[] = [
     { id: 'dashboard', label: 'Dashboard', icon: Home, color: 'bg-sky-500' },
+    { id: 'aulas', label: 'Aulas', icon: GraduationCap, color: 'bg-green-500' },
     { id: 'exercicios', label: 'Exercícios', icon: Dumbbell, color: 'bg-violet-500' },
     { id: 'videos', label: 'Vídeos', icon: PlayCircle, color: 'bg-orange-500' },
     { id: 'ficheiros', label: 'Ficheiros', icon: Download, color: 'bg-blue-500' },
-    { id: 'aulas', label: 'Aulas', icon: GraduationCap, color: 'bg-green-500' },
-    { id: 'galeria', label: 'Galeria', icon: Image, color: 'bg-pink-500' },
-    { id: 'categorias', label: 'Categorias', icon: Folder, color: 'bg-yellow-500' },
-    { id: 'definicoes', label: 'Definições', icon: Settings, color: 'bg-gray-500' },
+    { id: 'livros', label: 'Livros', icon: Book, color: 'bg-yellow-500' },
+    // { id: 'galeria', label: 'Galeria', icon: Image, color: 'bg-pink-500' },
+    // { id: 'categorias', label: 'Categorias', icon: Folder, color: 'bg-yellow-500' },
+    // { id: 'definicoes', label: 'Definições', icon: Settings, color: 'bg-gray-500' },
 ]
 
 interface TabPanelProps {

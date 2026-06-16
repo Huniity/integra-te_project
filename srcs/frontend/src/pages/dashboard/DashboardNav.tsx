@@ -1,15 +1,10 @@
 
 
 
-import { Menu, X, CircleUserRound } from 'lucide-react'
+import { CircleUserRound } from 'lucide-react'
 import cloudLogo from '../../assets/cloud_logo.png'
 
-interface DashboardNavProps {
-    menuOpen: boolean
-    onToggleMenu: () => void
-}
-
-const DashboardNav = ({ menuOpen, onToggleMenu }: DashboardNavProps) => {
+const DashboardNav = () => {
     return (
         <nav className="flex items-center justify-between gap-4 p-4 z-10">
             <h1 className="relative mb-1 px-6 py-3 text-2xl font-bold text-(--text-h)">
@@ -19,17 +14,12 @@ const DashboardNav = ({ menuOpen, onToggleMenu }: DashboardNavProps) => {
 
             <button
                 type="button"
-                onClick={onToggleMenu}
-                aria-label={menuOpen ? 'Fechar menu' : 'Abrir menu'}
                 className="flex items-center gap-2 rounded-full bg-white px-3 py-1.5 shadow-md"
             >
                 <CircleUserRound size={32} className="text-blue-500" />
                 <span className="text-center leading-tight">
                     <span className="block text-sm font-semibold text-blue-500">Admin</span>
                     <span className="block text-xs text-(--text)">Editor</span>
-                </span>
-                <span className="lg:hidden">
-                    {menuOpen ? <X size={18} /> : <Menu size={18} />}
                 </span>
             </button>
         </nav>
