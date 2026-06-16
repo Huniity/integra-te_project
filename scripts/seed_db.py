@@ -27,16 +27,8 @@ from integrate.models import (  # noqa
     Jogo,  # noqa
     Livro,  # noqa
     MaterialOriginal,  # noqa
-)
-
-
-from integrate.models import (  # noqa
-    Disciplina,  # noqa
-    Tema,  # noqa
-    Conteudo,  # noqa
-    Jogo,  # noqa
-    Livro,  # noqa
-    MaterialOriginal,  # noqa
+    Aula,  # noqa
+    Exercicio,  # noqa
 )
 
 
@@ -49,6 +41,8 @@ def clear_database():
     Jogo.objects.all().delete()
     Livro.objects.all().delete()
     MaterialOriginal.objects.all().delete()
+    Aula.objects.all().delete()
+    Exercicio.objects.all().delete()
 
 
 def seed_database():
@@ -232,6 +226,142 @@ def seed_database():
                 titulo="Puzzle de Cadeias Alimentares",
                 descricao="Jogo imprimível para montar cadeias alimentares.",
                 faixa_etaria="10-13 anos",
+                publicado=True,
+            ),
+        ]
+    )
+
+    Aula.objects.bulk_create(
+        [
+            Aula(
+                title="Introdução às Equações Lineares",
+                subject_id="matematica",
+                level=1,
+                description="Aprende a resolver equações de primeiro grau com exemplos simples.",
+                video_url="https://example.com/videos/equacoes-lineares",
+                thumbnail_url="",
+                duration=15,
+                publicado=True,
+            ),
+            Aula(
+                title="Sistemas de Equações",
+                subject_id="matematica",
+                level=2,
+                description="Resolução de sistemas de duas equações com duas incógnitas.",
+                video_url="https://example.com/videos/sistemas-equacoes",
+                thumbnail_url="",
+                duration=20,
+                publicado=True,
+            ),
+            Aula(
+                title="Classes de Palavras",
+                subject_id="portugues",
+                level=1,
+                description="Nomes, verbos, adjetivos e advérbios — aprende a identificá-los.",
+                video_url="https://example.com/videos/classes-palavras",
+                thumbnail_url="",
+                duration=12,
+                publicado=True,
+            ),
+            Aula(
+                title="Análise Sintática",
+                subject_id="portugues",
+                level=2,
+                description="Sujeito, predicado e complementos numa frase simples.",
+                video_url="https://example.com/videos/analise-sintatica",
+                thumbnail_url="",
+                duration=18,
+                publicado=True,
+            ),
+            Aula(
+                title="Cadeias Alimentares",
+                subject_id="estudo-do-meio",
+                level=1,
+                description="Produtores, consumidores e decompositores no ecossistema.",
+                video_url="https://example.com/videos/cadeias-alimentares",
+                thumbnail_url="",
+                duration=14,
+                publicado=True,
+            ),
+            Aula(
+                title="O Sistema Solar",
+                subject_id="estudo-do-meio",
+                level=2,
+                description="Os planetas, as suas características e as suas órbitas.",
+                video_url="https://example.com/videos/sistema-solar",
+                thumbnail_url="",
+                duration=16,
+                publicado=True,
+            ),
+        ]
+    )
+
+    Exercicio.objects.bulk_create(
+        [
+            Exercicio(
+                title="Equações Simples",
+                subject_id="matematica",
+                level=1,
+                title_color="text-blue-600",
+                icon_img="",
+                path="/exercicios/matematica/equacoes-simples",
+                description="Resolve equações de primeiro grau com uma incógnita.",
+                pdf_url="https://example.com/pdfs/equacoes-simples.pdf",
+                publicado=True,
+            ),
+            Exercicio(
+                title="Frações e Decimais",
+                subject_id="matematica",
+                level=2,
+                title_color="text-blue-600",
+                icon_img="",
+                path="/exercicios/matematica/fracoes-decimais",
+                description="Converte frações em decimais e resolve operações mistas.",
+                pdf_url="https://example.com/pdfs/fracoes-decimais.pdf",
+                publicado=True,
+            ),
+            Exercicio(
+                title="Geometria — Áreas e Perímetros",
+                subject_id="matematica",
+                level=3,
+                title_color="text-blue-600",
+                icon_img="",
+                path="/exercicios/matematica/geometria",
+                description="Calcula áreas e perímetros de figuras geométricas planas.",
+                pdf_url="https://example.com/pdfs/geometria.pdf",
+                publicado=True,
+            ),
+            Exercicio(
+                title="Compreensão de Texto",
+                subject_id="portugues",
+                level=1,
+                title_color="text-green-600",
+                icon_img="",
+                path="/exercicios/portugues/compreensao-texto",
+                description="Lê o texto e responde às perguntas de interpretação.",
+                pdf_url="https://example.com/pdfs/compreensao-texto.pdf",
+                publicado=True,
+            ),
+            Exercicio(
+                title="Ortografia e Acentuação",
+                subject_id="portugues",
+                level=2,
+                title_color="text-green-600",
+                icon_img="",
+                path="/exercicios/portugues/ortografia",
+                description="Exercícios de ortografia com as regras de acentuação.",
+                pdf_url="https://example.com/pdfs/ortografia.pdf",
+                publicado=True,
+            ),
+            Exercicio(
+                title="Os Animais e o seu Habitat",
+                subject_id="estudo-do-meio",
+                level=1,
+                title_color="text-orange-600",
+                icon_img="",
+                path="/exercicios/estudo-do-meio/animais-habitat",
+                description="Associa cada animal ao seu habitat natural.",
+                pdf_url="https://example.com/pdfs/animais-habitat.pdf",
                 publicado=True,
             ),
         ]
