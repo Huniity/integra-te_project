@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import './App.css'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
-import Read from './pages/Read'
+import Ler from './pages/Read'
 import Homepage from './pages/Homepage'
 import Resolver from './pages/Resolver'
-import Games from './pages/Jogos'
+import Jogos from './pages/Jogos'
 
 function App() {
   return (
@@ -13,8 +13,8 @@ function App() {
         <Route path="/" element={<Homepage />} />
         <Route path="/exercicios" element={<Resolver />} />
         <Route path="/exercicios/*" element={<Resolver />} />
-        <Route path="/jogos" element={<Games />} />
-        <Route path="/read" element={<Read />} />
+        <Route path="/jogos" element={<Jogos />} />
+        <Route path="/ler" element={<Ler />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>

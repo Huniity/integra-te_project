@@ -15,14 +15,6 @@ export default function Home() {
 
   const menuButtons: MenuButton[] = [
     {
-      id: 'contactos',
-      label: 'Contactos',
-      hint: 'Contacta-nos ou envia-nos uma mensagem',
-      bgImg: './src/assets/yellow_dot.webp',
-      iconImg: './src/assets/user.webp',
-      path: '/contactos'
-    },
-    {
       id: 'exercicios',
       label: 'Exercícios',
       hint: 'Treina e diverte-te',
@@ -47,6 +39,14 @@ export default function Home() {
       path: '/aprender'
     },
     {
+      id: 'ler',
+      label: 'Ler',
+      hint: 'Descobre livros',
+      bgImg: './src/assets/salmon_dot.webp',
+      iconImg: './src/assets/gallery.webp',
+      path: '/ler'
+    },
+    {
       id: 'videos',
       label: 'Vídeos',
       hint: 'Vê vídeos educativos',
@@ -55,20 +55,20 @@ export default function Home() {
       path: '/videos'
     },
     {
-      id: 'livros',
-      label: 'Livros',
-      hint: 'Descobre livros',
-      bgImg: './src/assets/salmon_dot.webp',
-      iconImg: './src/assets/gallery.webp',
-      path: '/livros'
-    },
-    {
       id: 'descarregar',
       label: 'Descarregar',
       hint: 'Descarrega recursos',
       bgImg: './src/assets/darkb_dot.webp',
       iconImg: './src/assets/download.webp',
       path: '/descarregar'
+    },
+    {
+      id: 'contactos',
+      label: 'Contactos',
+      hint: 'Contacta-nos ou envia-nos uma mensagem',
+      bgImg: './src/assets/yellow_dot.webp',
+      iconImg: './src/assets/user.webp',
+      path: '/contactos'
     },
     {
       id: 'sobre',

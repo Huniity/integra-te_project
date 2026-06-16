@@ -4,10 +4,10 @@ import { NightModeBackground, NightModeProvider, NightModeToggle, useNightMode }
 import Searchbar from '../components/core/Searchbar';
 import Aside from '../components/core/Aside';
 import type { SubjectId } from '../components/core/Aside';
-import MainContent from '../components/resolver/MainContent';
-import type { FilterType } from '../components/resolver/MainContent';
-import ExerciseModal from '../components/resolver/ExerciseModal';
-import type { Exercise } from '../components/resolver/ExerciseModal';
+import MainContent from '../components/core/MainContent';
+import type { FilterType } from '../components/core/MainContent';
+import ExerciseModal from '../components/exercicios/ExerciseModal';
+import type { Exercise } from '../components/exercicios/ExerciseModal';
 import { getLevelBadgeClassName, subjects } from '../utils/resolver';
 
 import { exercicioApi } from '../services/api/resolver.api';
