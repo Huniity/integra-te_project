@@ -15,12 +15,12 @@ export default function Home() {
 
   const menuButtons: MenuButton[] = [
     {
-      id: 'perfil',
-      label: 'Perfil',
-      hint: 'Acede ao teu perfil',
+      id: 'contactos',
+      label: 'Contactos',
+      hint: 'Contacta-nos ou envia-nos uma mensagem',
       bgImg: './src/assets/yellow_dot.webp',
       iconImg: './src/assets/user.webp',
-      path: '/perfil'
+      path: '/contactos'
     },
     {
       id: 'exercicios',
@@ -44,7 +44,7 @@ export default function Home() {
       hint: 'Explora os temas',
       bgImg: './src/assets/red_dot.webp',
       iconImg: './src/assets/blue_book.webp',
-      path: '/ler'
+      path: '/aprender'
     },
     {
       id: 'videos',
@@ -55,12 +55,12 @@ export default function Home() {
       path: '/videos'
     },
     {
-      id: 'galeria',
-      label: 'Galeria',
-      hint: 'Descobre imagees e trabalhos',
+      id: 'livros',
+      label: 'Livros',
+      hint: 'Descobre livros',
       bgImg: './src/assets/salmon_dot.webp',
       iconImg: './src/assets/gallery.webp',
-      path: '/galeria'
+      path: '/livros'
     },
     {
       id: 'descarregar',
@@ -71,8 +71,8 @@ export default function Home() {
       path: '/descarregar'
     },
     {
-      id: 'informacoes',
-      label: 'Informações',
+      id: 'sobre',
+      label: 'Sobre',
       hint: 'Sabe mais sobre nós',
       bgImg: './src/assets/pink_dot.webp',
       iconImg: './src/assets/info.webp',
