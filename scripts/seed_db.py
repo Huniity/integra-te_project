@@ -1,6 +1,9 @@
 import os  # noqa
 import sys  # noqa
+from datetime import datetime  # noqa
 from pathlib import Path  # noqa
+from django.core.files.base import ContentFile  # noqa
+from django.utils import timezone  # noqa
 
 import django  # noqa
 
@@ -12,6 +15,19 @@ BACKEND_DIR = Path("/app")  # noqa
 sys.path.insert(0, str(BACKEND_DIR))  # noqa
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "core.settings")  # noqa
+
+
+django.setup()  # noqa
+
+
+from integrate.models import (  # noqa
+    Disciplina,  # noqa
+    Tema,  # noqa
+    Conteudo,  # noqa
+    Jogo,  # noqa
+    Livro,  # noqa
+    MaterialOriginal,  # noqa
+)
 
 
 django.setup()  # noqa
