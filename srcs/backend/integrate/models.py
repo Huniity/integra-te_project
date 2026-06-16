@@ -154,6 +154,38 @@ class Livro(models.Model):
         return self.titulo
 
 
+class Exercicio(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    title = models.CharField(max_length=200)
+    level = models.IntegerField()
+    subject_id = models.CharField(max_length=200)
+    title_color = models.CharField(max_length=200, default="text-blue-600")
+    icon_img = models.CharField(max_length=500, blank=True)
+    path = models.CharField(max_length=500, blank=True)
+    description = models.TextField(blank=True)
+    pdf_url = models.URLField(max_length=500, null=True, blank=True)
+    publicado = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.title
+
+
+class Aula(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    title = models.CharField(max_length=200)
+    subject_id = models.CharField(max_length=200)
+    level = models.IntegerField()
+    description = models.TextField(blank=True)
+    video_url = models.URLField(max_length=500, null=True, blank=True)
+    thumbnail_url = models.CharField(max_length=500, blank=True)
+    duration = models.IntegerField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    publicado = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.title
+
+
 class MaterialOriginal(models.Model):
     """
     Modelo para os materiais originais

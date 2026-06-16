@@ -1,11 +1,13 @@
-from rest_framework.views import ReadOnlyModelViewSet
-# from rest_framework.generics import CreateAPIView
+from rest_framework.permissions import AllowAny
+from rest_framework.viewsets import ReadOnlyModelViewSet
 
 from .models import (
     Disciplina,
     Tema,
     Jogo,
     Livro,
+    Exercicio,
+    Aula,
 )
 
 from .serializers import (
@@ -13,44 +15,44 @@ from .serializers import (
     TemaSerializer,
     JogosSerializers,
     LivroSerializers,
+    ExercicioSerializer,
+    AulaSerializer,
 )
 
 
 class DisciplinaViewSet(ReadOnlyModelViewSet):
-    """
-    ViewSet para as disciplinas
-    """
-
     queryset = Disciplina.objects.all()
     serializer_class = DisciplinaSerializer
+    permission_classes = [AllowAny]
     lookup_field = "slug"
 
 
 class TemaViewSet(ReadOnlyModelViewSet):
-    """
-    ViewSet para os temas
-    """
-
     queryset = Tema.objects.all()
     serializer_class = TemaSerializer
+    permission_classes = [AllowAny]
     lookup_field = "slug"
 
 
 class JogoViewSet(ReadOnlyModelViewSet):
-    """
-    ViewSet para os jogos
-    """
-
-    queryset = Jogo.objects.all()
+    queryset = Jogo.objects.filter(publicado=True)
     serializer_class = JogosSerializers
-    lookup_field = "slug"
+    permission_classes = [AllowAny]
 
 
 class LivroViewSet(ReadOnlyModelViewSet):
-    """
-    ViewSet para os livros
-    """
-
-    queryset = Livro.objects.all()
+    queryset = Livro.objects.filter(publicado=True)
     serializer_class = LivroSerializers
-    lookup_field = "slug"
+    permission_classes = [AllowAny]
+
+
+class ExercicioViewSet(ReadOnlyModelViewSet):
+    queryset = Exercicio.objects.filter(publicado=True)
+    serializer_class = ExercicioSerializer
+    permission_classes = [AllowAny]
+
+
+class AulaViewSet(ReadOnlyModelViewSet):
+    queryset = Aula.objects.filter(publicado=True)
+    serializer_class = AulaSerializer
+    permission_classes = [AllowAny]
