@@ -1,4 +1,7 @@
+import { useState } from 'react'
+import './App.css'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import Read from './pages/Read'
 import Homepage from './pages/Homepage'
 import Resolver from './pages/Resolver'
 import Games from './pages/Jogos'
@@ -11,6 +14,7 @@ function App() {
         <Route path="/exercicios" element={<Resolver />} />
         <Route path="/exercicios/*" element={<Resolver />} />
         <Route path="/jogos" element={<Games />} />
+        <Route path="/read" element={<Read />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
