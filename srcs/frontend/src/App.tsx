@@ -11,8 +11,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Homepage />} />
-        <Route path="/exercicios" element={<Resolver />} />
-        <Route path="/exercicios/*" element={<Resolver />} />
+        <Route path="/resolver" element={<Resolver />} />
         <Route path="/jogos" element={<Jogos />} />
         <Route path="/ler" element={<Ler />} />
         <Route path="*" element={<Navigate to="/" replace />} />

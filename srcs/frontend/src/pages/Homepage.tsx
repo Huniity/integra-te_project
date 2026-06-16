@@ -15,12 +15,12 @@ export default function Home() {
 
   const menuButtons: MenuButton[] = [
     {
-      id: 'exercicios',
-      label: 'Exercícios',
+      id: 'resolver',
+      label: 'Resolver',
       hint: 'Treina e diverte-te',
       bgImg: './src/assets/purple_dot.webp',
       iconImg: './src/assets/weight.webp',
-      path: '/exercicios'
+      path: '/resolver'
     },
     {
       id: 'jogos',
