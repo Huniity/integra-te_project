@@ -30,46 +30,17 @@ from integrate.models import (  # noqa
 )
 
 
-# Tiny valid 1x1 PNG image
-DUMMY_IMAGE = (
-    b"\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x01"
-    b"\x00\x00\x00\x01\x08\x02\x00\x00\x00\x90wS\xde"
-    b"\x00\x00\x00\x0cIDATx\x9cc\xf8\xff\xff?\x00\x05"
-    b"\xfe\x02\xfeA\x0d\xa4\xb3\x00\x00\x00\x00IEND\xaeB`\x82"
+django.setup()  # noqa
+
+
+from integrate.models import (  # noqa
+    Disciplina,  # noqa
+    Tema,  # noqa
+    Conteudo,  # noqa
+    Jogo,  # noqa
+    Livro,  # noqa
+    MaterialOriginal,  # noqa
 )
-
-
-ANO_ESCOLAR = (
-    ("1", "1º Ano"),
-    ("2", "2º Ano"),
-    ("3", "3º Ano"),
-    ("4", "4º Ano"),
-    ("5", "5º Ano"),
-    ("6", "6º Ano"),
-)
-
-SECCAO = (
-    ("aprender", "Aprender"),
-    ("resolver", "Resolver"),
-    ("ler", "Ler"),
-)
-
-TIPO = (
-    ("texto", "Texto"),  # fixed — removed comma inside string
-    ("imagem", "Imagem"),
-    ("video", "Vídeo"),
-    ("pdf", "PDF"),
-)
-
-DIFICULDADE = (  # fixed typo
-    ("basico", "Básico"),
-    ("intermedio", "Intermédio"),
-    ("avancado", "Avançado"),
-)
-
-
-def add_image(instance, filename):
-    instance.image.save(filename, ContentFile(DUMMY_IMAGE), save=True)
 
 
 def clear_database():
@@ -85,9 +56,6 @@ def clear_database():
 
 def seed_database():
     print("Creating sample events...")
-
-    def dt(day, hour, minute=0):
-        return timezone.make_aware(datetime(2026, 7, day, hour, minute))
 
     # ── Disciplinas ──────────────────────────────────────────────────────────────
     Disciplina.objects.bulk_create(
@@ -121,9 +89,8 @@ def seed_database():
                 titulo="Álgebra",
                 slug="algebra",
                 desc="Tema de Álgebra dentro da disciplina de Matemática.",
-                ano_escolar="5",
+                ano_escolar="5º Ano",
                 seccao="aprender",
-                publicado=True,
             ),
             Tema(
                 id="5c7d6e8f-9a0b-4f8e-9f6c-abcdef890123",
@@ -131,9 +98,8 @@ def seed_database():
                 titulo="Gramática",
                 slug="gramatica",
                 desc="Tema de Gramática dentro da disciplina de Português.",
-                ano_escolar="5",
+                ano_escolar="5º Ano",
                 seccao="aprender",
-                publicado=True,
             ),
             Tema(
                 id="6d8e7f9e-0a1b-4e9f-0e7d-abcdef901234",
@@ -141,9 +107,8 @@ def seed_database():
                 titulo="Ecossistemas",
                 slug="ecossistemas",
                 desc="Tema de Ecossistemas dentro da disciplina de Estudo do Meio.",
-                ano_escolar="5",
+                ano_escolar="5º Ano",
                 seccao="aprender",
-                publicado=True,
             ),
         ]
     )
@@ -250,7 +215,6 @@ def seed_database():
                 id="a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d",
                 disciplina_id="1e8b9c3e-9f1a-4c5b-8d2a-1234567890ab",
                 titulo="Jogo de Equações",
-                tipo="online",
                 descricao="Jogo interativo para aprender a resolver equações lineares.",
                 faixa_etaria="10-12 anos",
                 url_externa="https://example.com/jogo-equacoes",
@@ -260,7 +224,6 @@ def seed_database():
                 id="b2c3d4e5-f6a7-4b8c-9d0e-1f2a3b4c5d6e",
                 disciplina_id="2f9c8d4e-7a2b-4c6d-9e3f-abcdef123456",
                 titulo="Jogo de Gramática",
-                tipo="online",
                 descricao="Jogo para praticar classes gramaticais e estrutura de frases.",
                 faixa_etaria="9-11 anos",
                 url_externa="https://example.com/jogo-gramatica",
@@ -270,7 +233,6 @@ def seed_database():
                 id="c3d4e5f6-a7b8-4c9d-0e1f-2a3b4c5d6e7f",
                 disciplina_id="3a7d6e5f-8c9b-4d7e-9f4a-abcdef654321",
                 titulo="Puzzle de Cadeias Alimentares",
-                tipo="imprimivel",
                 descricao="Jogo imprimível para montar cadeias alimentares.",
                 faixa_etaria="10-13 anos",
                 publicado=True,
