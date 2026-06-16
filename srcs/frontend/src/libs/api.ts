@@ -116,3 +116,67 @@ export function mediaUrl(path: string | null | undefined): string | null {
   if (path.startsWith('http://') || path.startsWith('https://')) return path
   return `/media/${path.replace(/^\/+/, '')}`
 }
+
+/* CSRF handling
+   Reads the csrftoken cookie that Django sets via the
+   CsrfViewMiddleware. Returns null when the cookie is absent.
+   */
+
+export function getCsrfToken(): string | null {
+  const match = document.cookie.match(/(?:^|;\s*)csrftoken=([^;]+)/)
+  return match ? decodeURIComponent(match[1]) : null
+}
+
+/* Validation error - distinct from ApiError
+   DRF default 400 shape: { field_name: ["msg", "msg"], ... }
+   plus optional "non_field_errors" for cross-field problems.
+   */
+
+export interface FieldErrorMap {
+  [field: string]: string[]
+}
+
+export class ValidationError extends Error {
+  constructor(public readonly fields: FieldErrorMap) {
+    const firstField = Object.keys(fields)[0]
+    const firstMsg = firstField ? fields[firstField]?.[0] : 'Erro de validação.'
+    super(firstMsg ?? 'Erro de validação.')
+    this.name = 'ValidationError'
+  }
+}
+
+/* Contact form submission */
+export interface ContactPayload {
+  nome          : string
+  email         : string
+  mensagem      : string
+  consentimento : boolean
+}
+
+export async function submitContact(payload: ContactPayload): Promise<void> {
+  const token = getCsrfToken()
+
+  const headers: Record<string, string> = {
+    'Content-Type' : 'application/json',
+    Accept         : 'application/json',
+  }
+  if (token) headers['X-CSRFToken'] = token
+
+  const res = await fetch(`${API_BASE}/contacto/`, {
+    method      : 'POST',
+    credentials : 'include',   // sends csrftoken cookie back to Django
+    headers,
+    body        : JSON.stringify(payload),
+  })
+
+  if (res.ok) return
+
+  /* 400 - DRF field validation */
+  if (res.status === 400) {
+    let body: FieldErrorMap = {}
+    try { body = await res.json() } catch { /* ignore - keep empty map */ }
+    throw new ValidationError(body)
+  }
+
+  throw new ApiError(res.status, '/contacto/')
+}

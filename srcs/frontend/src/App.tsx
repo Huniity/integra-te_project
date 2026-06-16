@@ -3,6 +3,7 @@ import Navbar      from './components/core/Navbar'
 import Home        from './pages/Home'
 import TopicDetail from './pages/learn/TopicDetail'
 import Styleguide  from './pages/Styleguide'
+import Contact from './pages/Contact'
 import './App.css'
 
 function PageStub({ title, emoji }: { title: string; emoji: string }) {
@@ -29,14 +30,15 @@ export default function App() {
         <Route path="/learn/:disciplinaSlug/:temaSlug"    element={<TopicDetail />} />
         <Route path="/styleguide"                         element={<Styleguide />} />
 
-        {/* Other sections — stubs until pages are built */}
+        {/* Other sections - stubs until pages are built */}
         <Route path="/practice"  element={<PageStub title="Exercícios"            emoji="💪" />} />
         <Route path="/play"      element={<PageStub title="Jogos"                 emoji="🎮" />} />
         <Route path="/read"      element={<PageStub title="Ler"                   emoji="📖" />} />
         <Route path="/about"     element={<PageStub title="Sobre"                 emoji="ℹ️"  />} />
-        <Route path="/contact"   element={<PageStub title="Contactos"             emoji="✉️"  />} />
+
         <Route path="/search"    element={<PageStub title="Pesquisar"             emoji="🔍" />} />
         <Route path="*"          element={<PageStub title="Página não encontrada" emoji="🤔" />} />
+        <Route path="/contact"   element={<Contact />} />
       </Routes>
     </div>
   )
