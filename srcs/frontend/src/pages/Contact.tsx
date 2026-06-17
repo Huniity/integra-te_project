@@ -1,12 +1,56 @@
 import { useState, useId, type FormEvent } from 'react'
 import { Send, CheckCircle2, AlertCircle, Loader2, Mail, MapPin } from 'lucide-react'
-import { submitContact, ApiError, ValidationError } from '../libs/api'
 
-/* Form state, error channels, submission state */
+/* Web3Forms submission
+   Public form-to-email relay. The access key is rate-limited and
+   spam-filtered server-side; bundling it into the client is the
+   intended usage pattern. Source it from a Vite env var so it's
+   swappable per environment.
+   See https://docs.web3forms.com/
+*/
+
+const WEB3FORMS_ENDPOINT = 'https://api.web3forms.com/submit'
+const WEB3FORMS_KEY = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY as string | undefined
+
+interface Web3FormsResponse {
+  success : boolean
+  message?: string
+}
+
+async function submitContact(payload: {
+  name    : string
+  email   : string
+  message : string
+}): Promise<void> {
+  if (!WEB3FORMS_KEY) {
+    throw new Error('VITE_WEB3FORMS_ACCESS_KEY não está configurada.')
+  }
+
+  const res = await fetch(WEB3FORMS_ENDPOINT, {
+    method  : 'POST',
+    headers : {
+      'Content-Type' : 'application/json',
+      Accept         : 'application/json',
+    },
+    body: JSON.stringify({
+      access_key : WEB3FORMS_KEY,
+      from_name  : 'INTEGRA-TE — Formulário de contacto',
+      subject    : `Mensagem de ${payload.name}`,
+      ...payload,
+    }),
+  })
+
+  const data = (await res.json().catch(() => ({}))) as Web3FormsResponse
+  if (!res.ok || !data.success) {
+    throw new Error(data.message ?? 'Falha no envio.')
+  }
+}
+
+/* Form state and validation */
 interface FormState {
-  nome          : string
+  name          : string
   email         : string
-  mensagem      : string
+  message       : string
   consentimento : boolean
 }
 
@@ -21,44 +65,38 @@ type SubmissionState =
   | { status: 'error'; message: string }
 
 const INITIAL_FORM: FormState = {
-  nome          : '',
+  name          : '',
   email         : '',
-  mensagem      : '',
+  message       : '',
   consentimento : false,
 }
 
 const MAX = {
-  nome     : 100,
-  email    : 200,
-  mensagem : 2000,
+  name    : 100,
+  email   : 200,
+  message : 2000,
 } as const
 
-/* HTML5-aligned email regex — covers >99% of real addresses */
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-
-/* Client-side validation - runs on field blur (single field) and
-   on submit (all fields). Trims whitespace before checking emptiness
-   but uses raw length for max-length enforcement.
-*/
 
 function validate(form: FormState): FieldErrors {
   const errors: FieldErrors = {}
 
-  const nome     = form.nome.trim()
-  const email    = form.email.trim()
-  const mensagem = form.mensagem.trim()
+  const name    = form.name.trim()
+  const email   = form.email.trim()
+  const message = form.message.trim()
 
-  if (!nome)                       errors.nome = 'Indique o seu nome.'
-  else if (nome.length < 2)        errors.nome = 'O nome deve ter pelo menos 2 caracteres.'
-  else if (form.nome.length > MAX.nome) errors.nome = `Máximo ${MAX.nome} caracteres.`
+  if (!name)                       errors.name = 'Indique o seu nome.'
+  else if (name.length < 2)        errors.name = 'O nome deve ter pelo menos 2 caracteres.'
+  else if (form.name.length > MAX.name) errors.name = `Máximo ${MAX.name} caracteres.`
 
   if (!email)                      errors.email = 'Indique o seu email.'
   else if (!EMAIL_RE.test(email))  errors.email = 'Email inválido.'
   else if (form.email.length > MAX.email) errors.email = `Máximo ${MAX.email} caracteres.`
 
-  if (!mensagem)                   errors.mensagem = 'Escreva a sua mensagem.'
-  else if (mensagem.length < 10)   errors.mensagem = 'A mensagem deve ter pelo menos 10 caracteres.'
-  else if (form.mensagem.length > MAX.mensagem) errors.mensagem = `Máximo ${MAX.mensagem} caracteres.`
+  if (!message)                    errors.message = 'Escreva a sua mensagem.'
+  else if (message.length < 10)    errors.message = 'A mensagem deve ter pelo menos 10 caracteres.'
+  else if (form.message.length > MAX.message) errors.message = `Máximo ${MAX.message} caracteres.`
 
   if (!form.consentimento)         errors.consentimento = 'Tem de aceitar a política de privacidade.'
 
@@ -71,13 +109,10 @@ export default function Contact() {
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({})
   const [submission, setSubmission]   = useState<SubmissionState>({ status: 'idle' })
 
-  /* useId gives a stable form-scoped prefix so IDs are unique even
-     if the Contact page is ever embedded twice on the same DOM. */
   const formId = useId()
 
   function setField<K extends FieldName>(name: K, value: FormState[K]) {
     setForm((f) => ({ ...f, [name]: value }))
-    /* Clear the error as the user starts fixing it (don't wait for re-blur) */
     if (fieldErrors[name]) {
       setFieldErrors((e) => ({ ...e, [name]: undefined }))
     }
@@ -91,12 +126,9 @@ export default function Contact() {
   async function handleSubmit(e: FormEvent) {
     e.preventDefault()
 
-    /* Re-run full validation - all errors visible after first submit attempt */
     const errors = validate(form)
     setFieldErrors(errors)
-
     if (Object.keys(errors).length > 0) {
-      /* Move focus to first invalid field for keyboard users */
       const firstError = (Object.keys(errors) as FieldName[])[0]
       document.getElementById(`${formId}-${firstError}`)?.focus()
       return
@@ -106,36 +138,20 @@ export default function Contact() {
 
     try {
       await submitContact({
-        nome          : form.nome.trim(),
-        email         : form.email.trim(),
-        mensagem      : form.mensagem.trim(),
-        consentimento : form.consentimento,
+        name    : form.name.trim(),
+        email   : form.email.trim(),
+        message : form.message.trim(),
       })
       setSubmission({ status: 'success' })
       setForm(INITIAL_FORM)
       setFieldErrors({})
     } catch (err) {
-      if (err instanceof ValidationError) {
-        /* Map DRF field errors back to per-field UI errors */
-        const mapped: FieldErrors = {}
-        for (const [field, msgs] of Object.entries(err.fields)) {
-          if (field in INITIAL_FORM && msgs[0]) {
-            mapped[field as FieldName] = msgs[0]
-          }
-        }
-        setFieldErrors(mapped)
-        setSubmission({ status: 'error', message: 'Há campos por corrigir.' })
-      } else if (err instanceof ApiError && err.status === 403) {
-        setSubmission({
-          status  : 'error',
-          message : 'Sessão expirada. Recarregue a página e tente novamente.',
-        })
-      } else {
-        setSubmission({
-          status  : 'error',
-          message : 'Não foi possível enviar a mensagem. Verifique a sua ligação e tente novamente.',
-        })
-      }
+      setSubmission({
+        status  : 'error',
+        message : err instanceof Error
+          ? 'Não foi possível enviar a mensagem. Verifique a sua ligação e tente novamente.'
+          : 'Erro desconhecido.',
+      })
     }
   }
 
@@ -147,7 +163,6 @@ export default function Contact() {
 
   const isSubmitting = submission.status === 'submitting'
 
-  /* Render */
   return (
     <main id="main-content" className="mx-auto max-w-2xl px-4 py-10">
 
@@ -175,20 +190,20 @@ export default function Contact() {
             className="flex flex-col gap-5"
           >
 
-            <Field id={`${formId}-nome`} label="Nome" required error={fieldErrors.nome}>
+            <Field id={`${formId}-name`} label="Nome" required error={fieldErrors.name}>
               <input
-                id={`${formId}-nome`}
+                id={`${formId}-name`}
                 type="text"
-                name="nome"
-                value={form.nome}
-                maxLength={MAX.nome}
+                name="name"
+                value={form.name}
+                maxLength={MAX.name}
                 autoComplete="name"
                 disabled={isSubmitting}
-                aria-invalid={fieldErrors.nome ? true : undefined}
-                aria-describedby={fieldErrors.nome ? `${formId}-nome-error` : undefined}
-                onChange={(e) => setField('nome', e.target.value)}
-                onBlur={() => handleBlur('nome')}
-                className={inputClass(!!fieldErrors.nome)}
+                aria-invalid={fieldErrors.name ? true : undefined}
+                aria-describedby={fieldErrors.name ? `${formId}-name-error` : undefined}
+                onChange={(e) => setField('name', e.target.value)}
+                onBlur={() => handleBlur('name')}
+                className={inputClass(!!fieldErrors.name)}
               />
             </Field>
 
@@ -210,28 +225,27 @@ export default function Contact() {
             </Field>
 
             <Field
-              id={`${formId}-mensagem`}
+              id={`${formId}-message`}
               label="Mensagem"
               required
-              error={fieldErrors.mensagem}
-              hint={`${form.mensagem.length}/${MAX.mensagem}`}
+              error={fieldErrors.message}
+              hint={`${form.message.length}/${MAX.message}`}
             >
               <textarea
-                id={`${formId}-mensagem`}
-                name="mensagem"
-                value={form.mensagem}
+                id={`${formId}-message`}
+                name="message"
+                value={form.message}
                 rows={6}
-                maxLength={MAX.mensagem}
+                maxLength={MAX.message}
                 disabled={isSubmitting}
-                aria-invalid={fieldErrors.mensagem ? true : undefined}
-                aria-describedby={fieldErrors.mensagem ? `${formId}-mensagem-error` : undefined}
-                onChange={(e) => setField('mensagem', e.target.value)}
-                onBlur={() => handleBlur('mensagem')}
-                className={`${inputClass(!!fieldErrors.mensagem)} resize-y`}
+                aria-invalid={fieldErrors.message ? true : undefined}
+                aria-describedby={fieldErrors.message ? `${formId}-message-error` : undefined}
+                onChange={(e) => setField('message', e.target.value)}
+                onBlur={() => handleBlur('message')}
+                className={`${inputClass(!!fieldErrors.message)} resize-y`}
               />
             </Field>
 
-            {/* GDPR consent - layout differs (checkbox + inline label) */}
             <div>
               <label htmlFor={`${formId}-consentimento`} className="flex items-start gap-3 cursor-pointer">
                 <input
