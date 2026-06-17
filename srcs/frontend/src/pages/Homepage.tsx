@@ -47,7 +47,7 @@ function HomeContent() {
       label: 'Aprender',
       hint: 'Explora os temas',
       bgImg: './src/assets/red_dot.webp',
-      iconImg: './src/assets/blue_book.webp',
+      iconImg: './src/assets/blackboard.png',
       path: '/aprender'
     },
     {
