@@ -1,25 +1,40 @@
-import { useState } from 'react'
-import './App.css'
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
-import Ler from './pages/Read'
-import Homepage from './pages/Homepage'
-import Resolver from './pages/Resolver'
-import Jogos from './pages/Jogos'
-import Aprender from './pages/Aprender'
+import { Routes, Route } from 'react-router-dom'
+import Navbar      from './components/core/Navbar'
+import Home        from './pages/Home'
 
-function App() {
+import Styleguide  from './pages/Styleguide'
+import Contact     from './pages/Contact'
+import Aprender    from './pages/Aprender'
+import Resolver    from './pages/Resolver'
+import Jogos       from './pages/Jogos'
+import Ler         from './pages/Read'
+import './App.css'
+
+function PageStub({ title }: { title: string }) {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Homepage />} />
-        <Route path="/resolver" element={<Resolver />} />
-        <Route path="/jogos" element={<Jogos />} />
-        <Route path="/ler" element={<Ler />} />
-        <Route path="/aprender" element={<Aprender />} />
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
-    </BrowserRouter>
+    <main className="flex min-h-[80vh] flex-col items-center justify-center gap-4 px-6">
+      <h1 className="font-display text-4xl font-black text-neutral-700">{title}</h1>
+      <p className="font-body text-neutral-400">Página em construção</p>
+    </main>
   )
 }
 
-export default App
+export default function App() {
+  return (
+    <div className="min-h-screen bg-neutral-50">
+      <Navbar />
+      <Routes>
+        <Route path="/"                                 element={<Home />} />
+
+        <Route path="/aprender"                         element={<Aprender />} />
+        <Route path="/resolver"                         element={<Resolver />} />
+        <Route path="/jogos"                            element={<Jogos />} />
+        <Route path="/ler"                              element={<Ler />} />
+
+        <Route path="/contactar"  element={<Contact />} />
+        <Route path="/styleguide" element={<Styleguide />} />
+        <Route path="*"          element={<PageStub title="Página não encontrada" />} />
+      </Routes>
+    </div>
+  )
+}
