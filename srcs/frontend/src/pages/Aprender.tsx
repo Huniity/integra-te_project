@@ -4,30 +4,30 @@ import { NightModeBackground, NightModeProvider, NightModeToggle, useNightMode }
 import Searchbar from '../components/core/Searchbar';
 import Aside from '../components/core/Aside';
 import type { SubjectId } from '../components/core/Aside';
-import MainContent from '../components/core/MainContent';
-import type { FilterType } from '../components/core/MainContent';
-import ExerciseCard from '../components/resolver/ExerciseCard';
-import ExerciseModal from '../components/resolver/ExerciseModal';
-import type { Exercise } from '../components/resolver/ExerciseModal';
-import { subjects } from '../utils/resolver';
+import MainContent from '../components/aprender/MainContent';
+import type { FilterType } from '../components/aprender/MainContent';
+import AprenderCard from '../components/aprender/AprenderCard';
+import AprenderModal from '../components/aprender/AprenderModal';
+import { subjects } from '../utils/aprender';
 
-import { exercicioApi } from '../services/api/resolver.api';
+import { aulasApi } from '../services/api/aprender.api';
+import type { Aula } from '../api/contracts/aprender';
 
-export default function Resolver() {
+export default function Aprender() {
   return (
     <NightModeProvider>
-      <ResolverContent />
+      <AprenderContent />
     </NightModeProvider>
   );
 }
 
-function ResolverContent() {
+function AprenderContent() {
   const navigate = useNavigate();
   const { isNightMode } = useNightMode();
   const [activeSubject, setActiveSubject] = useState<SubjectId>('todos');
   const [activeFilter, setActiveFilter] = useState<FilterType>('todos');
   const [selectedLevel, setSelectedLevel] = useState<number | 'todos'>('todos');
-  const [selectedExercise, setSelectedExercise] = useState<Exercise | null>(null);
+  const [selectedAula, setSelectedAula] = useState<Aula | null>(null);
 
   const handleSelectAllLevels = () => {
     setActiveFilter('todos');
@@ -44,35 +44,35 @@ function ResolverContent() {
     }
   };
 
-  const [exercises, setExercises] = useState<Exercise[]>([]);
+  const [aulas, setAulas] = useState<Aula[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const navItems = [
     { iconImg: './src/assets/lock.png', label: 'Admin', path: '/login' },
   ];
 
-  const filteredExercises =
-    exercises.filter(
+  const filteredAulas =
+    aulas.filter(
       (ex) =>
         (activeSubject === 'todos' || ex.subjectId === activeSubject) &&
         (activeFilter === 'nivel' ? selectedLevel === 'todos' || ex.level === selectedLevel : true),
     );
 
   useEffect(() => {
-      const loadExercises = async () => {
+      const loadAulas = async () => {
         try {
           setIsLoading(true);
-          const data = await exercicioApi.getExercicios();
+          const data = await aulasApi.getAulas();
 
-          setExercises(data);
+          setAulas(data);
         } catch (error) {
-          console.error("Erro ao carregar os exercícios:", error);
+          console.error("Erro ao carregar as aulas:", error);
         } finally {
           setIsLoading(false);
         }
       };
 
-      loadExercises();
+      loadAulas();
     }, []);
 
 
@@ -149,7 +149,7 @@ function ResolverContent() {
 
         {/* Main Content Panel */}
         <MainContent
-          title="Pratica connosco!"
+          title="Aprende connosco!"
           activeFilter={activeFilter}
           selectedLevel={selectedLevel}
           onSelectAll={handleSelectAllLevels}
@@ -162,21 +162,21 @@ function ResolverContent() {
                 <p className="text-gray-500 font-semibold">Carregando exercícios...</p>
               </div>
             </div>
-          ) : filteredExercises.length === 0 ? (
+          ) : filteredAulas.length === 0 ? (
             <div className="flex items-center justify-center h-64">
               <p className="text-gray-400 text-lg font-semibold">Nenhum exercício disponível</p>
             </div>
           ) : (
             <div className="grid grid-cols-2 min-[640px]:grid-cols-3 gap-3 sm:gap-4 items-stretch rounded-2xl">
-              {filteredExercises.map((ex) => (
-                <ExerciseCard key={ex.id} exercise={ex} onSelect={setSelectedExercise} />
+              {filteredAulas.map((ex) => (
+                <AprenderCard key={ex.id} aula={ex} onSelect={setSelectedAula} />
               ))}
             </div>
           )}
         </MainContent>
       </div>
-      {selectedExercise && (
-        <ExerciseModal exercise={selectedExercise} onClose={() => setSelectedExercise(null)} />
+      {selectedAula && (
+        <AprenderModal aula={selectedAula} onClose={() => setSelectedAula(null)} />
       )}
       <NightModeToggle />
       {/* Footer */}
