@@ -1,10 +1,9 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Download, FileText } from 'lucide-react';
 import { NightModeBackground, NightModeProvider, NightModeToggle, useNightMode } from '../components/core/NightMode';
-import Searchbar from '../components/core/SearchBar';
 import Aside from '../components/core/Aside';
 import type { SubjectId } from '../components/core/Aside';
+import MainContent from '../components/core/MainContent';
 import { subjects } from '../utils/descarregar';
 import { descarregarApi } from '../services/api/descarregar.api';
 import type { Descarregavel } from '../api/contracts/descarregar';
@@ -19,16 +18,11 @@ export default function Descarregar() {
 }
 
 function DescarregarContent() {
-  const navigate = useNavigate();
   const { isNightMode } = useNightMode();
 
   const [activeSubject, setActiveSubject] = useState<SubjectId>('todos');
   const [items, setItems] = useState<Descarregavel[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-
-  const navItems = [
-    { iconImg: './src/assets/lock.png', label: 'Admin', path: '/login' },
-  ];
 
   const filtered = items.filter(
     (item) => activeSubject === 'todos' || item.disciplina_slug === activeSubject,
@@ -68,43 +62,26 @@ function DescarregarContent() {
 
         <Aside subjects={subjects} activeSubject={activeSubject} onSelectSubject={setActiveSubject} />
 
-        {/* Main content panel */}
-        <div className="flex-1 min-h-0 bg-blue-600/30 backdrop-blur-xs rounded-3xl shadow-[0_18px_45px_rgba(31,38,135,0.28)] border border-white/30 ring-1 ring-white/20 overflow-hidden flex flex-col">
-
-          {/* Panel header */}
-          <div className="relative px-5 pt-3 pb-2 flex items-center shrink-0">
-            <img src="./src/assets/stars.png" alt="" aria-hidden="true"
-              className="pointer-events-none absolute inset-x-[-50] top-1/2 h-[100%] w-2/3 -translate-y-2/3 mx-auto object-contain" />
-            <h1
-              className="relative z-10 font-['Fredoka',sans-serif] text-3xl font-black text-white"
-              style={{ textShadow: '-1px 0 #2563eb, 0 1px #2563eb, 1px 0 #2563eb, 0 -1px #2563eb, 1px 1px #2563eb, -1px -1px #2563eb, 1px -1px #2563eb, -1px 1px #2563eb' }}
-            >
-              Descarregar!
-            </h1>
-          </div>
-
-          {/* Content */}
-          <div className="flex-1 min-h-0 overflow-y-auto px-4 py-3">
-            {isLoading ? (
-              <div className="flex items-center justify-center h-64">
-                <div className="text-center">
-                  <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-white mb-4" />
-                  <p className="text-white/80 font-semibold">A carregar ficheiros…</p>
-                </div>
+        <MainContent title="Descarregar!">
+          {isLoading ? (
+            <div className="flex items-center justify-center h-64">
+              <div className="text-center">
+                <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-white mb-4" />
+                <p className="text-white/80 font-semibold">A carregar ficheiros…</p>
               </div>
-            ) : filtered.length === 0 ? (
-              <div className="flex items-center justify-center h-64">
-                <p className="text-white/60 text-lg font-semibold">Nenhum ficheiro disponível</p>
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3 sm:gap-4">
-                {filtered.map((item) => (
-                  <DownloadCard key={item.id} item={item} />
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
+            </div>
+          ) : filtered.length === 0 ? (
+            <div className="flex items-center justify-center h-64">
+              <p className="text-white/60 text-lg font-semibold">Nenhum ficheiro disponível</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3 sm:gap-4">
+              {filtered.map((item) => (
+                <DownloadCard key={item.id} item={item} />
+              ))}
+            </div>
+          )}
+        </MainContent>
       </div>
 
       <NightModeToggle />

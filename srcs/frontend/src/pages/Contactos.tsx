@@ -6,8 +6,6 @@ import {
   NightModeToggle,
   useNightMode,
 } from '../components/core/NightMode'
-
-/* ─── Web3Forms submission ───────────────────────────────────────────────────
 import Footer from '../components/core/Footer'
 
 /* Web3Forms submission

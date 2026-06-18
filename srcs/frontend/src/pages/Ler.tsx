@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { NightModeBackground, NightModeProvider, NightModeToggle, useNightMode } from '../components/core/NightMode';
-import Searchbar from '../components/core/SearchBar';
 import Footer from '../components/core/Footer';
 
 // Definição estrita de tipos para evitar quebras
