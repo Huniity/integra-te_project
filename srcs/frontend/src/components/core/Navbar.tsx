@@ -418,7 +418,7 @@ export function Navbar() {
     <header
       role="banner"
       className="
-        fixed top-0 left-0 right-0 z-50
+        fixed top-5 left-0 right-0 z-50
         bg-transparent
       "
     >
@@ -462,7 +462,7 @@ export function Navbar() {
               <>
                 <button
                     onClick={() => navigate('/')}
-                    className="h-14 w-[200px] flex items-center justify-center bg-center bg-no-repeat bg-[length:100%_100%] hover:scale-105 transition-transform cursor-pointer"
+                    className="h-22 w-[250px] flex items-center justify-center bg-center bg-no-repeat bg-[length:100%_100%] hover:scale-105 transition-transform cursor-pointer"
                     style={{ backgroundImage: 'url(/src/assets/cloud_logo.png)' }}
                     >
                     <span className="font-['Fredoka',sans-serif] text-xl md:text-[1.4rem] font-black tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-[#005bb7] to-[#3b82f6]">
@@ -492,11 +492,11 @@ export function Navbar() {
 
           {/* SearchBar + Admin lock — hidden on mobile (burger handles nav there) */}
           <div className="hidden md:flex items-center gap-2">
-            <SearchBar className="relative flex w-[220px] items-center rounded-full border border-white/40 bg-white/15 backdrop-blur-xs shadow-[0_14px_36px_rgba(31,38,135,0.22)] ring-1 ring-white/20" />
+            <SearchBar className="relative flex w-[220px] items-center rounded-full border border-white/40 bg-white/15 backdrop-blur-xs shadow-[0_14px_36px_rgba(31,38,135,0.22)] ring-1 ring-white/20"/>
             <a
               href="/admin/"
               aria-label="Django Admin"
-              className="w-9 h-9 bg-white/30 rounded-full flex items-center justify-center shadow-md border-2 border-white/20 hover:scale-110 active:scale-95 transition-transform cursor-pointer backdrop-blur-xs"
+              className="w-10 h-10 bg-white/15 rounded-full flex items-center justify-center shadow-[0_14px_36px_rgba(31,38,135,0.22)] border border-white/40 ring-1 ring-white/20 hover:scale-110 active:scale-95 transition-transform cursor-pointer backdrop-blur-xs"
             >
               <img src="/src/assets/lock.png" alt="Admin" className="w-5 h-5 object-contain" />
             </a>
