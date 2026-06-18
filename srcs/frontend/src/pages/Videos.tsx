@@ -61,37 +61,8 @@ function VideosContent() {
       <img src="./src/assets/rainbow.png" alt="" aria-hidden="true"
         className={`pointer-events-none fixed top-[14%] left-[-5%] z-1 w-28 sm:w-36 md:w-44 lg:w-100 object-contain rotate-24 transition-opacity duration-700 ${isNightMode ? 'opacity-0' : 'opacity-100'}`} />
       <NightModeBackground dayImage="./src/assets/content2.png" nightImage="./src/assets/noite.png" />
-
-      {/* Header */}
-      <header className="max-w-[95%] w-full mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 mb-2 relative z-30 shrink-0">
-        <button
-          onClick={() => navigate('/')}
-          className="h-18 w-[225px] flex items-center justify-center bg-center bg-no-repeat bg-[length:100%_100%] transform hover:scale-105 transition-transform cursor-pointer"
-          style={{ backgroundImage: 'url(./src/assets/cloud_logo.png)' }}
-        >
-          <span className="font-['Fredoka',sans-serif] text-xl md:text-[1.5rem] font-black tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-[#005bb7] to-[#3b82f6]">
-            INTEGRA-TE
-          </span>
-        </button>
-
-        <Searchbar />
-
-        <nav className="flex flex-wrap items-center justify-center gap-2">
-          {navItems.map((item) => (
-            <button
-              key={item.path}
-              onClick={() => navigate(item.path)}
-              aria-label={item.label}
-              className="w-9 h-9 bg-white/30 rounded-full flex items-center justify-center shadow-md border-2 border-white/20 hover:scale-110 active:scale-95 transition-transform cursor-pointer backdrop-blur-xs"
-            >
-              <img src={item.iconImg} alt={item.label} className="w-7 h-7 object-contain" />
-            </button>
-          ))}
-        </nav>
-      </header>
-
       {/* Body: Sidebar + Main */}
-      <div className="max-w-[95%] w-full mx-auto flex flex-col lg:flex-row gap-3 lg:gap-20 relative z-10 pb-2 flex-1 min-h-0">
+      <div className="max-w-[95%] w-full mx-auto flex flex-col lg:flex-row gap-3 lg:gap-20 relative z-10 mt-40 mb-20 pb-2 flex-1 min-h-0">
 
         <Aside subjects={subjects} activeSubject={activeSubject} onSelectSubject={setActiveSubject} />
 
