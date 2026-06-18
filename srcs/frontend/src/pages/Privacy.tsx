@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import Footer from '../components/core/Footer';
 
 export default function Privacy() {
   const [activeTab, setActiveTab] = useState<'geral' | 'dados' | 'direitos'>('geral');
@@ -153,6 +154,7 @@ export default function Privacy() {
           Última atualização: Junho de 2026 • Projeto iNTEGRA-TE Loulé
         </div>
       </section>
+      <Footer />
     </main>
   );
 }

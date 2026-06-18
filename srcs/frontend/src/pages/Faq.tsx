@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import Footer from '../components/core/Footer';
 
 interface FaqItem {
   question: string;
@@ -224,6 +225,7 @@ export default function Faq() {
           </button>
         </div>
       </section>
+      <Footer />
     </main>
   );
 }

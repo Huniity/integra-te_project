@@ -12,6 +12,7 @@ import { subjects } from '../utils/aprender';
 
 import { aulasApi } from '../services/api/aprender.api';
 import type { Aula } from '../api/contracts/aprender';
+import Footer from '../components/core/Footer';
 
 export default function Aprender() {
   return (
@@ -179,24 +180,7 @@ function AprenderContent() {
         <AprenderModal aula={selectedAula} onClose={() => setSelectedAula(null)} />
       )}
       <NightModeToggle />
-      {/* Footer */}
-      <footer className="w-full mt-1 mb-1 flex justify-center relative z-20 shrink-0">
-        <div className="w-full sm:w-auto bg-white/95 rounded-3xl sm:rounded-full px-4 sm:px-7 py-2 sm:py-2.5 shadow-lg border-2 border-white flex flex-wrap items-center justify-center gap-3 sm:gap-5 md:gap-7 max-w-4xl mx-auto">
-          <div className="flex items-center gap-2 sm:border-r border-gray-200 sm:pr-5 last:border-0">
-            <div className="w-8 h-5 bg-blue-800 flex items-center justify-center text-[6px] text-yellow-400 font-bold rounded-sm">EU</div>
-            <span className="text-[10px] font-black text-gray-500 leading-tight uppercase">Cofinanciado pela<br />União Europeia</span>
-          </div>
-          <div className="text-sm font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-green-500">
-            ALGARVE <span className="text-orange-500">2030</span>
-          </div>
-          <div className="text-sm font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-green-600">
-            PORTUGAL <span className="text-amber-500">2030</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="text-[10px] font-black text-gray-500 leading-tight uppercase">Loulé<br />concelho</span>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </main>
   );
 }
