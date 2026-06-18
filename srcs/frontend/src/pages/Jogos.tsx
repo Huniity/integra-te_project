@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { NightModeBackground, NightModeProvider, NightModeToggle, useNightMode } from '../components/core/NightMode';
-import Searchbar from '../components/core/Searchbar';
+import Searchbar from '../components/core/SearchBar';
 import AsideJogos from '../components/core/asidejogos';
 import type { GameAgeFilterId, GameAgeSubject } from '../components/core/asidejogos';
 import MainContentJogos from '../components/Games/MainContent';

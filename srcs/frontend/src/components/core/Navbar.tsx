@@ -2,6 +2,8 @@ import { useState, useEffect, useRef, useCallback } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import type { Variants } from 'framer-motion'
+import { SearchBar } from './SearchBar'
+
 import {
   BookOpen,
   Dumbbell,
@@ -448,13 +450,11 @@ export function Navbar() {
     <header
       role="banner"
       className="
-        sticky top-0 z-50
-        bg-white/95 backdrop-blur-md
-        border-b border-neutral-200
-        shadow-sm
+        fixed top-0 left-0 right-0 z-50
+        bg-transparent
       "
     >
-     <a 
+     <a
       href="#main-content"
         className="
           sr-only focus:not-sr-only
@@ -483,9 +483,7 @@ export function Navbar() {
             whileTap={{ scale: 0.97 }}
             transition={{ type: 'spring', stiffness: 400, damping: 24 }}
             className="
-              flex items-center gap-1.5 rounded-xl
-              bg-brand-blue-500 px-3.5 py-2
-              shadow-sm
+              flex items-center gap-1.5 px-3.5 py-2
             "
           >
             {LOGO_SRC ? (
@@ -496,13 +494,15 @@ export function Navbar() {
               />
             ) : (
               <>
-                <span
-                  aria-hidden="true"
-                  className="font-display text-base font-black text-white tracking-tight leading-none"
-                >
-                  INTEGRA‑TE
-                </span>
-                <span aria-hidden="true" className="text-brand-blue-200 text-sm leading-none">⭐</span>
+                <button
+                    onClick={() => navigate('/')}
+                    className="h-18 w-[225px] flex items-center justify-center bg-center bg-no-repeat bg-[length:100%_100%] transform hover:scale-105 transition-transform cursor-pointer"
+                    style={{ backgroundImage: 'url(./src/assets/cloud_logo.png)' }}
+                    >
+                    <span className="font-['Fredoka',sans-serif] text-xl md:text-[1.5rem] font-black tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-[#005bb7] to-[#3b82f6]">
+                        INTEGRA-TE
+                    </span>
+                </button>
               </>
             )}
           </motion.div>
@@ -520,26 +520,19 @@ export function Navbar() {
         </nav>
 
         {/* Right controls */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 shrink-0">
 
-          {/* Search (text+icon on large screens, icon-only on sm) */}
-          <motion.button
-            type="button"
-            whileHover={{ scale: 1.04 }}
-            whileTap={{ scale: 0.96 }}
-            onClick={() => navigate('/search')}
-            aria-label="Pesquisar — o que procuras?"
-            className="
-              flex items-center gap-2 rounded-full
-              bg-brand-blue-100 text-brand-blue-600 font-display font-bold text-sm
-              hover:bg-brand-blue-200 active:bg-brand-blue-300
-              transition-colors duration-150
-              h-10 px-3 sm:px-4
-            "
-          >
-            <Search size={18} strokeWidth={2.5} aria-hidden="true" />
-            <span className="hidden lg:inline whitespace-nowrap">O que procuras?</span>
-          </motion.button>
+          {/* SearchBar + Admin lock — hidden on mobile (burger handles nav there) */}
+          <div className="hidden md:flex items-center gap-2">
+            <SearchBar className="relative flex w-[220px] items-center rounded-full border border-white/40 bg-white/15 backdrop-blur-xs shadow-[0_14px_36px_rgba(31,38,135,0.22)] ring-1 ring-white/20" />
+            <button
+              onClick={() => navigate('/login')}
+              aria-label="Admin"
+              className="w-9 h-9 bg-white/30 rounded-full flex items-center justify-center shadow-md border-2 border-white/20 hover:scale-110 active:scale-95 transition-transform cursor-pointer backdrop-blur-xs"
+            >
+              <img src="/src/assets/lock.png" alt="Admin" className="w-5 h-5 object-contain" />
+            </button>
+          </div>
 
           {/* Burger - mobile only */}
           <BurgerButton

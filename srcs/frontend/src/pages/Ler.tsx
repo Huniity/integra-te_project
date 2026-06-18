@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { NightModeBackground, NightModeProvider, NightModeToggle, useNightMode } from '../components/core/NightMode';
-import Searchbar from '../components/core/Searchbar';
+import Searchbar from '../components/core/SearchBar';
 
 // Definição estrita de tipos para evitar quebras
 export type AgeFilterId = 'todos' | '4-6' | '6-9' | '9-12';
