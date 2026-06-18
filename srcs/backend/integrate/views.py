@@ -64,7 +64,10 @@ class DescarregarViewSet(ReadOnlyModelViewSet):
     queryset = Conteudo.objects.filter(
         tipo="pdf", descarregavel=True, publicado=True
     ).select_related("tema", "tema__disciplina")
-    serializer_class = ConteudoDownloadSerializer
+    serializer_class = ConteudoItemSerializer
+    permission_classes = [AllowAny]
+
+
 class VideosViewSet(ReadOnlyModelViewSet):
     queryset = Conteudo.objects.filter(tipo="video", publicado=True).select_related(
         "tema", "tema__disciplina"
