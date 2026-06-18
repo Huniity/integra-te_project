@@ -48,7 +48,7 @@ function ResolverContent() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const navItems = [
-    { iconImg: './src/assets/lock.png', label: 'Admin', path: '/login' },
+    { iconImg: './src/assets/lock.png', label: 'Admin', path: '/admin/' },
   ];
 
   const filteredExercises =
@@ -74,8 +74,6 @@ function ResolverContent() {
 
       loadExercises();
     }, []);
-
-
 
   return (
     <main

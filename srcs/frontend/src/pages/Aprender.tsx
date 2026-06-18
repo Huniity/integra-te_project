@@ -48,7 +48,7 @@ function AprenderContent() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const navItems = [
-    { iconImg: './src/assets/lock.png', label: 'Admin', path: '/login' },
+    { iconImg: './src/assets/lock.png', label: 'Admin', path: '/admin/' },
   ];
 
   const filteredAulas =
@@ -74,8 +74,6 @@ function AprenderContent() {
 
       loadAulas();
     }, []);
-
-
 
   return (
     <main
