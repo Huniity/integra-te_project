@@ -8,6 +8,8 @@ import Contact   from './pages/Contactos'
 import Aprender  from './pages/Aprender'
 import Resolver  from './pages/Resolver'
 import Jogos     from './pages/Jogos'
+import Descarregar from './pages/Descarregar'
+import Videos    from './pages/Videos'
 import Ler       from './pages/Ler'
 import Styleguide from './pages/Styleguide'
 import './App.css'
@@ -28,27 +30,19 @@ export default function App() {
     <>
       <Navbar />
       <Routes>
-        {/* Core pages */}
-        <Route path="/"             element={<Home />} />
-        <Route path="/aprender"     element={<Aprender />} />
-        <Route path="/resolver"     element={<Resolver />} />
-        <Route path="/jogos"        element={<Jogos />} />
+        <Route path="/"            element={<Home />} />
+        <Route path="/aprender"    element={<Aprender />} />
+        <Route path="/resolver"    element={<Resolver />} />
+        <Route path="/jogos"       element={<Jogos />} />
         <Route path="/ler"          element={<Ler />} />
-
-        {/* Info pages */}
-        <Route path="/sobre"        element={<About />} />
-        <Route path="/faq"          element={<Faq />} />
-        <Route path="/privacidade"  element={<Privacy />} />
-        <Route path="/contactar"    element={<Contact />} />
-
-        {/* Search - stub until search page is built */}
-        <Route path="/pesquisar"    element={<PageStub title="Pesquisar" />} />
-
-        {/* Dev/design tooling */}
-        <Route path="/styleguide"   element={<Styleguide />} />
-
-        {/* Catch-all */}
-        <Route path="*"             element={<PageStub title="Página não encontrada" />} />
+        <Route path="/descarregar"  element={<Descarregar />} />
+        <Route path="/videos"      element={<Videos />} />
+        <Route path="/sobre"       element={<About />} />
+        <Route path="/faq"         element={<Faq />} />
+        <Route path="/privacidade" element={<Privacy />} />
+        <Route path="/contactar"   element={<Contact />} />
+        <Route path="/styleguide"  element={<Styleguide />} />
+        <Route path="*"            element={<PageStub title="Página não encontrada" />} />
       </Routes>
     </>
   )
