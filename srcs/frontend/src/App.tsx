@@ -13,6 +13,7 @@ import Videos    from './pages/Videos'
 import Ler       from './pages/Ler'
 import Styleguide from './pages/Styleguide'
 import './App.css'
+import Dashboard from './pages/Dashboard'
 
 /* Placeholder for pages that are scoped but not yet built */
 function PageStub({ title }: { title: string }) {
@@ -43,6 +44,7 @@ export default function App() {
         <Route path="/contactar"   element={<Contact />} />
         <Route path="/styleguide"  element={<Styleguide />} />
         <Route path="*"            element={<PageStub title="Página não encontrada" />} />
+        <Route path="/dashboard"     element={<Dashboard />} />
       </Routes>
     </>
   )
