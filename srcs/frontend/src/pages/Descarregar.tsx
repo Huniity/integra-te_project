@@ -20,7 +20,7 @@ export default function Descarregar() {
 function DescarregarContent() {
   const { isNightMode } = useNightMode();
 
-  const [activeSubject, setActiveSubject] = useState<SubjectId>('todos');
+  const [activeSubject, setActiveSubject] = useState<SubjectId | string>('todos');
   const [items, setItems] = useState<Descarregavel[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 

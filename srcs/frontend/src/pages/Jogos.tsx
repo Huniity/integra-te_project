@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { NightModeBackground, NightModeProvider, NightModeToggle, useNightMode } from '../components/core/NightMode';
-import AsideJogos from '../components/core/asidejogos';
-import type { GameAgeFilterId, GameAgeSubject } from '../components/core/asidejogos';
+import Aside from '../components/core/Aside';
+import type { Subject, SubjectId } from '../components/core/Aside';
 import MainContentJogos from '../components/Games/MainContent';
 import Footer from '../components/core/Footer';
 import { jogosApi } from '../services/api/jogos.api';
@@ -18,15 +18,15 @@ export default function Games() {
 function GamesContent() {
   const { isNightMode } = useNightMode();
 
-  const [activeSubject, setActiveSubject] = useState<GameAgeFilterId>('todos');
+  const [activeSubject, setActiveSubject] = useState<SubjectId | string>('todos');
   const [jogos, setJogos] = useState<Jogo[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  const ageSubjects: GameAgeSubject[] = [
-    { id: 'todos', label: 'Todos os Jogos' },
-    { id: '4-6', label: 'Entre os 4 e 6 anos' },
-    { id: '6-9', label: 'Entre os 6 e 9 anos' },
-    { id: '9-12', label: 'Entre os 9 e 12 anos' },
+  const ageSubjects: Subject[] = [
+    { id: 'todos',  label: 'Todos os Jogos',     iconImg: './src/assets/controller.webp' },
+    { id: '4-6',   label: '4 à 6 anos', iconImg: './src/assets/puzzle.png' },
+    { id: '6-9',   label: '6 à 9 anos', iconImg: './src/assets/abc.webp' },
+    { id: '9-12',  label: '9 à 12 anos', iconImg: './src/assets/sudoku.webp' },
   ];
 
   useEffect(() => {
@@ -54,7 +54,7 @@ function GamesContent() {
       {/* Layout Dividido */}
       <div className="max-w-[95%] w-full mx-auto flex flex-col lg:flex-row gap-3 lg:gap-20 relative z-10 mt-40 mb-20 pb-2 flex-1 min-h-0">
 
-        <AsideJogos subjects={ageSubjects} activeSubject={activeSubject} onSelectSubject={setActiveSubject} />
+        <Aside subjects={ageSubjects} activeSubject={activeSubject} onSelectSubject={setActiveSubject} title="Idades" />
 
         <MainContentJogos title="Jogos Disponíveis">
           {isLoading ? (

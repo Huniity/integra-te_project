@@ -24,7 +24,7 @@ export default function Resolver() {
 function ResolverContent() {
   const navigate = useNavigate();
   const { isNightMode } = useNightMode();
-  const [activeSubject, setActiveSubject] = useState<SubjectId>('todos');
+  const [activeSubject, setActiveSubject] = useState<SubjectId | string>('todos');
   const [activeFilter, setActiveFilter] = useState<FilterType>('todos');
   const [selectedLevel, setSelectedLevel] = useState<number | 'todos'>('todos');
   const [selectedExercise, setSelectedExercise] = useState<Exercise | null>(null);

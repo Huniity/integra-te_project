@@ -20,7 +20,7 @@ export default function Videos() {
 function VideosContent() {
   const { isNightMode } = useNightMode();
 
-  const [activeSubject, setActiveSubject] = useState<SubjectId>('todos');
+  const [activeSubject, setActiveSubject] = useState<SubjectId | string>('todos');
   const [videos, setVideos] = useState<Video[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [selected, setSelected] = useState<Video | null>(null);
