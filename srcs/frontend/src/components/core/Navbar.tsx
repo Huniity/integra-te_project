@@ -62,7 +62,7 @@ const NAV: NavItem[] = [
   {
     id           : 'videos',
     label        : 'Vídeos',
-    path         : '/aprender',
+    path         : '/videos',
     bgImg        : '/src/assets/blue_dot.webp',
     iconImg      : '/src/assets/video.webp',
     drawerActive : 'bg-brand-blue-400 text-white',
@@ -71,7 +71,7 @@ const NAV: NavItem[] = [
   {
     id           : 'descarregar',
     label        : 'Descarregar',
-    path         : '/resolver',
+    path         : '/descarregar',
     bgImg        : '/src/assets/darkb_dot.webp',
     iconImg      : '/src/assets/download.webp',
     drawerActive : 'bg-brand-blue-600 text-white',
@@ -436,23 +436,21 @@ export function Navbar() {
       </a>
 
       <div className="
-        relative mx-auto flex h-[var(--nav-h)] max-w-6xl
-        items-center justify-between gap-4 px-4 sm:px-6
+        relative w-full flex h-[var(--nav-h)]
+        items-center px-4 sm:px-6
       ">
 
-        {/* Logo */}
+        {/* Logo — flush to the left viewport edge */}
         <NavLink
           to="/"
           aria-label="INTEGRA-TE — ir para a página inicial"
-          className="shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-blue-400 focus-visible:ring-offset-2 rounded-xl"
+          className="shrink-0 no-underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-blue-400 focus-visible:ring-offset-2 rounded-xl"
         >
           <motion.div
             whileHover={{ scale: 1.04 }}
             whileTap={{ scale: 0.97 }}
             transition={{ type: 'spring', stiffness: 400, damping: 24 }}
-            className="
-              flex items-center gap-1.5 px-3.5 py-2
-            "
+            className="flex items-center"
           >
             {LOGO_SRC ? (
               <img
@@ -464,7 +462,7 @@ export function Navbar() {
               <>
                 <button
                     onClick={() => navigate('/')}
-                    className="h-14 w-[200px] flex items-center justify-center bg-center bg-no-repeat bg-[length:100%_100%] transform hover:scale-105 transition-transform cursor-pointer"
+                    className="h-14 w-[200px] flex items-center justify-center bg-center bg-no-repeat bg-[length:100%_100%] hover:scale-105 transition-transform cursor-pointer"
                     style={{ backgroundImage: 'url(/src/assets/cloud_logo.png)' }}
                     >
                     <span className="font-['Fredoka',sans-serif] text-xl md:text-[1.4rem] font-black tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-[#005bb7] to-[#3b82f6]">
@@ -476,19 +474,21 @@ export function Navbar() {
           </motion.div>
         </NavLink>
 
-        {/* Desktop navigation */}
-        <nav
-          role="navigation"
-          aria-label="Navegação principal"
-          className="hidden md:flex items-center gap-6 lg:gap-7"
-        >
-          {visibleNav.map((item) => (
-            <DesktopNavIcon key={item.id} item={item} />
-          ))}
-        </nav>
+        {/* Desktop navigation — hidden on homepage (grid serves as nav there) */}
+        {pathname !== '/' && (
+          <nav
+            role="navigation"
+            aria-label="Navegação principal"
+            className="hidden md:flex items-center gap-6 lg:gap-7 absolute left-1/2 -translate-x-1/2"
+          >
+            {visibleNav.map((item) => (
+              <DesktopNavIcon key={item.id} item={item} />
+            ))}
+          </nav>
+        )}
 
-        {/* Right controls */}
-        <div className="flex items-center gap-2 shrink-0">
+        {/* Right controls — flush to the right viewport edge */}
+        <div className="ml-auto flex items-center gap-2 shrink-0">
 
           {/* SearchBar + Admin lock — hidden on mobile (burger handles nav there) */}
           <div className="hidden md:flex items-center gap-2">
@@ -502,12 +502,14 @@ export function Navbar() {
             </a>
           </div>
 
-          {/* Burger - mobile only */}
-          <BurgerButton
-            isOpen={menuOpen}
-            onClick={() => setMenuOpen((v) => !v)}
-            btnRef={burgerRef}
-          />
+          {/* Burger — mobile only, not needed on homepage (grid is the nav) */}
+          {pathname !== '/' && (
+            <BurgerButton
+              isOpen={menuOpen}
+              onClick={() => setMenuOpen((v) => !v)}
+              btnRef={burgerRef}
+            />
+          )}
         </div>
       </div>
 
