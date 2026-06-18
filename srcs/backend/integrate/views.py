@@ -12,7 +12,7 @@ from .models import (
 )
 
 from .serializers import (
-    ConteudoDownloadSerializer,
+    ConteudoItemSerializer,
     DisciplinaSerializer,
     TemaSerializer,
     JogosSerializers,
@@ -65,4 +65,9 @@ class DescarregarViewSet(ReadOnlyModelViewSet):
         tipo="pdf", descarregavel=True, publicado=True
     ).select_related("tema", "tema__disciplina")
     serializer_class = ConteudoDownloadSerializer
+class VideosViewSet(ReadOnlyModelViewSet):
+    queryset = Conteudo.objects.filter(tipo="video", publicado=True).select_related(
+        "tema", "tema__disciplina"
+    )
+    serializer_class = ConteudoItemSerializer
     permission_classes = [AllowAny]

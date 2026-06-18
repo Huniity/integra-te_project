@@ -8,6 +8,7 @@ from integrate.views import (
     LivroViewSet,
     ExercicioViewSet,
     AulaViewSet,
+    VideosViewSet,
 )
 
 router = DefaultRouter()
@@ -19,5 +20,6 @@ router.register(r"livros", LivroViewSet, basename="livros")
 router.register(r"exercicios", ExercicioViewSet, basename="exercicios")
 router.register(r"aulas", AulaViewSet, basename="aulas")
 router.register(r"descarregar", DescarregarViewSet, basename="descarregar")
+router.register(r"videos", VideosViewSet, basename="videos")
 
 urlpatterns = router.urls

@@ -140,7 +140,9 @@ class MaterialOriginalSerializers(serializers.ModelSerializer):
         )
 
 
-class ConteudoDownloadSerializer(serializers.ModelSerializer):
+class ConteudoItemSerializer(serializers.ModelSerializer):
+    """Generic serializer for Conteudo items exposed to the frontend (PDFs, videos, etc.)."""
+
     ficheiro_url = serializers.SerializerMethodField()
     thumbnail_url = serializers.SerializerMethodField()
     disciplina_slug = serializers.CharField(
