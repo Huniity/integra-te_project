@@ -8,11 +8,13 @@ import Contact   from './pages/Contactos'
 import Aprender  from './pages/Aprender'
 import Resolver  from './pages/Resolver'
 import Jogos     from './pages/Jogos'
+import Descarregar from './pages/Descarregar'
 import Videos    from './pages/Videos'
 import Ler       from './pages/Ler'
 import Styleguide from './pages/Styleguide'
 import './App.css'
 
+/* Placeholder for pages that are scoped but not yet built */
 function PageStub({ title }: { title: string }) {
   return (
     <main className="flex min-h-[80vh] flex-col items-center justify-center gap-4 px-6">
@@ -22,6 +24,7 @@ function PageStub({ title }: { title: string }) {
   )
 }
 
+/* Route table */
 export default function App() {
   return (
     <>
@@ -31,7 +34,8 @@ export default function App() {
         <Route path="/aprender"    element={<Aprender />} />
         <Route path="/resolver"    element={<Resolver />} />
         <Route path="/jogos"       element={<Jogos />} />
-        <Route path="/ler"         element={<Ler />} />
+        <Route path="/ler"          element={<Ler />} />
+        <Route path="/descarregar"  element={<Descarregar />} />
         <Route path="/videos"      element={<Videos />} />
         <Route path="/sobre"       element={<About />} />
         <Route path="/faq"         element={<Faq />} />
