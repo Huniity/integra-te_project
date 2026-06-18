@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNightMode } from './NightMode';
 
-export default function Searchbar() {
+export function SearchBar({ className }: { className?: string }) {
   const { isNightMode } = useNightMode();
   const [searchText, setSearchText] = useState('');
   const [isRecording, setIsRecording] = useState(false);
@@ -68,7 +68,7 @@ export default function Searchbar() {
   return (
     <form
       onSubmit={(event) => event.preventDefault()}
-      className="relative flex w-full sm:w-[280px] max-w-xs items-center rounded-full border border-white/40 bg-white/15 backdrop-blur-xs shadow-[0_14px_36px_rgba(31,38,135,0.22)] ring-1 ring-white/20 sm:absolute sm:left-1/2 sm:-translate-x-1/2"
+      className={className ?? "relative flex w-full sm:w-[280px] max-w-xs items-center rounded-full border border-white/40 bg-white/15 backdrop-blur-xs shadow-[0_14px_36px_rgba(31,38,135,0.22)] ring-1 ring-white/20 sm:absolute sm:left-1/2 sm:-translate-x-1/2"}
     >
       <button
         type="button"
@@ -97,3 +97,5 @@ export default function Searchbar() {
     </form>
   );
 }
+
+export default SearchBar

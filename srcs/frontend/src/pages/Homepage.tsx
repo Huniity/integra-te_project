@@ -107,7 +107,7 @@ function HomeContent() {
 
       <NightModeBackground dayImage='./src/assets/content2.png' nightImage='./src/assets/noite.png' />
 
-      <header className="max-w-7xl w-full mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 md:gap-3 mb-2 md:mb-3 relative z-30 shrink-0">
+      {/* <header className="max-w-7xl w-full mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 md:gap-3 mb-2 md:mb-3 relative z-30 shrink-0">
         <div className="bg-white/95 px-5 md:px-8 py-2 md:py-3 rounded-full shadow-lg border-2 border-white transform hover:scale-[1.02] transition-transform">
           <span className="font-['Fredoka',sans-serif] text-xl md:text-3xl font-black tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-[#005bb7] to-[#3b82f6]">
             INTEGRA-TE
@@ -126,7 +126,7 @@ function HomeContent() {
             <NightModeToggle />
           </div>
         </div>
-      </header>
+      </header> */}
       <div className="hidden lg:block absolute top-[14%] right-[14%] z-50">
         <NightModeToggle />
       </div>

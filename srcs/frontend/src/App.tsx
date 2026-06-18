@@ -1,6 +1,5 @@
 import { Routes, Route } from 'react-router-dom'
 import Navbar    from './components/core/Navbar'
-import Footer    from './components/core/Footer'
 import Home      from './pages/Homepage'
 import About     from './pages/About'
 import Faq       from './pages/Faq'
@@ -24,24 +23,21 @@ function PageStub({ title }: { title: string }) {
 
 export default function App() {
   return (
-    <div className="flex flex-col min-h-screen bg-neutral-50">
+    <>
       <Navbar />
-      <div className="flex-1">
-        <Routes>
-          <Route path="/"            element={<Home />} />
-          <Route path="/aprender"    element={<Aprender />} />
-          <Route path="/resolver"    element={<Resolver />} />
-          <Route path="/jogos"       element={<Jogos />} />
-          <Route path="/ler"         element={<Ler />} />
-          <Route path="/sobre"       element={<About />} />
-          <Route path="/faq"         element={<Faq />} />
-          <Route path="/privacidade" element={<Privacy />} />
-          <Route path="/contactar"   element={<Contact />} />
-          <Route path="/styleguide"  element={<Styleguide />} />
-          <Route path="*"            element={<PageStub title="Página não encontrada" />} />
-        </Routes>
-      </div>
-      <Footer />
-    </div>
+      <Routes>
+        <Route path="/"            element={<Home />} />
+        <Route path="/aprender"    element={<Aprender />} />
+        <Route path="/resolver"    element={<Resolver />} />
+        <Route path="/jogos"       element={<Jogos />} />
+        <Route path="/ler"         element={<Ler />} />
+        <Route path="/sobre"       element={<About />} />
+        <Route path="/faq"         element={<Faq />} />
+        <Route path="/privacidade" element={<Privacy />} />
+        <Route path="/contactar"   element={<Contact />} />
+        <Route path="/styleguide"  element={<Styleguide />} />
+        <Route path="*"            element={<PageStub title="Página não encontrada" />} />
+      </Routes>
+    </>
   )
 }
