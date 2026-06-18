@@ -1,18 +1,11 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import { NightModeBackground, NightModeProvider, NightModeToggle, useNightMode } from '../components/core/NightMode';
 import AsideJogos from '../components/core/asidejogos';
 import type { GameAgeFilterId, GameAgeSubject } from '../components/core/asidejogos';
 import MainContentJogos from '../components/Games/MainContent';
 import Footer from '../components/core/Footer';
-
-interface GameType {
-  id: string;
-  title: string;
-  ageGroup: string;
-  gameUrl: string;
-  photoUrl: string;
-}
+import { jogosApi } from '../services/api/jogos.api';
+import type { Jogo } from '../api/contracts/jogos';
 
 export default function Games() {
   return (
@@ -23,10 +16,11 @@ export default function Games() {
 }
 
 function GamesContent() {
-  const navigate = useNavigate();
   const { isNightMode } = useNightMode();
 
   const [activeSubject, setActiveSubject] = useState<GameAgeFilterId>('todos');
+  const [jogos, setJogos] = useState<Jogo[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const ageSubjects: GameAgeSubject[] = [
     { id: 'todos', label: 'Todos os Jogos' },
@@ -35,43 +29,22 @@ function GamesContent() {
     { id: '9-12', label: 'Entre os 9 e 12 anos' },
   ];
 
-  const gamesData: GameType[] = [
-    {
-      id: '1',
-      title: 'Sudoku dos Números',
-      ageGroup: '4-6',
-      gameUrl: 'https://wordwall.net',
-      photoUrl: '/src/assets/sudoku.webp',
-    },
-    {
-      id: '2',
-      title: 'Explorador ABC',
-      ageGroup: '4-6',
-      gameUrl: 'https://wordwall.net',
-      photoUrl: '/src/assets/sudoku.webp',
-    },
-    {
-      id: '3',
-      title: 'Jogo do Enforcado',
-      ageGroup: '6-9',
-      gameUrl: 'https://wordwall.net',
-      photoUrl: '/src/assets/sudoku.webp',
-    },
-    {
-      id: '4',
-      title: 'Campo Minado Lógico',
-      ageGroup: '9-12',
-      gameUrl: 'https://wordwall.net',
-      photoUrl: '/src/assets/sudoku.webp',
-    },
-  ];
+  useEffect(() => {
+    const load = async () => {
+      try {
+        setIsLoading(true);
+        setJogos(await jogosApi.getJogos());
+      } catch (error) {
+        console.error('Erro ao carregar jogos:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    load();
+  }, []);
 
-  const navItems = [
-    { iconImg: '/src/assets/lock.png', label: 'Admin', path: '/admin/' },
-  ];
-
-  const filteredGames = gamesData.filter(
-    (game) => activeSubject === 'todos' || game.ageGroup === activeSubject
+  const filteredGames = jogos.filter(
+    (jogo) => activeSubject === 'todos' || jogo.faixa_etaria === activeSubject,
   );
 
   return (
@@ -84,43 +57,45 @@ function GamesContent() {
         <AsideJogos subjects={ageSubjects} activeSubject={activeSubject} onSelectSubject={setActiveSubject} />
 
         <MainContentJogos title="Jogos Disponíveis">
-          <div className="relative w-full h-full flex items-center justify-center">
+          {isLoading ? (
+            <div className="flex items-center justify-center h-64">
+              <div className="text-center">
+                <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-white mb-4" />
+                <p className="text-white/80 font-semibold">A carregar jogos…</p>
+              </div>
+            </div>
+          ) : filteredGames.length === 0 ? (
+            <div className="flex items-center justify-center h-64">
+              <p className="text-white/90 font-semibold">Nenhum jogo disponível para esta faixa etária.</p>
+            </div>
+          ) : (
             <div className="grid grid-cols-2 gap-x-8 gap-y-6 justify-items-center rounded-2xl relative z-10 pt-2 w-full max-w-2xl mx-auto">
-              {filteredGames.map((game) => (
+              {filteredGames.map((jogo) => (
                 <a
-                  key={game.id}
-                  href={game.gameUrl}
+                  key={jogo.id}
+                  href={jogo.ficheiro_url ?? jogo.url_externa ?? '#'}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="block cursor-pointer flex flex-col items-center transition-none bg-transparent hover:bg-transparent"
+                  className="flex flex-col items-center gap-2 w-full cursor-pointer group"
                 >
-                  <p className="font-['Fredoka',sans-serif] text-sm md:text-base font-black text-center mb-2 leading-tight text-white drop-shadow-[0_2px_3px_rgba(0,0,0,0.5)]">
-                    {game.title}
-                  </p>
-                  <div className="w-full max-w-[300px] aspect-square flex items-center justify-center overflow-visible bg-transparent">
+                  <div className="w-full max-w-[220px] aspect-square rounded-2xl bg-white/20 border border-white/30 backdrop-blur-xs flex items-center justify-center shadow-[0_4px_16px_rgba(31,38,135,0.15)] group-hover:scale-105 transition-transform duration-300">
                     <img
-                      src={game.photoUrl}
-                      alt={game.title}
-                      className="w-full h-full object-cover rounded-2xl duration-300 hover:scale-105"
-                      onError={(e) => {
-                        e.currentTarget.style.display = 'none';
-                        if (e.currentTarget.parentElement) {
-                          e.currentTarget.parentElement.className += " bg-amber-500/90 border border-white/40 flex flex-col items-center justify-center p-2 text-center text-[11px] text-white font-bold rounded-2xl";
-                          e.currentTarget.parentElement.innerHTML = `<span>Erro no arquivo</span>`;
-                        }
-                      }}
+                      src="/src/assets/controller.webp"
+                      alt=""
+                      aria-hidden="true"
+                      className="w-16 h-16 object-contain opacity-80"
                     />
                   </div>
+                  <p className="font-['Fredoka',sans-serif] text-sm md:text-base font-black text-center leading-tight text-white drop-shadow-[0_2px_3px_rgba(0,0,0,0.5)]">
+                    {jogo.titulo}
+                  </p>
+                  {jogo.descricao && (
+                    <p className="text-white/70 text-xs text-center line-clamp-2">{jogo.descricao}</p>
+                  )}
                 </a>
               ))}
             </div>
-
-            {filteredGames.length === 0 && (
-              <div className="text-center py-16 font-semibold text-white/90 bg-white/5 rounded-2xl border border-white/10 backdrop-blur-xs w-full">
-                Nenhum jogo disponível para esta faixa etária.
-              </div>
-            )}
-          </div>
+          )}
         </MainContentJogos>
       </div>
 
