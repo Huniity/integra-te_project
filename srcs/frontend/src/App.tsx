@@ -1,13 +1,13 @@
 import { Routes, Route } from 'react-router-dom'
 import Navbar      from './components/core/Navbar'
-import Home        from './pages/Home'
+import Home        from './pages/Homepage'
 
 import Styleguide  from './pages/Styleguide'
-import Contact     from './pages/Contact'
+import Contact     from './pages/Contactos'
 import Aprender    from './pages/Aprender'
 import Resolver    from './pages/Resolver'
 import Jogos       from './pages/Jogos'
-import Ler         from './pages/Read'
+import Ler         from './pages/Ler'
 import './App.css'
 
 function PageStub({ title }: { title: string }) {
