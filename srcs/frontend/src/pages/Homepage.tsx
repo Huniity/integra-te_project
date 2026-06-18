@@ -1,7 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { NightModeBackground, NightModeProvider, NightModeToggle, useNightMode } from '../components/core/NightMode';
 
-
 interface MenuButton {
   id: string;
   label: string;
@@ -23,7 +22,6 @@ export default function Home () {
 function HomeContent() {
   const { isNightMode } = useNightMode();
   const navigate = useNavigate();
-
 
   const menuButtons: MenuButton[] = [
     {
@@ -64,7 +62,7 @@ function HomeContent() {
       hint: 'Vê vídeos educativos',
       bgImg: './src/assets/blue_dot.webp',
       iconImg: './src/assets/video.webp',
-      path: '/videos'
+      path: '/aprender'         // videos are content blocks inside Aprender
     },
     {
       id: 'descarregar',
@@ -72,15 +70,15 @@ function HomeContent() {
       hint: 'Descarrega recursos',
       bgImg: './src/assets/darkb_dot.webp',
       iconImg: './src/assets/download.webp',
-      path: '/descarregar'
+      path: '/resolver'         // downloadable PDFs live in Resolver/Aprender
     },
     {
-      id: 'contactos',
+      id: 'contactar',
       label: 'Contactos',
       hint: 'Contacta-nos ou envia-nos uma mensagem',
       bgImg: './src/assets/yellow_dot.webp',
       iconImg: './src/assets/user.webp',
-      path: '/contactos'
+      path: '/contactar'        // was /contactos — fixed to match App.tsx
     },
     {
       id: 'sobre',

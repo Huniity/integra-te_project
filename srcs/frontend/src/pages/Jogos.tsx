@@ -35,7 +35,6 @@ function GamesContent() {
     { id: '9-12', label: 'Entre os 9 e 12 anos' },
   ];
 
-
   const gamesData: GameType[] = [
     {
       id: '1',
@@ -68,7 +67,7 @@ function GamesContent() {
   ];
 
   const navItems = [
-    { iconImg: '/src/assets/lock.png', label: 'Admin', path: '/login' },
+    { iconImg: '/src/assets/lock.png', label: 'Admin', path: '/admin/' },
   ];
 
   const filteredGames = gamesData.filter(
@@ -154,7 +153,6 @@ function GamesContent() {
       </div>
 
       <NightModeToggle />
-
 
       <footer className="w-full mt-1 mb-1 flex justify-center relative z-20 shrink-0">
         <div className="w-full sm:w-auto bg-white/95 rounded-3xl sm:rounded-full px-4 sm:px-7 py-2 sm:py-2.5 shadow-lg border-2 border-white flex flex-wrap items-center justify-center gap-3 sm:gap-5 md:gap-7 max-w-4xl mx-auto">

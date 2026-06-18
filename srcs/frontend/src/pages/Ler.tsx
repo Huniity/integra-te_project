@@ -103,7 +103,7 @@ function ReadContent() {
   ];
 
   const navItems = [
-    { iconImg: './src/assets/lock.png', label: 'Admin', path: '/login' },
+    { iconImg: './src/assets/lock.png', label: 'Admin', path: '/admin/' },
   ];
 
   const filteredBooks = booksData.filter(
@@ -148,7 +148,7 @@ function ReadContent() {
         <button
           onClick={() => navigate('/')}
           className="h-18 w-[225px] flex items-center justify-center bg-center bg-no-repeat bg-[length:100%_100%] transform hover:scale-105 transition-transform cursor-pointer"
-          style={{ backgroundImage: 'url(./src/assets/cloud_logo.png)' }}
+          style={{ backgroundImage: 'url(/src/assets/cloud_logo.png)' }}
         >
           <span className="font-['Fredoka',sans-serif] text-xl md:text-[1.5rem] font-black tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-[#005bb7] to-[#3b82f6]">
             INTEGRA-TE
