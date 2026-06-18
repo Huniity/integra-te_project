@@ -1,6 +1,7 @@
 from rest_framework.routers import DefaultRouter
 
 from integrate.views import (
+    DescarregarViewSet,
     DisciplinaViewSet,
     TemaViewSet,
     JogoViewSet,
@@ -18,6 +19,7 @@ router.register(r"jogos", JogoViewSet, basename="jogos")
 router.register(r"livros", LivroViewSet, basename="livros")
 router.register(r"exercicios", ExercicioViewSet, basename="exercicios")
 router.register(r"aulas", AulaViewSet, basename="aulas")
+router.register(r"descarregar", DescarregarViewSet, basename="descarregar")
 router.register(r"videos", VideosViewSet, basename="videos")
 
 urlpatterns = router.urls
