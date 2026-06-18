@@ -62,7 +62,7 @@ function HomeContent() {
       hint: 'Vê vídeos educativos',
       bgImg: './src/assets/blue_dot.webp',
       iconImg: './src/assets/video.webp',
-      path: '/aprender'         // videos are content blocks inside Aprender
+      path: '/videos'         // videos are content blocks inside Aprender
     },
     {
       id: 'descarregar',
@@ -70,7 +70,7 @@ function HomeContent() {
       hint: 'Descarrega recursos',
       bgImg: './src/assets/darkb_dot.webp',
       iconImg: './src/assets/download.webp',
-      path: '/resolver'         // downloadable PDFs live in Resolver/Aprender
+      path: '/descarregar'         // downloadable PDFs live in Resolver/Aprender
     },
     {
       id: 'contactar',
@@ -104,27 +104,6 @@ function HomeContent() {
     >
 
       <NightModeBackground dayImage='./src/assets/content2.png' nightImage='./src/assets/noite.png' />
-
-      {/* <header className="max-w-7xl w-full mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 md:gap-3 mb-2 md:mb-3 relative z-30 shrink-0">
-        <div className="bg-white/95 px-5 md:px-8 py-2 md:py-3 rounded-full shadow-lg border-2 border-white transform hover:scale-[1.02] transition-transform">
-          <span className="font-['Fredoka',sans-serif] text-xl md:text-3xl font-black tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-[#005bb7] to-[#3b82f6]">
-            INTEGRA-TE
-          </span>
-        </div>
-        <div className="flex items-center gap-3 w-full sm:w-auto justify-end">
-          <div className="relative flex-1 sm:w-72">
-            <input
-              type="text"
-              placeholder="O que procuras?"
-              className="w-full bg-[#005bb7]/90 text-white placeholder-white/80 pl-12 pr-4 py-2.5 rounded-full font-bold text-sm outline-none border-2 border-white/20 focus:border-white shadow-md backdrop-blur-sm"
-            />
-            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-white text-base">🔍</span>
-          </div>
-          <div className="lg:hidden shrink-0">
-            <NightModeToggle />
-          </div>
-        </div>
-      </header> */}
       <div className="hidden lg:block absolute top-[14%] right-[14%] z-50">
         <NightModeToggle />
       </div>
