@@ -202,6 +202,31 @@
   }
 }
 
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+@keyframes floatKid {
+  0% {
+    transform: translate(35%, -50%);
+  }
+
+  50% {
+    transform: translate(35%, calc(-50% - 10px));
+  }
+
+  100% {
+    transform: translate(35%, -50%);
+  }
+}
+
+.animate-bounce-slow {
+  animation: floatKid 3s ease-in-out infinite;
+}
 @layer components {
   .button-shadow {
     filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.2));
