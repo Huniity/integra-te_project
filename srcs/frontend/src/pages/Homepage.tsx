@@ -100,7 +100,7 @@ function HomeContent() {
 
   return (
     <main
-      className="relative h-screen w-full bg-cover bg-center bg-no-repeat bg-fixed px-3 md:px-6 py-3 md:py-4 font-['Nunito',sans-serif] overflow-hidden flex flex-col"
+      className="relative h-screen w-full bg-cover bg-center bg-no-repeat bg-fixed px-3 md:px-6 pt-3 md:pt-4 pb-2 font-['Nunito',sans-serif] overflow-hidden flex flex-col"
       style={{ backgroundImage: 'url(./src/assets/content2.png)' }}
     >
 

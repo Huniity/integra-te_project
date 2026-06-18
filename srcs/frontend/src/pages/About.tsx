@@ -3,7 +3,7 @@ import Footer from "../components/core/Footer";
 export default function About() {
   return (
     <main
-      className="relative overflow-hidden font-['Nunito',sans-serif] min-h-screen"
+      className="relative overflow-hidden font-['Nunito',sans-serif] min-h-screen pb-2"
       style={{
         backgroundImage: 'url(./src/assets/jardim.jpeg)',
         backgroundSize: 'cover',
