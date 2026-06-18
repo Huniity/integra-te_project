@@ -79,8 +79,36 @@ function GamesContent() {
     <main className="relative min-h-screen lg:h-screen w-full px-3 md:px-5 py-2 font-['Nunito',sans-serif] overflow-x-hidden overflow-y-auto lg:overflow-y-hidden flex flex-col">
       <NightModeBackground dayImage="/src/assets/content2.png" nightImage="/src/assets/noite.png" />
 
+      {/* Header */}
+      <header className="max-w-[95%] w-full mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 mb-2 relative z-30 shrink-0">
+        <button
+          onClick={() => navigate('/')}
+          className="h-18 w-[225px] flex items-center justify-center bg-center bg-no-repeat bg-[length:100%_100%] transform hover:scale-105 transition-transform cursor-pointer"
+          style={{ backgroundImage: 'url(/src/assets/cloud_logo.png)' }}
+        >
+          <span className="font-['Fredoka',sans-serif] text-xl md:text-[1.5rem] font-black tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-[#005bb7] to-[#3b82f6]">
+            INTEGRA-TE
+          </span>
+        </button>
+
+        <Searchbar />
+
+        <nav className="flex flex-wrap items-center justify-center gap-2">
+          {navItems.map((item) => (
+            <button
+              key={item.path}
+              onClick={() => navigate(item.path)}
+              aria-label={item.label}
+              className="w-9 h-9 bg-white/30 rounded-full flex items-center justify-center shadow-md border-2 border-white/20 hover:scale-110 active:scale-95 transition-transform cursor-pointer backdrop-blur-xs"
+            >
+              <img src={item.iconImg} alt={item.label} className="w-7 h-7 object-contain" />
+            </button>
+          ))}
+        </nav>
+      </header>
+
       {/* Layout Dividido */}
-      <div className="max-w-[95%] w-full mx-auto flex flex-col lg:flex-row gap-3 lg:gap-20 relative z-10 mt-40 mb-20 pb-2 flex-1 min-h-0">
+      <div className="max-w-[95%] w-full mx-auto flex flex-col lg:flex-row gap-3 lg:gap-20 relative z-10 pb-2 flex-1 min-h-0">
 
         <AsideJogos subjects={ageSubjects} activeSubject={activeSubject} onSelectSubject={setActiveSubject} />
 
@@ -126,25 +154,6 @@ function GamesContent() {
       </div>
 
       <NightModeToggle />
-
-
-      <footer className="w-full mt-1 mb-1 flex justify-center relative z-20 shrink-0">
-        <div className="w-full sm:w-auto bg-white/95 rounded-3xl sm:rounded-full px-4 sm:px-7 py-2 sm:py-2.5 shadow-lg border-2 border-white flex flex-wrap items-center justify-center gap-3 sm:gap-5 md:gap-7 max-w-4xl mx-auto">
-          <div className="flex items-center gap-2 sm:border-r border-gray-200 sm:pr-5 last:border-0">
-            <div className="w-8 h-5 bg-blue-800 flex items-center justify-center text-[6px] text-yellow-400 font-bold rounded-sm">EU</div>
-            <span className="text-[10px] font-black text-gray-500 leading-tight uppercase">Cofinanciado pela<br />União Europeia</span>
-          </div>
-          <div className="text-sm font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-green-500">
-            ALGARVE <span className="text-orange-500">2030</span>
-          </div>
-          <div className="text-sm font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-green-600">
-            PORTUGAL <span className="text-amber-500">2030</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="text-[10px] font-black text-gray-500 leading-tight uppercase">Loulé<br />concelho</span>
-          </div>
-        </div>
-      </footer>
     </main>
   );
 }
