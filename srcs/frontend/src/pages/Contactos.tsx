@@ -1,5 +1,6 @@
 import { useState, useId, type FormEvent } from 'react'
 import { Send, CheckCircle2, AlertCircle, Loader2, Mail, MapPin } from 'lucide-react'
+import Footer from '../components/core/Footer'
 
 /* Web3Forms submission
    Public form-to-email relay. The access key is rate-limited and
@@ -311,6 +312,7 @@ export default function Contact() {
       )}
 
       <ContactInfo />
+      <Footer />
     </main>
   )
 }
