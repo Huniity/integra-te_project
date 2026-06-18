@@ -1,25 +1,15 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import { NightModeBackground, NightModeProvider, NightModeToggle, useNightMode } from '../components/core/NightMode';
 import Footer from '../components/core/Footer';
+import { livrosApi } from '../services/api/livros.api';
+import type { Livro } from '../api/contracts/livros';
 
-// Definição estrita de tipos para evitar quebras
 export type AgeFilterId = 'todos' | '4-6' | '6-9' | '9-12';
 
 export interface AgeSubject {
   id: AgeFilterId;
   label: string;
   iconImg: string;
-}
-
-export interface BookType {
-  id: string;
-  title: string;
-  ageGroup: string;
-  abstract: string;
-  externalLink: string;
-  photoUrl: string;
-  iconType: string;
 }
 
 export default function Read() {
@@ -31,13 +21,13 @@ export default function Read() {
 }
 
 function ReadContent() {
-  const navigate = useNavigate();
   const { isNightMode } = useNightMode();
 
   const [activeSubject, setActiveSubject] = useState<AgeFilterId>('todos');
-  const [selectedBook, setSelectedBook] = useState<BookType | null>(null);
+  const [selectedBook, setSelectedBook] = useState<Livro | null>(null);
+  const [livros, setLivros] = useState<Livro[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Mapeamento dos botões com ícones ilustrativos mantendo a estrutura visual limpa
   const ageSubjects: AgeSubject[] = [
     { id: 'todos', label: 'Todos os Livros', iconImg: './src/assets/star.png' },
     { id: '4-6', label: 'Entre os 4 e 6 anos', iconImg: './src/assets/star.png' },
@@ -45,69 +35,22 @@ function ReadContent() {
     { id: '9-12', label: 'Entre os 9 e 12 anos', iconImg: './src/assets/star.png' },
   ];
 
-  const booksData: BookType[] = [
-    {
-      id: '1',
-      title: 'Nível 1',
-      ageGroup: '4-6',
-      abstract: 'Uma aventura mágica adaptada sobre a inclusão social.',
-      externalLink: 'https://www.amazon.com',
-      photoUrl: 'src/assets/blue_book.webp',
-      iconType: '📘'
-    },
-    {
-      id: '2',
-      title: 'Nível 2',
-      ageGroup: '4-6',
-      abstract: 'Desafios lúdicos para treinar a lógica.',
-      externalLink: 'https://www.amazon.com',
-      photoUrl: 'src/assets/blue_book.webp',
-      iconType: '📙'
-    },
-    {
-      id: '3',
-      title: 'Nível 3',
-      ageGroup: '6-9',
-      abstract: 'Contos interativos contra o absentismo.',
-      externalLink: 'https://www.amazon.com',
-      photoUrl: 'src/assets/blue_book.webp',
-      iconType: '📕'
-    },
-    {
-      id: '4',
-      title: 'Nível 4',
-      ageGroup: '6-9',
-      abstract: 'Livro focado na igualdade de oportunidades.',
-      externalLink: 'https://www.amazon.com',
-      photoUrl: 'src/assets/blue_book.webp',
-      iconType: '📗'
-    },
-    {
-      id: '5',
-      title: 'Nível 5',
-      ageGroup: '9-12',
-      abstract: 'Guia prático e divertido sobre o uso seguro da internet.',
-      externalLink: 'https://www.amazon.com',
-      photoUrl: 'src/assets/blue_book.webp',
-      iconType: '📒'
-    },
-    {
-      id: '6',
-      title: 'Nível 6',
-      ageGroup: '9-12',
-      abstract: 'Uma narrativa densa baseada em inteligência emocional.',
-      externalLink: 'https://www.amazon.com',
-      photoUrl: 'src/assets/blue_book.webp',
-      iconType: '📔'
-    }
-  ];
+  useEffect(() => {
+    const load = async () => {
+      try {
+        setIsLoading(true);
+        setLivros(await livrosApi.getLivros());
+      } catch (error) {
+        console.error('Erro ao carregar livros:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    load();
+  }, []);
 
-  const navItems = [
-    { iconImg: './src/assets/lock.png', label: 'Admin', path: '/admin/' },
-  ];
-
-  const filteredBooks = booksData.filter(
-    (book) => activeSubject === 'todos' || book.ageGroup === activeSubject
+  const filteredBooks = livros.filter(
+    (livro) => activeSubject === 'todos' || livro.faixa_etaria === activeSubject,
   );
 
   return (
@@ -149,37 +92,47 @@ function ReadContent() {
         <AsideLer subjects={ageSubjects} activeSubject={activeSubject} onSelectSubject={setActiveSubject} />
 
         <MainContentLer title="Livros Disponíveis">
-          <div className="relative w-full h-full">
-            {/* Fotos do Menino e Menina Removidas Daqui Permanentemente */}
-
-            {/* Grelha de Exibição dos Livros */}
+          {isLoading ? (
+            <div className="flex items-center justify-center h-64">
+              <div className="text-center">
+                <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-white mb-4" />
+                <p className="text-white/80 font-semibold">A carregar livros…</p>
+              </div>
+            </div>
+          ) : filteredBooks.length === 0 ? (
+            <div className="flex items-center justify-center h-64">
+              <p className="text-white/90 font-semibold">Nenhum livro disponível para esta faixa etária.</p>
+            </div>
+          ) : (
             <div className="grid grid-cols-2 min-[640px]:grid-cols-3 gap-3 sm:gap-4 items-stretch rounded-2xl relative z-10">
-              {filteredBooks.map((book) => (
+              {filteredBooks.map((livro) => (
                 <div
-                  key={book.id}
+                  key={livro.id}
                   className="rounded-2xl min-h-[220px] bg-white border border-gray-100 flex flex-col items-center justify-between p-3 group hover:-translate-y-1 transition-transform duration-200 shadow-sm"
                 >
                   <p className="font-['Fredoka',sans-serif] text-base md:text-lg font-semibold text-center mb-1 leading-tight text-blue-600">
-                    {book.title}
+                    {livro.titulo}
                   </p>
 
                   <div className="w-24 h-24 flex items-center justify-center my-1 transform group-hover:scale-105 transition-transform duration-200">
-                    <img
-                      src={book.photoUrl}
-                      alt={book.title}
-                      className="w-full h-full object-contain drop-shadow-md"
-                      onError={(e) => {
-                        e.currentTarget.style.display = 'none';
-                        if (e.currentTarget.parentElement) {
-                          e.currentTarget.parentElement.className += " bg-gray-50 rounded-xl border border-gray-200 shadow-inner";
-                          e.currentTarget.parentElement.innerHTML = `<span class="text-4xl select-none">${book.iconType}</span>`;
-                        }
-                      }}
-                    />
+                    {livro.capa_url ? (
+                      <img
+                        src={livro.capa_url}
+                        alt={livro.titulo}
+                        className="w-full h-full object-contain drop-shadow-md"
+                      />
+                    ) : (
+                      <img
+                        src="./src/assets/blue_book.webp"
+                        alt=""
+                        aria-hidden="true"
+                        className="w-full h-full object-contain drop-shadow-md opacity-80"
+                      />
+                    )}
                   </div>
 
                   <button
-                    onClick={() => setSelectedBook(book)}
+                    onClick={() => setSelectedBook(livro)}
                     className="w-full sm:w-5/6 text-white font-extrabold text-xs py-1.5 rounded-full flex items-center justify-center gap-1.5 cursor-pointer bg-gradient-to-br from-blue-600 to-blue-700 shadow-[0_4px_12px_rgba(37,99,235,0.3)] transition-all duration-200 hover:-translate-y-px hover:shadow-[0_6px_16px_rgba(37,99,235,0.4)] active:translate-y-0"
                   >
                     Ver Livro
@@ -190,13 +143,7 @@ function ReadContent() {
                 </div>
               ))}
             </div>
-
-            {filteredBooks.length === 0 && (
-              <div className="text-center py-16 font-semibold text-white/90 bg-white/5 rounded-2xl border border-white/10 backdrop-blur-xs">
-                Nenhum livro disponível para esta faixa etária.
-              </div>
-            )}
-          </div>
+          )}
         </MainContentLer>
       </div>
 
@@ -279,7 +226,7 @@ function AsideLer({ subjects, activeSubject, onSelectSubject }: AsideLerProps) {
 }
 
 interface BookModalProps {
-  book: BookType;
+  book: Livro;
   onClose: () => void;
 }
 
@@ -305,32 +252,36 @@ function BookModal({ book, onClose }: BookModalProps) {
 
         <div className="w-28 h-36 flex items-center justify-center my-2">
           <img
-            src={book.photoUrl}
-            alt={book.title}
+            src={book.capa_url ?? './src/assets/blue_book.webp'}
+            alt={book.titulo}
             className="w-full h-full object-contain drop-shadow-md"
-            onError={(e) => {
-              e.currentTarget.style.display = 'none';
-              e.currentTarget.parentElement!.innerHTML = `<span class="text-6xl">${book.iconType}</span>`;
-            }}
           />
         </div>
 
-        <h3 className="font-['Fredoka',sans-serif] text-2xl font-black text-center text-blue-600 mb-2 mt-2">
-          {book.title}
+        <h3 className="font-['Fredoka',sans-serif] text-2xl font-black text-center text-blue-600 mb-1 mt-2">
+          {book.titulo}
         </h3>
 
-        <p className="text-sm text-gray-500 font-medium text-center leading-relaxed mb-6 px-4">
-          {book.abstract}
-        </p>
+        {book.autor && (
+          <p className="text-xs text-gray-400 font-semibold text-center mb-2">{book.autor}</p>
+        )}
 
-        <a
-          href={book.externalLink}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="w-full text-center text-white font-extrabold text-sm py-3 rounded-full bg-gradient-to-br from-blue-600 to-blue-700 shadow-md hover:scale-102 active:scale-98 transition-all cursor-pointer"
-        >
-          Começar Leitura 📖
-        </a>
+        {book.resumo && (
+          <p className="text-sm text-gray-500 font-medium text-center leading-relaxed mb-6 px-4">
+            {book.resumo}
+          </p>
+        )}
+
+        {book.ficheiro_url && (
+          <a
+            href={book.ficheiro_url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-full text-center text-white font-extrabold text-sm py-3 rounded-full bg-gradient-to-br from-blue-600 to-blue-700 shadow-md hover:scale-102 active:scale-98 transition-all cursor-pointer"
+          >
+            Começar Leitura
+          </a>
+        )}
       </div>
     </div>
   );
