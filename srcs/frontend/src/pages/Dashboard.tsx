@@ -3,7 +3,7 @@ import bg from '../assets/content2.png'
 import cloudMenu from '../assets/cloud_menu2.png'
 
 import Aside from '../components/core/Aside'
-import MainContent from '../components/resolver/MainContent'
+import MainContent from '../components/core/MainContent'
 import DashboardNav from './dashboard/DashboardNav'
 import { TABS } from './dashboard/TabPanel'
 import OverviewPanel from './dashboard/OverviewPanel'

@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useCallback } from 'react'
 import { NavLink, useNavigate, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import type { Variants } from 'framer-motion'
-import { SearchBar } from './SearchBar'
+import { SearchBar } from './Searchbar'
 import { Search } from 'lucide-react'
 
 /* Types */
