@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react';
 import { NightModeBackground, NightModeProvider, NightModeToggle, useNightMode } from '../components/core/NightMode';
 import Aside from '../components/core/Aside';
 import type { Subject, SubjectId } from '../components/core/Aside';
-import MainContentJogos from '../components/Games/MainContent';
+import MainContent from '../components/core/MainContent';
+import JogoCard from '../components/jogos/JogoCard';
 import Footer from '../components/core/Footer';
 import { jogosApi } from '../services/api/jogos.api';
 import type { Jogo } from '../api/contracts/jogos';
@@ -56,7 +57,7 @@ function GamesContent() {
 
         <Aside subjects={ageSubjects} activeSubject={activeSubject} onSelectSubject={setActiveSubject} title="Idades" />
 
-        <MainContentJogos title="Jogos Disponíveis">
+        <MainContent title="Jogos Disponíveis">
           {isLoading ? (
             <div className="flex items-center justify-center h-64">
               <div className="text-center">
@@ -71,32 +72,11 @@ function GamesContent() {
           ) : (
             <div className="grid grid-cols-2 gap-x-8 gap-y-6 justify-items-center rounded-2xl relative z-10 pt-2 w-full max-w-2xl mx-auto">
               {filteredGames.map((jogo) => (
-                <a
-                  key={jogo.id}
-                  href={jogo.ficheiro_url ?? jogo.url_externa ?? '#'}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex flex-col items-center gap-2 w-full cursor-pointer group"
-                >
-                  <div className="w-full max-w-[220px] aspect-square rounded-2xl bg-white/20 border border-white/30 backdrop-blur-xs flex items-center justify-center shadow-[0_4px_16px_rgba(31,38,135,0.15)] group-hover:scale-105 transition-transform duration-300">
-                    <img
-                      src="/src/assets/controller.webp"
-                      alt=""
-                      aria-hidden="true"
-                      className="w-16 h-16 object-contain opacity-80"
-                    />
-                  </div>
-                  <p className="font-['Fredoka',sans-serif] text-sm md:text-base font-black text-center leading-tight text-white drop-shadow-[0_2px_3px_rgba(0,0,0,0.5)]">
-                    {jogo.titulo}
-                  </p>
-                  {jogo.descricao && (
-                    <p className="text-white/70 text-xs text-center line-clamp-2">{jogo.descricao}</p>
-                  )}
-                </a>
+                <JogoCard key={jogo.id} jogo={jogo} />
               ))}
             </div>
           )}
-        </MainContentJogos>
+        </MainContent>
       </div>
 
       <NightModeToggle />
