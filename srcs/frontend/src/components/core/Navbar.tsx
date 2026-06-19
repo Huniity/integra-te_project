@@ -419,7 +419,7 @@ export function Navbar() {
     <header
       role="banner"
       className="
-        fixed top-5 left-0 right-0 z-50
+        fixed top-15 left-2 right-0 z-50
         bg-transparent
       "
     >
@@ -463,10 +463,10 @@ export function Navbar() {
               <>
                 <button
                     onClick={() => navigate('/')}
-                    className="h-22 w-[250px] flex items-center justify-center bg-center bg-no-repeat bg-[length:100%_100%] hover:scale-105 transition-transform cursor-pointer"
-                    style={{ backgroundImage: 'url(/src/assets/cloud_logo.webp)' }}
+                    className="ml-[-7%] h-22 w-[270px] flex items-center justify-center bg-center bg-no-repeat bg-[length:100%_100%] hover:scale-105 transition-transform cursor-pointer"
+
                     >
-                    <img src={Logo} alt="INTEGRA-TE" className="h-24 mt-3 w-[220px] object-contain" />
+                    <img src={Logo} alt="INTEGRA-TE" className="h-24 mt-3 w-[280px] object-contain rotate-[9deg]" />
                     {/* <span className="font-['Fredoka',sans-serif] text-xl md:text-[1.4rem] font-black tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-[#005bb7] to-[#3b82f6]">
                         INTEGRA-TE
                     </span> */}
