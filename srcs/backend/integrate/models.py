@@ -29,34 +29,18 @@ DIFICULDADE = (
     ("avancado", "Avançado"),
 )
 
-TIPOS_JOGO = (
-    ("online", "Online"),
-    ("imprimivel", "Imprimível"),
-)
-
 
 class Disciplina(models.Model):
-    """
-    Modelo para as disciplinas
-    """
-
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     nome = models.CharField(max_length=200)
     slug = models.SlugField(max_length=500)
     desc = models.CharField(max_length=500)
 
     def __str__(self):
-        """
-        Método para retornar o nome da disciplina
-        """
         return self.nome
 
 
 class Tema(models.Model):
-    """
-    Modelo para os temas
-    """
-
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     disciplina = models.ForeignKey(Disciplina, on_delete=models.CASCADE)
     titulo = models.CharField(max_length=200)
@@ -69,17 +53,10 @@ class Tema(models.Model):
         unique_together = ("disciplina", "slug", "seccao")
 
     def __str__(self):
-        """
-        Método para retornar o título do tema
-        """
         return self.titulo
 
 
 class Conteudo(models.Model):
-    """
-    Modelo para os conteúdos
-    """
-
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     tema = models.ForeignKey(Tema, on_delete=models.CASCADE)
     tipo = models.CharField(max_length=200, choices=TIPO)
@@ -96,17 +73,10 @@ class Conteudo(models.Model):
     criado_em = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        """
-        Método para retornar o título do conteúdo
-        """
         return self.titulo
 
 
 class Jogo(models.Model):
-    """
-    Modelo para os jogos
-    """
-
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     disciplina = models.ForeignKey(
         Disciplina, on_delete=models.CASCADE, null=True, blank=True
@@ -121,17 +91,10 @@ class Jogo(models.Model):
     criado_em = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        """
-        Método para retornar o título do jogo
-        """
         return self.titulo
 
 
 class Livro(models.Model):
-    """
-    Modelo para os livros
-    """
-
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     titulo = models.CharField(max_length=200)
     autor = models.CharField(max_length=200)
@@ -143,14 +106,7 @@ class Livro(models.Model):
     publicado = models.BooleanField(default=False)
     criado_em = models.DateTimeField(auto_now_add=True)
 
-    """
-    falta : temas_list property
-    """
-
     def __str__(self):
-        """
-        Método para retornar o título do livro
-        """
         return self.titulo
 
 
@@ -187,10 +143,6 @@ class Aula(models.Model):
 
 
 class MaterialOriginal(models.Model):
-    """
-    Modelo para os materiais originais
-    """
-
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     titulo = models.CharField(max_length=200)
     autor = models.CharField(max_length=200)
@@ -201,7 +153,4 @@ class MaterialOriginal(models.Model):
     publicado = models.BooleanField(default=False)
 
     def __str__(self):
-        """
-        Método para retornar o título do material original
-        """
         return self.titulo

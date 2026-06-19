@@ -66,16 +66,16 @@ export function NightModeToggle() {
   return (
     <>
       <img
-        src={isNightMode ? './src/assets/moon2.png' : './src/assets/sun.png'}
+        src={isNightMode ? './src/assets/moon2.webp' : './src/assets/sun.webp'}
         alt=""
         aria-hidden="true"
-        className="pointer-events-none fixed top-[14%] left-[15%] z-0 w-28 sm:w-36 md:w-44 lg:w-20 object-contain rotate-24 transition-all duration-700"
+        className="pointer-events-none fixed top-[17%] left-[6%] z-0 w-28 sm:w-36 md:w-44 lg:w-20 object-contain rotate-[355deg] transition-all duration-700"
       />
       <button
         type="button"
         onClick={toggleNightMode}
         aria-label={isNightMode ? 'Ativar Day Mode' : 'Ativar Night Mode'}
-        className="fixed top-[14%] left-[15%] z-10 h-28 w-28 sm:h-36 sm:w-36 md:h-44 md:w-44 lg:h-20 lg:w-20 rounded-full bg-transparent transition-transform duration-500 hover:scale-110"
+        className="fixed top-[17%] left-[6%] z-10 h-28 w-28 sm:h-36 sm:w-36 md:h-44 md:w-44 lg:h-20 lg:w-20 rounded-full bg-transparent transition-transform duration-500 hover:scale-110"
       />
     </>
   );

@@ -10,7 +10,7 @@ export const subjects: Subject[] = [
   {
 	id: 'todos',
 	label: 'Todos',
-	iconImg: './src/assets/book2.png',
+	iconImg: './src/assets/book2.webp',
 	// iconBg: 'bg-slate-100',
 	path: '/aprender',
   },

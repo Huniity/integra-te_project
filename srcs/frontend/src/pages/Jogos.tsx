@@ -1,18 +1,13 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import { NightModeBackground, NightModeProvider, NightModeToggle, useNightMode } from '../components/core/NightMode';
-import Searchbar from '../components/core/SearchBar';
-import AsideJogos from '../components/core/asidejogos';
-import type { GameAgeFilterId, GameAgeSubject } from '../components/core/asidejogos';
-import MainContentJogos from '../components/Games/MainContent';
-
-interface GameType {
-  id: string;
-  title: string;
-  ageGroup: string;
-  gameUrl: string;
-  photoUrl: string;
-}
+import Aside from '../components/core/Aside';
+import type { SubjectId } from '../components/core/Aside';
+import MainContent from '../components/core/MainContent';
+import JogoCard from '../components/jogos/JogoCard';
+import Footer from '../components/core/Footer';
+import { jogosApi } from '../services/api/jogos.api';
+import type { Jogo } from '../api/contracts/jogos';
+import { ageSubjects } from '../utils/jogos';
 
 export default function Games() {
   return (
@@ -23,61 +18,33 @@ export default function Games() {
 }
 
 function GamesContent() {
-  const navigate = useNavigate();
   const { isNightMode } = useNightMode();
 
-  const [activeSubject, setActiveSubject] = useState<GameAgeFilterId>('todos');
+  const [activeSubject, setActiveSubject] = useState<SubjectId | string>('todos');
+  const [jogos, setJogos] = useState<Jogo[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const ageSubjects: GameAgeSubject[] = [
-    { id: 'todos', label: 'Todos os Jogos' },
-    { id: '4-6', label: 'Entre os 4 e 6 anos' },
-    { id: '6-9', label: 'Entre os 6 e 9 anos' },
-    { id: '9-12', label: 'Entre os 9 e 12 anos' },
-  ];
+  useEffect(() => {
+    const load = async () => {
+      try {
+        setIsLoading(true);
+        setJogos(await jogosApi.getJogos());
+      } catch (error) {
+        console.error('Erro ao carregar jogos:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    load();
+  }, []);
 
-
-  const gamesData: GameType[] = [
-    {
-      id: '1',
-      title: 'Sudoku dos Números',
-      ageGroup: '4-6',
-      gameUrl: 'https://wordwall.net',
-      photoUrl: '/src/assets/sudoku.webp',
-    },
-    {
-      id: '2',
-      title: 'Explorador ABC',
-      ageGroup: '4-6',
-      gameUrl: 'https://wordwall.net',
-      photoUrl: '/src/assets/sudoku.webp',
-    },
-    {
-      id: '3',
-      title: 'Jogo do Enforcado',
-      ageGroup: '6-9',
-      gameUrl: 'https://wordwall.net',
-      photoUrl: '/src/assets/sudoku.webp',
-    },
-    {
-      id: '4',
-      title: 'Campo Minado Lógico',
-      ageGroup: '9-12',
-      gameUrl: 'https://wordwall.net',
-      photoUrl: '/src/assets/sudoku.webp',
-    },
-  ];
-
-  const navItems = [
-    { iconImg: '/src/assets/lock.png', label: 'Admin', path: '/login' },
-  ];
-
-  const filteredGames = gamesData.filter(
-    (game) => activeSubject === 'todos' || game.ageGroup === activeSubject
+  const filteredGames = jogos.filter(
+    (jogo) => activeSubject === 'todos' || jogo.faixa_etaria === activeSubject,
   );
 
   return (
     <main className="relative min-h-screen lg:h-screen w-full px-3 md:px-5 py-2 font-['Nunito',sans-serif] overflow-x-hidden overflow-y-auto lg:overflow-y-hidden flex flex-col">
-      <NightModeBackground dayImage="/src/assets/content2.png" nightImage="/src/assets/noite.png" />
+      <NightModeBackground dayImage="/src/assets/content2.webp" nightImage="/src/assets/noite.webp" />
 
       {/* Header */}
       <header className="max-w-[95%] w-full mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 mb-2 relative z-30 shrink-0">
@@ -110,50 +77,32 @@ function GamesContent() {
       {/* Layout Dividido */}
       <div className="max-w-[95%] w-full mx-auto flex flex-col lg:flex-row gap-3 lg:gap-20 relative z-10 pb-2 flex-1 min-h-0">
 
-        <AsideJogos subjects={ageSubjects} activeSubject={activeSubject} onSelectSubject={setActiveSubject} />
+        <Aside subjects={ageSubjects} activeSubject={activeSubject} onSelectSubject={setActiveSubject} title="Idades" />
 
-        <MainContentJogos title="Jogos Disponíveis">
-          <div className="relative w-full h-full flex items-center justify-center">
+        <MainContent title="Jogos Disponíveis">
+          {isLoading ? (
+            <div className="flex items-center justify-center h-64">
+              <div className="text-center">
+                <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-white mb-4" />
+                <p className="text-white/80 font-semibold">A carregar jogos…</p>
+              </div>
+            </div>
+          ) : filteredGames.length === 0 ? (
+            <div className="flex items-center justify-center h-64">
+              <p className="text-white/90 font-semibold">Nenhum jogo disponível para esta faixa etária.</p>
+            </div>
+          ) : (
             <div className="grid grid-cols-2 gap-x-8 gap-y-6 justify-items-center rounded-2xl relative z-10 pt-2 w-full max-w-2xl mx-auto">
-              {filteredGames.map((game) => (
-                <a
-                  key={game.id}
-                  href={game.gameUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block cursor-pointer flex flex-col items-center transition-none bg-transparent hover:bg-transparent"
-                >
-                  <p className="font-['Fredoka',sans-serif] text-sm md:text-base font-black text-center mb-2 leading-tight text-white drop-shadow-[0_2px_3px_rgba(0,0,0,0.5)]">
-                    {game.title}
-                  </p>
-                  <div className="w-full max-w-[300px] aspect-square flex items-center justify-center overflow-visible bg-transparent">
-                    <img
-                      src={game.photoUrl}
-                      alt={game.title}
-                      className="w-full h-full object-cover rounded-2xl duration-300 hover:scale-105"
-                      onError={(e) => {
-                        e.currentTarget.style.display = 'none';
-                        if (e.currentTarget.parentElement) {
-                          e.currentTarget.parentElement.className += " bg-amber-500/90 border border-white/40 flex flex-col items-center justify-center p-2 text-center text-[11px] text-white font-bold rounded-2xl";
-                          e.currentTarget.parentElement.innerHTML = `<span>Erro no arquivo</span>`;
-                        }
-                      }}
-                    />
-                  </div>
-                </a>
+              {filteredGames.map((jogo) => (
+                <JogoCard key={jogo.id} jogo={jogo} />
               ))}
             </div>
-
-            {filteredGames.length === 0 && (
-              <div className="text-center py-16 font-semibold text-white/90 bg-white/5 rounded-2xl border border-white/10 backdrop-blur-xs w-full">
-                Nenhum jogo disponível para esta faixa etária.
-              </div>
-            )}
-          </div>
-        </MainContentJogos>
+          )}
+        </MainContent>
       </div>
 
       <NightModeToggle />
+      <Footer />
     </main>
   );
 }

@@ -6,7 +6,7 @@ import type { Variants } from 'framer-motion'
    Checklist: Logo/wordmark centering . Tagline typography . Responsive height
 
    PLACEHOLDER NOTES (update when assets arrive):
-     logoSrc  -> swap text wordmark for final SVG/PNG via the `logoSrc` prop
+     logoSrc  -> swap text wordmark for final SVG/webp via the `logoSrc` prop
      tagline  -> update DEFAULT_TAGLINE when copy is approved
      subtitle -> update DEFAULT_SUBTITLE when copy is approved
      font     -> `font-display` (Nunito) is placeholder until type spec is settled;
@@ -113,7 +113,7 @@ export function HeroBrand({
 
         {/* Logo / Wordmark
             ─────────────────────────────────────────────────────────
-            PLACEHOLDER: text badge until final logo SVG/PNG is ready.
+            PLACEHOLDER: text badge until final logo SVG/webp is ready.
             To swap in the real asset pass `logoSrc="/path/to/logo.svg"`.
             Sizing classes below (h-16 / sm:h-24 / lg:h-32) are the
             target slot sizes - adjust once the actual artwork is measured. */}

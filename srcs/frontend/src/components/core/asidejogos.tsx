@@ -40,7 +40,7 @@ export default function AsideJogos({ subjects, activeSubject, onSelectSubject }:
       <aside className="hidden lg:flex flex-col justify-center items-center h-full w-64 shrink-0 relative z-20">
         <div className="relative w-full h-[320px] flex items-center justify-center">
           <img
-            src="./src/assets/cloud_menu.png"
+            src="./src/assets/cloud_menu.webp"
             alt=""
             aria-hidden="true"
             className="pointer-events-none absolute left-1/2 top-1/2 h-[135%] w-[150%] -translate-x-1/2 -translate-y-1/2 object-contain opacity-95"

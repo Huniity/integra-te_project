@@ -1,10 +1,11 @@
 import { useState } from 'react';
+import Footer from '../components/core/Footer';
 
 export default function Privacy() {
   const [activeTab, setActiveTab] = useState<'geral' | 'dados' | 'direitos'>('geral');
 
   return (
-    <main className="relative overflow-hidden bg-[#c8e8ff] font-['Nunito',sans-serif] min-h-screen">
+    <main className="relative overflow-hidden bg-[#c8e8ff] font-['Nunito',sans-serif] min-h-screen pb-2">
 
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;900&family=Fredoka+One&display=swap');
@@ -153,6 +154,7 @@ export default function Privacy() {
           Última atualização: Junho de 2026 • Projeto iNTEGRA-TE Loulé
         </div>
       </section>
+      <Footer />
     </main>
   );
 }

@@ -1,117 +1,82 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
-import { NavLink, useNavigate } from 'react-router-dom'
+import { NavLink, useNavigate, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import type { Variants } from 'framer-motion'
 import { SearchBar } from './SearchBar'
-
-import {
-  BookOpen,
-  Dumbbell,
-  Gamepad2,
-  BookMarked,
-  Info,
-  Mail,
-  Search,
-  type LucideIcon,
-} from 'lucide-react'
+import { Search } from 'lucide-react'
+import Logo from '../../assets/integrate.png'
 
 /* Types */
 interface NavItem {
-  id       : string
-  label    : string
-  path     : string
-  Icon     : LucideIcon
-  /* Full Tailwind class strings (must be literal for v4 tree-shaking) */
-  iconActive  : string   /* circular icon pill (active state)  */
-  iconIdle    : string   /* circular icon pill (idle state)    */
-  labelActive : string   /* small label below icon (active)    */
-  labelIdle   : string   /* small label below icon (idle)      */
-  /* Mobile drawer item */
-  drawerActive : string  /* whole drawer row (active)          */
-  drawerIcon   : string  /* icon circle inside drawer (active) */
+  id           : string
+  label        : string
+  path         : string
+  /** Coloured sphere/dot — same assets as Homepage menu buttons */
+  bgImg        : string
+  /** Icon layered on top of the sphere */
+  iconImg      : string
+  /** Tailwind classes for the active drawer row background */
+  drawerActive : string
   ariaLabel    : string
 }
 
 /* Navigation data
-   Matches scope doc: Aprender · Exercícios · Jogos · Ler · Sobre · Contactos */
+   Order and assets mirror Homepage.tsx menuButtons exactly:
+   Resolver -> Jogos -> Aprender -> Ler -> Vídeos -> Descarregar */
 const NAV: NavItem[] = [
   {
-    id    : 'learn',
-    label : 'Aprender',
-    path  : '/learn',
-    Icon  : BookOpen,
-    iconActive   : 'bg-brand-blue-500 text-white shadow-md',
-    iconIdle     : 'bg-brand-blue-100 text-brand-blue-600 hover:bg-brand-blue-200',
-    labelActive  : 'text-brand-blue-600 font-black',
-    labelIdle    : 'text-neutral-400',
-    drawerActive : 'bg-brand-blue-500 text-white',
-    drawerIcon   : 'bg-white/20 text-white',
-    ariaLabel    : 'Aprender — ir para a área de aprendizagem',
-  },
-  {
-    id    : 'practice',
-    label : 'Exercícios',
-    path  : '/practice',
-    Icon  : Dumbbell,
-    iconActive   : 'bg-brand-green-500 text-white shadow-md',
-    iconIdle     : 'bg-brand-green-100 text-brand-green-600 hover:bg-brand-green-200',
-    labelActive  : 'text-brand-green-600 font-black',
-    labelIdle    : 'text-neutral-400',
+    id           : 'resolver',
+    label        : 'Exercícios',
+    path         : '/resolver',
+    bgImg        : '/src/assets/purple_dot.webp',
+    iconImg      : '/src/assets/weight.webp',
     drawerActive : 'bg-brand-green-500 text-white',
-    drawerIcon   : 'bg-white/20 text-white',
     ariaLabel    : 'Exercícios — ir para os exercícios',
   },
   {
-    id    : 'play',
-    label : 'Jogos',
-    path  : '/play',
-    Icon  : Gamepad2,
-    iconActive   : 'bg-brand-green-600 text-white shadow-md',
-    iconIdle     : 'bg-brand-green-100 text-brand-green-700 hover:bg-brand-green-200',
-    labelActive  : 'text-brand-green-700 font-black',
-    labelIdle    : 'text-neutral-400',
+    id           : 'jogos',
+    label        : 'Jogos',
+    path         : '/jogos',
+    bgImg        : '/src/assets/green_dot.webp',
+    iconImg      : '/src/assets/controller.webp',
     drawerActive : 'bg-brand-green-600 text-white',
-    drawerIcon   : 'bg-white/20 text-white',
     ariaLabel    : 'Jogos — ir para os jogos',
   },
   {
-    id    : 'read',
-    label : 'Ler',
-    path  : '/read',
-    Icon  : BookMarked,
-    iconActive   : 'bg-brand-red-500 text-white shadow-md',
-    iconIdle     : 'bg-brand-red-100 text-brand-red-500 hover:bg-brand-red-200',
-    labelActive  : 'text-brand-red-500 font-black',
-    labelIdle    : 'text-neutral-400',
+    id           : 'aprender',
+    label        : 'Aprender',
+    path         : '/aprender',
+    bgImg        : '/src/assets/red_dot.webp',
+    iconImg      : '/src/assets/blackboard.webp',
+    drawerActive : 'bg-brand-blue-500 text-white',
+    ariaLabel    : 'Aprender — ir para a área de aprendizagem',
+  },
+  {
+    id           : 'ler',
+    label        : 'Ler',
+    path         : '/ler',
+    bgImg        : '/src/assets/salmon_dot.webp',
+    iconImg      : '/src/assets/blue_book.webp',
     drawerActive : 'bg-brand-red-500 text-white',
-    drawerIcon   : 'bg-white/20 text-white',
     ariaLabel    : 'Ler — ir para a área de leitura',
   },
   {
-    id    : 'about',
-    label : 'Sobre',
-    path  : '/about',
-    Icon  : Info,
-    iconActive   : 'bg-brand-orange-500 text-white shadow-md',
-    iconIdle     : 'bg-brand-orange-100 text-brand-orange-600 hover:bg-brand-orange-200',
-    labelActive  : 'text-brand-orange-600 font-black',
-    labelIdle    : 'text-neutral-400',
-    drawerActive : 'bg-brand-orange-500 text-white',
-    drawerIcon   : 'bg-white/20 text-white',
-    ariaLabel    : 'Sobre o projeto — saber mais',
+    id           : 'videos',
+    label        : 'Vídeos',
+    path         : '/videos',
+    bgImg        : '/src/assets/blue_dot.webp',
+    iconImg      : '/src/assets/video.webp',
+    drawerActive : 'bg-brand-blue-400 text-white',
+    ariaLabel    : 'Vídeos — ver vídeos educativos',
   },
   {
-    id    : 'contact',
-    label : 'Contactos',
-    path  : '/contact',
-    Icon  : Mail,
-    iconActive   : 'bg-brand-red-600 text-white shadow-md',
-    iconIdle     : 'bg-brand-red-100 text-brand-red-600 hover:bg-brand-red-200',
-    labelActive  : 'text-brand-red-600 font-black',
-    labelIdle    : 'text-neutral-400',
-    drawerActive : 'bg-brand-red-600 text-white',
-    drawerIcon   : 'bg-white/20 text-white',
-    ariaLabel    : 'Contactos — falar connosco',
+    id           : 'descarregar',
+    label        : 'Descarregar',
+    path         : '/descarregar',
+    bgImg        : '/src/assets/darkb_dot.webp',
+    iconImg      : '/src/assets/download.webp',
+    drawerActive : 'bg-brand-blue-600 text-white',
+    ariaLabel    : 'Descarregar — descarregar recursos',
   },
 ]
 
@@ -130,8 +95,8 @@ const BURGER_SPRING = { type: 'spring', stiffness: 420, damping: 32 } as const
  * Burger bar y-offset maths:
  *   bar height = 2px (h-0.5), gap = 6px (gap-1.5)
  *   center-to-center distance between adjacent bars = 2 + 6 = 8px
- *   → top bar moves  +8px to overlay middle bar then rotates +45°
- *   → bottom bar moves −8px to overlay middle bar then rotates −45°
+ *   -> top bar moves  +8px to overlay middle bar then rotates +45°
+ *   -> bottom bar moves −8px to overlay middle bar then rotates −45°
  */
 const BURGER_VARIANTS = {
   top: {
@@ -164,7 +129,6 @@ const DRAWER_ITEM_VARIANTS: Variants = {
 }
 
 /* Sub-components */
-
 /* Animated burger button (mobile-only) */
 
 interface BurgerButtonProps {
@@ -218,51 +182,45 @@ function BurgerButton({ isOpen, onClick, btnRef }: BurgerButtonProps) {
   )
 }
 
-/* Desktop circular icon button */
-
+/* Desktop sphere icon — no label, active state = white ring + scale */
 function DesktopNavIcon({ item }: { item: NavItem }) {
   return (
     <NavLink
       to={item.path}
       aria-label={item.ariaLabel}
-      className="group flex flex-col items-center gap-1 focus-visible:outline-none"
+      className="group focus-visible:outline-none"
     >
       {({ isActive }) => (
-        <>
-          {/* Icon circle */}
-          <motion.span
-            aria-current={isActive ? 'page' : undefined}
-            whileHover={{ scale: 1.12 }}
-            whileTap={{ scale: 0.93 }}
-            transition={{ type: 'spring', stiffness: 380, damping: 22 }}
-            className={`
-              flex h-12 w-12 items-center justify-center rounded-full
-              transition-colors duration-200
-              ${isActive ? item.iconActive : item.iconIdle}
-            `}
-          >
-            <item.Icon size={22} strokeWidth={isActive ? 2.5 : 2} aria-hidden="true" />
-          </motion.span>
-
-          {/* Label (always rendered for layout stability, visually styled) */}
-          <span
-            className={`
-              font-display text-[11px] leading-none
-              transition-colors duration-200
-              ${isActive ? item.labelActive : item.labelIdle}
-            `}
-          >
-            {item.label}
-          </span>
-
-          {/* Active dot underline */}
-          <motion.span
+        <motion.span
+          aria-current={isActive ? 'page' : undefined}
+          animate={{ scale: isActive ? 1.1 : 1 }}
+          whileHover={{ scale: isActive ? 1.18 : 1.18 }}
+          whileTap={{ scale: 0.90 }}
+          transition={{ type: 'spring', stiffness: 550, damping: 20 }}
+          className={`
+            relative flex h-12 w-12 items-center justify-center rounded-full
+            transition-opacity duration-150
+            ${isActive
+              ? 'ring-2 ring-white ring-offset-2 ring-offset-transparent drop-shadow-lg'
+              : 'opacity-90 hover:opacity-100'
+            }
+          `}
+        >
+          {/* Coloured sphere — scale kept at 1.2 so bleed stays within the gap budget */}
+          <img
+            src={item.bgImg}
+            alt=""
             aria-hidden="true"
-            animate={{ scaleX: isActive ? 1 : 0, opacity: isActive ? 1 : 0 }}
-            transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-            className="block h-1 w-1 rounded-full bg-brand-blue-500 origin-center"
+            className="absolute inset-0 w-full h-full object-contain scale-[1.2] pointer-events-none"
           />
-        </>
+          {/* Section icon — scaled up for visibility on larger screens */}
+          <img
+            src={item.iconImg}
+            alt=""
+            aria-hidden="true"
+            className="relative z-10 w-[70%] h-[70%] object-contain drop-shadow-sm pointer-events-none"
+          />
+        </motion.span>
       )}
     </NavLink>
   )
@@ -300,15 +258,21 @@ function MobileNavRow({
               }
             `}
           >
-            {/* Icon circle (large for small fingers) */}
+            {/* Sphere icon (large for small fingers) */}
             <span
               aria-hidden="true"
-              className={`
-                flex h-14 w-14 shrink-0 items-center justify-center rounded-full
-                ${isActive ? item.drawerIcon : item.iconIdle}
-              `}
+              className="relative flex h-14 w-14 shrink-0 items-center justify-center"
             >
-              <item.Icon size={28} strokeWidth={isActive ? 2.5 : 2} />
+              <img
+                src={item.bgImg}
+                alt=""
+                className="absolute inset-0 w-full h-full object-contain scale-[1.2] pointer-events-none"
+              />
+              <img
+                src={item.iconImg}
+                alt=""
+                className="relative z-10 w-[70%] h-[70%] object-contain drop-shadow-sm pointer-events-none"
+              />
             </span>
 
             {/* Label (extra-large for low-literacy users) */}
@@ -329,11 +293,12 @@ function MobileNavRow({
 
 /* Mobile drawer panel */
 interface MobileDrawerProps {
-  isOpen          : boolean
-  onClose         : () => void
+  isOpen  : boolean
+  onClose : () => void
+  nav     : NavItem[]
 }
 
-function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
+function MobileDrawer({ isOpen, onClose, nav }: MobileDrawerProps) {
   const navigate = useNavigate()
   const listRef = useRef<HTMLUListElement>(null)
 
@@ -388,12 +353,12 @@ function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
             "
           >
             <ul ref={listRef} role="list" className="flex flex-col">
-              {NAV.map((item, i) => (
+              {nav.map((item, i) => (
                 <MobileNavRow
                   key={item.id}
                   item={item}
                   onClose={onClose}
-                  isLast={i === NAV.length - 1}
+                  isLast={i === nav.length - 1}
                 />
               ))}
             </ul>
@@ -402,7 +367,7 @@ function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
             <motion.div variants={DRAWER_ITEM_VARIANTS} className="mt-2 pt-2 border-t border-neutral-100">
               <button
                 type="button"
-                onClick={() => { navigate('/search'); onClose() }}
+                onClick={() => { navigate('/pesquisar'); onClose() }}
                 aria-label="Pesquisar — o que procuras?"
                 className="
                   flex w-full items-center gap-4 rounded-2xl px-4 py-3.5
@@ -432,6 +397,10 @@ export function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false)
   const burgerRef    = useRef<HTMLButtonElement>(null)
   const navigate     = useNavigate()
+  const { pathname } = useLocation()
+
+  /* Hide the button for the page the user is already on */
+  const visibleNav = NAV.filter(item => item.path !== pathname)
 
   const closeMenu = useCallback(() => setMenuOpen(false), [])
 
@@ -450,7 +419,7 @@ export function Navbar() {
     <header
       role="banner"
       className="
-        fixed top-0 left-0 right-0 z-50
+        fixed top-15 left-2 right-0 z-50
         bg-transparent
       "
     >
@@ -468,23 +437,21 @@ export function Navbar() {
       </a>
 
       <div className="
-        relative mx-auto flex h-[var(--nav-h)] max-w-6xl
-        items-center justify-between gap-4 px-4 sm:px-6
+        relative w-full flex h-[var(--nav-h)]
+        items-center px-4 sm:px-6
       ">
 
-        {/* Logo */}
+        {/* Logo — flush to the left viewport edge */}
         <NavLink
           to="/"
           aria-label="INTEGRA-TE — ir para a página inicial"
-          className="shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-blue-400 focus-visible:ring-offset-2 rounded-xl"
+          className="shrink-0 no-underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-blue-400 focus-visible:ring-offset-2 rounded-xl"
         >
           <motion.div
             whileHover={{ scale: 1.04 }}
             whileTap={{ scale: 0.97 }}
             transition={{ type: 'spring', stiffness: 400, damping: 24 }}
-            className="
-              flex items-center gap-1.5 px-3.5 py-2
-            "
+            className="flex items-center"
           >
             {LOGO_SRC ? (
               <img
@@ -496,50 +463,55 @@ export function Navbar() {
               <>
                 <button
                     onClick={() => navigate('/')}
-                    className="h-18 w-[225px] flex items-center justify-center bg-center bg-no-repeat bg-[length:100%_100%] transform hover:scale-105 transition-transform cursor-pointer"
-                    style={{ backgroundImage: 'url(./src/assets/cloud_logo.png)' }}
+                    className="ml-[-7%] h-22 w-[270px] flex items-center justify-center bg-center bg-no-repeat bg-[length:100%_100%] hover:scale-105 transition-transform cursor-pointer"
+
                     >
-                    <span className="font-['Fredoka',sans-serif] text-xl md:text-[1.5rem] font-black tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-[#005bb7] to-[#3b82f6]">
+                    <img src={Logo} alt="INTEGRA-TE" className="h-24 mt-3 w-[280px] object-contain rotate-[9deg]" />
+                    {/* <span className="font-['Fredoka',sans-serif] text-xl md:text-[1.4rem] font-black tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-[#005bb7] to-[#3b82f6]">
                         INTEGRA-TE
-                    </span>
+                    </span> */}
                 </button>
               </>
             )}
           </motion.div>
         </NavLink>
 
-        {/* Desktop navigation */}
-        <nav
-          role="navigation"
-          aria-label="Navegação principal"
-          className="hidden md:flex items-end gap-4 lg:gap-5"
-        >
-          {NAV.map((item) => (
-            <DesktopNavIcon key={item.id} item={item} />
-          ))}
-        </nav>
+        {/* Desktop navigation — hidden on homepage (grid serves as nav there) */}
+        {pathname !== '/' && (
+          <nav
+            role="navigation"
+            aria-label="Navegação principal"
+            className="hidden md:flex items-center gap-6 lg:gap-7 absolute left-1/2 -translate-x-1/2"
+          >
+            {visibleNav.map((item) => (
+              <DesktopNavIcon key={item.id} item={item} />
+            ))}
+          </nav>
+        )}
 
-        {/* Right controls */}
-        <div className="flex items-center gap-2 shrink-0">
+        {/* Right controls — flush to the right viewport edge */}
+        <div className="ml-auto flex items-center gap-2 shrink-0">
 
           {/* SearchBar + Admin lock — hidden on mobile (burger handles nav there) */}
           <div className="hidden md:flex items-center gap-2">
-            <SearchBar className="relative flex w-[220px] items-center rounded-full border border-white/40 bg-white/15 backdrop-blur-xs shadow-[0_14px_36px_rgba(31,38,135,0.22)] ring-1 ring-white/20" />
-            <button
-              onClick={() => navigate('/login')}
-              aria-label="Admin"
-              className="w-9 h-9 bg-white/30 rounded-full flex items-center justify-center shadow-md border-2 border-white/20 hover:scale-110 active:scale-95 transition-transform cursor-pointer backdrop-blur-xs"
+            <SearchBar className="relative flex w-[220px] items-center rounded-full border border-white/40 bg-white/15 backdrop-blur-xs shadow-[0_14px_36px_rgba(31,38,135,0.22)] ring-1 ring-white/20"/>
+            <a
+              href="/admin/"
+              aria-label="Django Admin"
+              className="w-10 h-10 bg-white/15 rounded-full flex items-center justify-center shadow-[0_14px_36px_rgba(31,38,135,0.22)] border border-white/40 ring-1 ring-white/20 hover:scale-110 active:scale-95 transition-transform cursor-pointer backdrop-blur-xs"
             >
-              <img src="/src/assets/lock.png" alt="Admin" className="w-5 h-5 object-contain" />
-            </button>
+              <img src="/src/assets/lock.webp" alt="Admin" className="w-5 h-5 object-contain" />
+            </a>
           </div>
 
-          {/* Burger - mobile only */}
-          <BurgerButton
-            isOpen={menuOpen}
-            onClick={() => setMenuOpen((v) => !v)}
-            btnRef={burgerRef}
-          />
+          {/* Burger — mobile only, not needed on homepage (grid is the nav) */}
+          {pathname !== '/' && (
+            <BurgerButton
+              isOpen={menuOpen}
+              onClick={() => setMenuOpen((v) => !v)}
+              btnRef={burgerRef}
+            />
+          )}
         </div>
       </div>
 
@@ -547,6 +519,7 @@ export function Navbar() {
       <MobileDrawer
         isOpen={menuOpen}
         onClose={closeMenu}
+        nav={visibleNav}
       />
     </header>
   )

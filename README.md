@@ -108,7 +108,7 @@ make start-dev
 | Command | Description |
 |---|---|
 | `make purge` | Stop containers and delete all volumes (data lost) |
-| `make convert` | Convert PNG/JPG assets to WebP |
+| `make convert` | Convert webp/webp assets to WebP |
 
 > Run `make help` to see all available commands in the terminal.
 

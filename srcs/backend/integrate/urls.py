@@ -22,4 +22,5 @@ router.register(r"aulas", AulaViewSet, basename="aulas")
 router.register(r"descarregar", DescarregarViewSet, basename="descarregar")
 router.register(r"videos", VideosViewSet, basename="videos")
 
+
 urlpatterns = router.urls

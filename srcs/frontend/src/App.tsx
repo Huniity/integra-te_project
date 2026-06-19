@@ -12,6 +12,7 @@ import Descarregar from './pages/Descarregar'
 import Videos    from './pages/Videos'
 import Ler       from './pages/Ler'
 import Styleguide from './pages/Styleguide'
+import Dashboard from './pages/Dashboard'
 import './App.css'
 
 function PageStub({ title }: { title: string }) {
@@ -32,14 +33,15 @@ export default function App() {
         <Route path="/aprender"    element={<Aprender />} />
         <Route path="/resolver"    element={<Resolver />} />
         <Route path="/jogos"       element={<Jogos />} />
-        <Route path="/ler"          element={<Ler />} />
-        <Route path="/descarregar"  element={<Descarregar />} />
+        <Route path="/ler"         element={<Ler />} />
+        <Route path="/descarregar" element={<Descarregar />} />
         <Route path="/videos"      element={<Videos />} />
         <Route path="/sobre"       element={<About />} />
         <Route path="/faq"         element={<Faq />} />
         <Route path="/privacidade" element={<Privacy />} />
         <Route path="/contactar"   element={<Contact />} />
         <Route path="/styleguide"  element={<Styleguide />} />
+        <Route path="/dashboard"   element={<Dashboard />} />
         <Route path="*"            element={<PageStub title="Página não encontrada" />} />
       </Routes>
     </>

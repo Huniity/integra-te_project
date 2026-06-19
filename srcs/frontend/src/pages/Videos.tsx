@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Play } from 'lucide-react';
 import { NightModeBackground, NightModeProvider, NightModeToggle, useNightMode } from '../components/core/NightMode';
-import Searchbar from '../components/core/SearchBar';
 import Aside from '../components/core/Aside';
 import type { SubjectId } from '../components/core/Aside';
+import MainContent from '../components/core/MainContent';
 import { subjects } from '../utils/videos';
 import { videosApi } from '../services/api/videos.api';
 import type { Video } from '../api/contracts/videos';
+import Footer from '../components/core/Footer';
 
 export default function Videos() {
   return (
@@ -18,17 +18,12 @@ export default function Videos() {
 }
 
 function VideosContent() {
-  const navigate = useNavigate();
   const { isNightMode } = useNightMode();
 
-  const [activeSubject, setActiveSubject] = useState<SubjectId>('todos');
+  const [activeSubject, setActiveSubject] = useState<SubjectId | string>('todos');
   const [videos, setVideos] = useState<Video[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [selected, setSelected] = useState<Video | null>(null);
-
-  const navItems = [
-    { iconImg: './src/assets/lock.png', label: 'Admin', path: '/login' },
-  ];
 
   const filtered = videos.filter(
     (v) => activeSubject === 'todos' || v.disciplina_slug === activeSubject,
@@ -53,81 +48,52 @@ function VideosContent() {
 
       {/* Decorative elements */}
       <img src="./src/assets/bush.webp" alt="" aria-hidden="true"
-        className="pointer-events-none fixed bottom-[-9%] left-[-5%] z-2 w-28 sm:w-36 md:w-44 lg:w-52 object-contain" />
+        className={`pointer-events-none fixed bottom-[-1%] left-[-2%] z-2 w-28 sm:w-36 md:w-44 lg:w-62 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-0' : 'opacity-100'}`} />
+      <img src="./src/assets/bush_night.webp" alt="" aria-hidden="true"
+        className={`pointer-events-none fixed bottom-[-1%] left-[-3%] z-2 w-28 sm:w-36 md:w-44 lg:w-70 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-100' : 'opacity-0'}`} />
       <img src="./src/assets/bush2.webp" alt="" aria-hidden="true"
-        className="pointer-events-none fixed bottom-[-9%] right-[-4%] z-2 w-28 sm:w-36 md:w-44 lg:w-52 object-contain" />
+        className={`pointer-events-none fixed bottom-[-1%] right-[-2%] z-2 w-28 sm:w-36 md:w-44 lg:w-62 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-0' : 'opacity-100'}`} />
+      <img src="./src/assets/bush2_night.webp" alt="" aria-hidden="true"
+        className={`pointer-events-none fixed bottom-[-1%] right-[-2%] z-2 w-28 sm:w-36 md:w-44 lg:w-62 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-100' : 'opacity-0'}`} />
       <img src="./src/assets/books.webp" alt="" aria-hidden="true"
-        className="pointer-events-none fixed bottom-[0%] left-[0%] z-1 w-28 sm:w-36 md:w-44 lg:w-36 object-contain" />
-      <img src="./src/assets/rainbow.png" alt="" aria-hidden="true"
+        className={`pointer-events-none fixed bottom-[2%] left-[3%] z-1 w-28 sm:w-36 md:w-44 lg:w-46 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-0' : 'opacity-100'}`} />
+      <img src="./src/assets/books_night.webp" alt="" aria-hidden="true"
+        className={`pointer-events-none fixed bottom-[2%] left-[3%] z-1 w-28 sm:w-36 md:w-44 lg:w-46 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-100' : 'opacity-0'}`} />
+      <img src="./src/assets/rainbow.webp" alt="" aria-hidden="true"
         className={`pointer-events-none fixed top-[14%] left-[-5%] z-1 w-28 sm:w-36 md:w-44 lg:w-100 object-contain rotate-24 transition-opacity duration-700 ${isNightMode ? 'opacity-0' : 'opacity-100'}`} />
-      <NightModeBackground dayImage="./src/assets/content2.png" nightImage="./src/assets/noite.png" />
+      <NightModeBackground dayImage="./src/assets/content2.webp" nightImage="./src/assets/noite.webp" />
       {/* Body: Sidebar + Main */}
       <div className="max-w-[95%] w-full mx-auto flex flex-col lg:flex-row gap-3 lg:gap-20 relative z-10 mt-40 mb-20 pb-2 flex-1 min-h-0">
 
         <Aside subjects={subjects} activeSubject={activeSubject} onSelectSubject={setActiveSubject} />
 
-        {/* Main content panel */}
-        <div className="flex-1 min-h-0 bg-blue-600/30 backdrop-blur-xs rounded-3xl shadow-[0_18px_45px_rgba(31,38,135,0.28)] border border-white/30 ring-1 ring-white/20 overflow-hidden flex flex-col">
-
-          {/* Panel header */}
-          <div className="relative px-5 pt-3 pb-2 flex items-center shrink-0">
-            <img src="./src/assets/stars.png" alt="" aria-hidden="true"
-              className="pointer-events-none absolute inset-x-[-50] top-1/2 h-[100%] w-2/3 -translate-y-2/3 mx-auto object-contain" />
-            <h1
-              className="relative z-10 font-['Fredoka',sans-serif] text-3xl font-black text-white"
-              style={{ textShadow: '-1px 0 #2563eb, 0 1px #2563eb, 1px 0 #2563eb, 0 -1px #2563eb, 1px 1px #2563eb, -1px -1px #2563eb, 1px -1px #2563eb, -1px 1px #2563eb' }}
-            >
-              Vídeos!
-            </h1>
-          </div>
-
-          {/* Content */}
-          <div className="flex-1 min-h-0 overflow-y-auto px-4 py-3">
-            {isLoading ? (
-              <div className="flex items-center justify-center h-64">
-                <div className="text-center">
-                  <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-white mb-4" />
-                  <p className="text-white/80 font-semibold">A carregar vídeos…</p>
-                </div>
+        <MainContent title="Vídeos!">
+          {isLoading ? (
+            <div className="flex items-center justify-center h-64">
+              <div className="text-center">
+                <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-white mb-4" />
+                <p className="text-white/80 font-semibold">A carregar vídeos…</p>
               </div>
-            ) : filtered.length === 0 ? (
-              <div className="flex items-center justify-center h-64">
-                <p className="text-white/60 text-lg font-semibold">Nenhum vídeo disponível</p>
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3 sm:gap-4">
-                {filtered.map((video) => (
-                  <VideoCard key={video.id} video={video} onPlay={setSelected} />
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
+            </div>
+          ) : filtered.length === 0 ? (
+            <div className="flex items-center justify-center h-64">
+              <p className="text-white/60 text-lg font-semibold">Nenhum vídeo disponível</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3 sm:gap-4">
+              {filtered.map((video) => (
+                <VideoCard key={video.id} video={video} onPlay={setSelected} />
+              ))}
+            </div>
+          )}
+        </MainContent>
       </div>
 
       {/* Video modal */}
       {selected && <VideoModal video={selected} onClose={() => setSelected(null)} />}
 
       <NightModeToggle />
-
-      {/* Footer */}
-      <footer className="w-full mt-1 mb-1 flex justify-center relative z-20 shrink-0">
-        <div className="w-full sm:w-auto bg-white/95 rounded-3xl sm:rounded-full px-4 sm:px-7 py-2 sm:py-2.5 shadow-lg border-2 border-white flex flex-wrap items-center justify-center gap-3 sm:gap-5 md:gap-7 max-w-4xl mx-auto">
-          <div className="flex items-center gap-2 sm:border-r border-gray-200 sm:pr-5 last:border-0">
-            <div className="w-8 h-5 bg-blue-800 flex items-center justify-center text-[6px] text-yellow-400 font-bold rounded-sm">EU</div>
-            <span className="text-[10px] font-black text-gray-500 leading-tight uppercase">Cofinanciado pela<br />União Europeia</span>
-          </div>
-          <div className="text-sm font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-green-500">
-            ALGARVE <span className="text-orange-500">2030</span>
-          </div>
-          <div className="text-sm font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-green-600">
-            PORTUGAL <span className="text-amber-500">2030</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="text-[10px] font-black text-gray-500 leading-tight uppercase">Loulé<br />concelho</span>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </main>
   );
 }

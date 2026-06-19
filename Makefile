@@ -228,8 +228,11 @@ populate-dev: ## Populate database with sample data in development environment
 #populate-prod: ## Populate database with main pages data in production environment
 #	docker compose -f compose.prod.yaml exec backend python /scripts/seed_db_prod.py
 
-convert: ## Convert PNG/JPG assets to WebP (runs from srcs/frontend)
-	cd srcs/frontend && node -e "const sharp = require('sharp'); const fs = require('fs'); const path = require('path'); const dir = 'src/assets'; const files = fs.readdirSync(dir).filter(f => f.endsWith('.png') || f.endsWith('.jpg') || f.endsWith('.jpeg')); Promise.all(files.map(f => { const input = path.join(dir, f); const output = path.join(dir, f.replace(/\.(png|jpg|jpeg)$$/,'.webp')); return sharp(input).webp({ quality: 80 }).toFile(output).then(() => console.log(f, '->', output)); })).then(() => console.log('Done!'));"
+convert: ## Convert webp/webp assets to WebP (runs from srcs/frontend)
+	cd srcs/frontend && node -e "const sharp = require('sharp'); const fs = require('fs'); const path = require('path'); const dir = 'src/assets'; const files = fs.readdirSync(dir).filter(f => f.endsWith('.webp') || f.endsWith('.webp') || f.endsWith('.jpeg')); Promise.all(files.map(f => { const input = path.join(dir, f); const output = path.join(dir, f.replace(/\.(webp|webp|jpeg)$$/,'.webp')); return sharp(input).webp({ quality: 80 }).toFile(output).then(() => console.log(f, '->', output)); })).then(() => console.log('Done!'));"
+
+convert-clean: ## Convert webp/webp assets to WebP and delete originals (runs from srcs/frontend)
+	cd srcs/frontend && node -e "const sharp = require('sharp'), fs = require('fs').promises, path = require('path'), dir = 'src/assets'; fs.readdir(dir).then(files => { const targets = files.filter(f => /\.(webp|jpe?g)$/i.test(f)); return Promise.all(targets.map(f => { const input = path.join(dir, f), output = path.join(dir, f.replace(/\.(webp|jpe?g)$/i, '.webp')); return sharp(input).webp({ quality: 80 }).toFile(output).then(() => fs.unlink(input)).then(() => console.log(`Converted & Deleted: ${f} -> ${path.basename(output)}`)); })); }).then(() => console.log('All assets successfully converted to WebP and originals deleted! 🎉')).catch(console.error);"
 
 embed:
 	docker compose -f compose.dev.yaml exec backend python manage.py embed_object
