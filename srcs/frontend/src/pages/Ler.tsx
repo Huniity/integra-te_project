@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
 import { NightModeBackground, NightModeProvider, NightModeToggle, useNightMode } from '../components/core/NightMode';
 import Aside from '../components/core/Aside';
-import type { Subject, SubjectId } from '../components/core/Aside';
+import type { SubjectId } from '../components/core/Aside';
 import MainContent from '../components/core/MainContent';
 import Footer from '../components/core/Footer';
 import { livrosApi } from '../services/api/livros.api';
 import type { Livro } from '../api/contracts/livros';
+import { ageSubjects } from '../utils/ler';
 
 export default function Read() {
   return (
@@ -22,13 +23,6 @@ function ReadContent() {
   const [selectedBook, setSelectedBook] = useState<Livro | null>(null);
   const [livros, setLivros] = useState<Livro[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-
-  const ageSubjects: Subject[] = [
-    { id: 'todos', label: 'Todos os Livros',      iconImg: './src/assets/blue_book.webp' },
-    { id: '4-6',  label: '4 à 6 anos',  iconImg: './src/assets/orange_book.webp' },
-    { id: '6-9',  label: '6 à 9 anos',  iconImg: './src/assets/green_book.webp' },
-    { id: '9-12', label: '9 à 12 anos', iconImg: './src/assets/pink_book.webp' },
-  ];
 
   useEffect(() => {
     const load = async () => {

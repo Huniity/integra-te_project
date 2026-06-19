@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react';
 import { NightModeBackground, NightModeProvider, NightModeToggle, useNightMode } from '../components/core/NightMode';
 import Aside from '../components/core/Aside';
-import type { Subject, SubjectId } from '../components/core/Aside';
+import type { SubjectId } from '../components/core/Aside';
 import MainContent from '../components/core/MainContent';
 import JogoCard from '../components/jogos/JogoCard';
 import Footer from '../components/core/Footer';
 import { jogosApi } from '../services/api/jogos.api';
 import type { Jogo } from '../api/contracts/jogos';
+import { ageSubjects } from '../utils/jogos';
 
 export default function Games() {
   return (
@@ -22,13 +23,6 @@ function GamesContent() {
   const [activeSubject, setActiveSubject] = useState<SubjectId | string>('todos');
   const [jogos, setJogos] = useState<Jogo[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-
-  const ageSubjects: Subject[] = [
-    { id: 'todos',  label: 'Todos os Jogos',     iconImg: './src/assets/controller.webp' },
-    { id: '4-6',   label: '4 à 6 anos', iconImg: './src/assets/puzzle.webp' },
-    { id: '6-9',   label: '6 à 9 anos', iconImg: './src/assets/abc.webp' },
-    { id: '9-12',  label: '9 à 12 anos', iconImg: './src/assets/sudoku.webp' },
-  ];
 
   useEffect(() => {
     const load = async () => {
