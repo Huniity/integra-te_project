@@ -32,6 +32,19 @@ from integrate.models import (  # noqa
 )
 
 
+django.setup()  # noqa
+
+
+from integrate.models import (  # noqa
+    Disciplina,  # noqa
+    Tema,  # noqa
+    Conteudo,  # noqa
+    Jogo,  # noqa
+    Livro,  # noqa
+    MaterialOriginal,  # noqa
+)
+
+
 def clear_database():
     print("Deleting old sample events...")
 

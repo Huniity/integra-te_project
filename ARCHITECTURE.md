@@ -113,7 +113,7 @@ graph TD
     subgraph DJANGO ["🐍 Django 5 Application"]
         DRF["Django REST Framework<br>/api/v1/<br>+ OpenAPI (Swagger)"]
         ADMIN["Django Admin (CMS)<br>/admin/<br>non-technical login"]
-        ORM["Django ORM — Models<br>Discipline · Topic · Resource · Game · Book · ContactMessage"]
+        ORM["Django ORM — Models<br>Discipline · Topic · Resource · Game · Book"]
     end
 
     subgraph STORAGE ["📦 Storage Layer"]
@@ -156,7 +156,6 @@ flowchart TD
       EP_LIVRO["GET /livros/\nGET /livros/:id/"]
       EP_MAT["GET /materiais/\nGET /materiais/:id/"]
       EP_SEARCH["GET /pesquisa/"]
-      EP_CONTACT["POST /contacto/"]
       EP_ADMIN_DISC["GET · POST /disciplinas/\nPATCH · DELETE /disciplinas/:slug/"]
       EP_ADMIN_TEMA["GET · POST /temas/\nPATCH · DELETE /temas/:slug/"]
       EP_ADMIN_CONT["GET · POST /conteudos/\nPATCH · DELETE /conteudos/:id/"]
@@ -186,7 +185,7 @@ flowchart TD
   end
 
   subgraph EXTERNAL["External Services"]
-    EMAIL["Email API — Resend / SendGrid"]
+    WEB3FORMS["Web3Forms API — api.web3forms.com\nForm-to-email relay · GDPR sub-processor\nBrowser POSTs directly · access_key auth"]
     YOUTUBE["YouTube — youtube-nocookie.com"]
   end
 
@@ -198,8 +197,9 @@ flowchart TD
 
   UI --> VOICE
   UI --> COOKIE
-  UI -->|"GET only — public read"| API
+  UI -->|"GET only — Django not involved in contact"| API
   UI -->|"iframe embed"| YOUTUBE
+  UI -->|"POST /contact · JSON + access_key\nHTTPS · direct browser request"| WEB3FORMS
 
   EP_DISC --> M_DISC
   EP_TEMA --> M_TEMA
@@ -212,8 +212,6 @@ flowchart TD
   EP_SEARCH --> M_JOGO
   EP_SEARCH --> M_LIVRO
   EP_SEARCH --> M_MAT
-  EP_CONTACT -->|"POST — trigger email"| EMAIL
-
   EP_ADMIN_DISC --> M_DISC
   EP_ADMIN_TEMA --> M_TEMA
   EP_ADMIN_CONT --> M_CONT

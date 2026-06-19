@@ -27,22 +27,21 @@ export default function MainContent({
   onSelectLevel,
   children,
 }: MainContentProps) {
-  const showFilters = onSelectAll !== undefined && onSelectLevel !== undefined;
   const [isLevelMenuOpen, setIsLevelMenuOpen] = useState(false);
   const levelMenuRef = useRef<HTMLDivElement | null>(null);
+  const showFilters = !!onSelectAll && !!onSelectLevel;
 
   useEffect(() => {
+    if (!showFilters) return;
     const handleClickOutside = (event: MouseEvent) => {
       if (!levelMenuRef.current) return;
-
       if (!levelMenuRef.current.contains(event.target as Node)) {
         setIsLevelMenuOpen(false);
       }
     };
-
     window.addEventListener('mousedown', handleClickOutside);
     return () => window.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+  }, [showFilters]);
 
   const selectedLevelLabel =
     levelOptions.find((option) => option.value === selectedLevel)?.label ?? 'Todos';
@@ -70,7 +69,7 @@ export default function MainContent({
           </h1>
         </div>
 
-        {/* Filter buttons */}
+        {/* Filter buttons — only rendered when handlers are provided */}
         {showFilters && (
           <div className="relative z-10 self-center sm:self-auto flex flex-wrap justify-center items-center rounded-2xl sm:rounded-full p-1 gap-12">
             <button
@@ -136,7 +135,7 @@ export default function MainContent({
       </div>
 
       {/* Content */}
-      <div className="flex-1 min-h-0 px-4 py-3 flex flex-col">
+      <div className="flex-1 min-h-0 overflow-y-auto px-4 py-3">
         {children}
       </div>
     </div>

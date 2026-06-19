@@ -1,7 +1,8 @@
-from rest_framework.viewsets import ReadOnlyModelViewSet
 from rest_framework.permissions import AllowAny
+from rest_framework.viewsets import ReadOnlyModelViewSet
 
 from .models import (
+    Conteudo,
     Disciplina,
     Tema,
     Jogo,
@@ -11,6 +12,7 @@ from .models import (
 )
 
 from .serializers import (
+    ConteudoItemSerializer,
     DisciplinaSerializer,
     TemaSerializer,
     JogosSerializers,
@@ -55,4 +57,20 @@ class ExercicioViewSet(ReadOnlyModelViewSet):
 class AulaViewSet(ReadOnlyModelViewSet):
     queryset = Aula.objects.filter(publicado=True)
     serializer_class = AulaSerializer
+    permission_classes = [AllowAny]
+
+
+class DescarregarViewSet(ReadOnlyModelViewSet):
+    queryset = Conteudo.objects.filter(
+        tipo="pdf", descarregavel=True, publicado=True
+    ).select_related("tema", "tema__disciplina")
+    serializer_class = ConteudoItemSerializer
+    permission_classes = [AllowAny]
+
+
+class VideosViewSet(ReadOnlyModelViewSet):
+    queryset = Conteudo.objects.filter(tipo="video", publicado=True).select_related(
+        "tema", "tema__disciplina"
+    )
+    serializer_class = ConteudoItemSerializer
     permission_classes = [AllowAny]

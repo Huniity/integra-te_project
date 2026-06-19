@@ -1,12 +1,18 @@
+<<<<<<< HEAD
 import type { ReactNode } from 'react';
 
+=======
+>>>>>>> dev
 export type SubjectId = string;
 
 export interface Subject {
-  id: SubjectId;
+  id: SubjectId | string;
   label: string;
   iconImg?: string;
+<<<<<<< HEAD
   icon?: ReactNode;
+=======
+>>>>>>> dev
   path?: string;
 }
 
@@ -15,6 +21,7 @@ interface AsideProps {
   activeSubject: SubjectId;
   onSelectSubject: (id: SubjectId) => void;
   title?: string;
+<<<<<<< HEAD
   cloudImage?: string;
   width?: string;
 }
@@ -38,6 +45,11 @@ export default function Aside({
       ) : null
     );
 
+=======
+}
+
+export default function Aside({ subjects, activeSubject, onSelectSubject, title = 'Matérias' }: AsideProps) {
+>>>>>>> dev
   return (
     <>
       {/* Mobile + Tablet*/}
@@ -56,9 +68,17 @@ export default function Aside({
                   : 'bg-gray-50 text-[#1e3a8a] border-transparent hover:bg-blue-50 hover:border-blue-200'
               }`}
             >
+<<<<<<< HEAD
               <div className="w-6 h-6 rounded-md flex items-center justify-center shrink-0 overflow-hidden">
                 {renderIcon(subj, 'sm')}
               </div>
+=======
+              {subj.iconImg && (
+                <div className="w-6 h-6 rounded-md flex items-center justify-center shrink-0 overflow-hidden">
+                  <img src={subj.iconImg} alt={subj.label} className="w-4 h-4 object-contain" />
+                </div>
+              )}
+>>>>>>> dev
               <span className={`font-extrabold ${activeSubject === subj.id ? 'text-white' : 'text-[#1e3a8a]'}`}>
                 {subj.label}
               </span>
@@ -91,9 +111,17 @@ export default function Aside({
                       : 'text-[#1e3a8a] hover:bg-blue-50 hover:border-blue-200'
                   }`}
                 >
+<<<<<<< HEAD
                   <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 overflow-hidden">
                     {renderIcon(subj, 'lg')}
                   </div>
+=======
+                  {subj.iconImg && (
+                    <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 overflow-hidden">
+                      <img src={subj.iconImg} alt={subj.label} className="w-6 h-6 object-contain" />
+                    </div>
+                  )}
+>>>>>>> dev
                   <span className={`font-extrabold ${activeSubject === subj.id ? 'text-white' : 'text-[#1e3a8a]'}`}>
                     {subj.label}
                   </span>

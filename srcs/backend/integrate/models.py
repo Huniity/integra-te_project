@@ -110,21 +110,8 @@ class Livro(models.Model):
         return self.titulo
 
 
-class MaterialOriginal(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    titulo = models.CharField(max_length=200)
-    autor = models.CharField(max_length=200)
-    descricao = models.TextField()
-    ficheiro = models.FileField(upload_to="materiais_originais/", null=True, blank=True)
-    url_externa = models.URLField(max_length=500, null=True, blank=True)
-    descarregavel = models.BooleanField(default=False)
-    publicado = models.BooleanField(default=False)
-
-    def __str__(self):
-        return self.titulo
-
-
 class Exercicio(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     title = models.CharField(max_length=200)
     level = models.IntegerField()
     subject_id = models.CharField(max_length=200)
@@ -140,6 +127,7 @@ class Exercicio(models.Model):
 
 
 class Aula(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     title = models.CharField(max_length=200)
     subject_id = models.CharField(max_length=200)
     level = models.IntegerField()
@@ -152,3 +140,17 @@ class Aula(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class MaterialOriginal(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    titulo = models.CharField(max_length=200)
+    autor = models.CharField(max_length=200)
+    descricao = models.TextField()
+    ficheiro = models.FileField(upload_to="materiais_originais/", null=True, blank=True)
+    url_externa = models.URLField(max_length=500, null=True, blank=True)
+    descarregavel = models.BooleanField(default=False)
+    publicado = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.titulo

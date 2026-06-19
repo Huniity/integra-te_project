@@ -31,12 +31,7 @@ export function NightModeProvider({ children }: { children: ReactNode }) {
 
 export function useNightMode() {
   const context = useContext(NightModeContext);
-
-  if (!context) {
-    throw new Error('useNightMode must be used within a NightModeProvider');
-  }
-
-  return context;
+  return context ?? { isNightMode: false, toggleNightMode: () => {} };
 }
 
 interface NightModeBackgroundProps {
