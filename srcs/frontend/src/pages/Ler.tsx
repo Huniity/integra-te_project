@@ -3,8 +3,6 @@ import { NightModeBackground, NightModeProvider, NightModeToggle, useNightMode }
 import Aside from '../components/core/Aside';
 import type { Subject, SubjectId } from '../components/core/Aside';
 import MainContent from '../components/core/MainContent';
-import BookCard from '../components/ler/BookCard';
-import BookModal from '../components/ler/BookModal';
 import Footer from '../components/core/Footer';
 import { livrosApi } from '../services/api/livros.api';
 import type { Livro } from '../api/contracts/livros';
@@ -54,24 +52,18 @@ function ReadContent() {
     <main className="relative min-h-screen lg:h-screen w-full px-3 md:px-5 py-2 font-['Nunito',sans-serif] overflow-x-hidden overflow-y-auto lg:overflow-y-hidden flex flex-col">
 
       {/* Elementos de Interface do Fundo */}
-      <img
-        src="./src/assets/bush.webp"
-        alt=""
-        aria-hidden="true"
-        className="pointer-events-none fixed bottom-[-9%] left-[-5%] z-2 w-28 sm:w-36 md:w-44 lg:w-52 object-contain"
-      />
-      <img
-        src="./src/assets/bush2.webp"
-        alt=""
-        aria-hidden="true"
-        className="pointer-events-none fixed bottom-[-9%] right-[-4%] z-2 w-28 sm:w-36 md:w-44 lg:w-52 object-contain"
-      />
-      <img
-        src="./src/assets/books.webp"
-        alt=""
-        aria-hidden="true"
-        className="pointer-events-none fixed bottom-[0%] left-[0%] z-1 w-28 sm:w-36 md:w-44 lg:w-36 object-contain"
-      />
+      <img src="./src/assets/bush.png" alt="" aria-hidden="true"
+        className={`pointer-events-none fixed bottom-[-1%] left-[-2%] z-2 w-28 sm:w-36 md:w-44 lg:w-62 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-0' : 'opacity-100'}`} />
+      <img src="./src/assets/bush_night.png" alt="" aria-hidden="true"
+        className={`pointer-events-none fixed bottom-[-1%] left-[-3%] z-2 w-28 sm:w-36 md:w-44 lg:w-70 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-100' : 'opacity-0'}`} />
+      <img src="./src/assets/bush2.png" alt="" aria-hidden="true"
+        className={`pointer-events-none fixed bottom-[-1%] right-[-2%] z-2 w-28 sm:w-36 md:w-44 lg:w-62 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-0' : 'opacity-100'}`} />
+      <img src="./src/assets/bush2_night.png" alt="" aria-hidden="true"
+        className={`pointer-events-none fixed bottom-[-1%] right-[-2%] z-2 w-28 sm:w-36 md:w-44 lg:w-62 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-100' : 'opacity-0'}`} />
+      <img src="./src/assets/books.webp" alt="" aria-hidden="true"
+        className={`pointer-events-none fixed bottom-[2%] left-[3%] z-1 w-28 sm:w-36 md:w-44 lg:w-46 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-0' : 'opacity-100'}`} />
+      <img src="./src/assets/books_night.png" alt="" aria-hidden="true"
+        className={`pointer-events-none fixed bottom-[2%] left-[3%] z-1 w-28 sm:w-36 md:w-44 lg:w-46 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-100' : 'opacity-0'}`} />
       <img
         src="./src/assets/rainbow.png"
         alt=""
@@ -103,7 +95,41 @@ function ReadContent() {
           ) : (
             <div className="grid grid-cols-2 min-[640px]:grid-cols-3 gap-3 sm:gap-4 items-stretch rounded-2xl relative z-10">
               {filteredBooks.map((livro) => (
-                <BookCard key={livro.id} livro={livro} onSelect={setSelectedBook} />
+                <div
+                  key={livro.id}
+                  className="rounded-2xl min-h-[220px] bg-white border border-gray-100 flex flex-col items-center justify-between p-3 group hover:-translate-y-1 transition-transform duration-200 shadow-sm"
+                >
+                  <p className="font-['Fredoka',sans-serif] text-base md:text-lg font-semibold text-center mb-1 leading-tight text-blue-600">
+                    {livro.titulo}
+                  </p>
+
+                  <div className="w-24 h-24 flex items-center justify-center my-1 transform group-hover:scale-105 transition-transform duration-200">
+                    {livro.capa_url ? (
+                      <img
+                        src={livro.capa_url}
+                        alt={livro.titulo}
+                        className="w-full h-full object-contain drop-shadow-md"
+                      />
+                    ) : (
+                      <img
+                        src="./src/assets/blue_book.webp"
+                        alt=""
+                        aria-hidden="true"
+                        className="w-full h-full object-contain drop-shadow-md opacity-80"
+                      />
+                    )}
+                  </div>
+
+                  <button
+                    onClick={() => setSelectedBook(livro)}
+                    className="w-full sm:w-5/6 text-white font-extrabold text-xs py-1.5 rounded-full flex items-center justify-center gap-1.5 cursor-pointer bg-gradient-to-br from-blue-600 to-blue-700 shadow-[0_4px_12px_rgba(37,99,235,0.3)] transition-all duration-200 hover:-translate-y-px hover:shadow-[0_6px_16px_rgba(37,99,235,0.4)] active:translate-y-0"
+                  >
+                    Ver Livro
+                    <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M8 5v14l11-7z" />
+                    </svg>
+                  </button>
+                </div>
               ))}
             </div>
           )}
@@ -117,5 +143,67 @@ function ReadContent() {
       <NightModeToggle />
       <Footer />
     </main>
+  );
+}
+
+interface BookModalProps {
+  book: Livro;
+  onClose: () => void;
+}
+
+function BookModal({ book, onClose }: BookModalProps) {
+  return (
+    <div
+      onClick={onClose}
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm px-4"
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="relative flex w-full max-w-sm flex-col items-center rounded-3xl bg-white p-6 shadow-2xl"
+      >
+        <button
+          type="button"
+          onClick={onClose}
+          className="absolute top-3 right-3 flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 text-gray-500 hover:bg-gray-200 transition-colors cursor-pointer"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M6 6l12 12M18 6L6 18" />
+          </svg>
+        </button>
+
+        <div className="w-28 h-36 flex items-center justify-center my-2">
+          <img
+            src={book.capa_url ?? './src/assets/blue_book.webp'}
+            alt={book.titulo}
+            className="w-full h-full object-contain drop-shadow-md"
+          />
+        </div>
+
+        <h3 className="font-['Fredoka',sans-serif] text-2xl font-black text-center text-blue-600 mb-1 mt-2">
+          {book.titulo}
+        </h3>
+
+        {book.autor && (
+          <p className="text-xs text-gray-400 font-semibold text-center mb-2">{book.autor}</p>
+        )}
+
+        {book.resumo && (
+          <p className="text-sm text-gray-500 font-medium text-center leading-relaxed mb-6 px-4">
+            {book.resumo}
+          </p>
+        )}
+
+        {book.ficheiro_url && (
+          <a
+            href={book.ficheiro_url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-full text-center text-white font-extrabold text-sm py-3 rounded-full bg-gradient-to-br from-blue-600 to-blue-700 shadow-md hover:scale-102 active:scale-98 transition-all cursor-pointer"
+          >
+            Começar Leitura
+          </a>
+        )}
+      </div>
+    </div>
   );
 }
