@@ -12,6 +12,8 @@ interface AsideProps {
   activeSubject: SubjectId;
   onSelectSubject: (id: SubjectId) => void;
   title?: string;
+  cloudImage?: string;
+  width?: string;
 }
 
 export default function Aside({ subjects, activeSubject, onSelectSubject, title = 'Matérias' }: AsideProps) {

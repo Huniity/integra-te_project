@@ -1,15 +1,7 @@
-export interface BookType {
-  id: string;
-  title: string;
-  ageGroup: string;
-  abstract: string;
-  externalLink: string;
-  photoUrl: string;
-  iconType: string;
-}
+import type { Livro } from '../../api/contracts/livros';
 
 interface BookModalProps {
-  book: BookType;
+  book: Livro;
   onClose: () => void;
 }
 
@@ -23,8 +15,6 @@ export default function BookModal({ book, onClose }: BookModalProps) {
         onClick={(e) => e.stopPropagation()}
         className="relative flex w-full max-w-sm flex-col items-center rounded-3xl bg-white p-6 shadow-2xl"
       >
-
-        {/* Botão Fechar */}
         <button
           type="button"
           onClick={onClose}
@@ -35,37 +25,38 @@ export default function BookModal({ book, onClose }: BookModalProps) {
           </svg>
         </button>
 
-        {/* Capa do Livro */}
         <div className="w-28 h-36 flex items-center justify-center my-2">
           <img
-            src={book.photoUrl}
-            alt={book.title}
+            src={book.capa_url ?? './src/assets/blue_book.webp'}
+            alt={book.titulo}
             className="w-full h-full object-contain drop-shadow-md"
-            onError={(e) => {
-              e.currentTarget.style.display = 'none';
-              e.currentTarget.parentElement!.innerHTML = `<span class="text-6xl">${book.iconType}</span>`;
-            }}
           />
         </div>
 
-
-        <h3 className="font-['Fredoka',sans-serif] text-2xl font-black text-center text-blue-600 mb-2 mt-2">
-          {book.title}
+        <h3 className="font-['Fredoka',sans-serif] text-2xl font-black text-center text-blue-600 mb-1 mt-2">
+          {book.titulo}
         </h3>
 
-        <p className="text-sm text-gray-500 font-medium text-center leading-relaxed mb-6 px-4">
-          {book.abstract}
-        </p>
+        {book.autor && (
+          <p className="text-xs text-gray-400 font-semibold text-center mb-2">{book.autor}</p>
+        )}
 
-        {/* Botão de Ação */}
-        <a
-          href={book.externalLink}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="w-full text-center text-white font-extrabold text-sm py-3 rounded-full bg-gradient-to-br from-blue-600 to-blue-700 shadow-md hover:scale-102 active:scale-98 transition-all cursor-pointer"
-        >
-          Começar Leitura 📖
-        </a>
+        {book.resumo && (
+          <p className="text-sm text-gray-500 font-medium text-center leading-relaxed mb-6 px-4">
+            {book.resumo}
+          </p>
+        )}
+
+        {book.ficheiro_url && (
+          <a
+            href={book.ficheiro_url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-full text-center text-white font-extrabold text-sm py-3 rounded-full bg-gradient-to-br from-blue-600 to-blue-700 shadow-md hover:scale-102 active:scale-98 transition-all cursor-pointer"
+          >
+            Começar Leitura
+          </a>
+        )}
       </div>
     </div>
   );

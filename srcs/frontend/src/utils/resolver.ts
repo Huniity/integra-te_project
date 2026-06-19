@@ -1,5 +1,7 @@
 import type { Subject } from '../components/core/Aside';
 
+export type ResolverSubjectId = 'todos' | 'portugues' | 'matematica' | 'estudo-do-meio';
+
 export const getLevelBadgeClassName = (level: number) => {
   if (level === 1) return 'bg-emerald-500 text-white';
   if (level === 2) return 'bg-orange-500 text-white';

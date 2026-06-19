@@ -1,17 +1,8 @@
 import { useEffect } from 'react';
+import type { Exercicio as Exercise } from '../../api/contracts/resolver';
 import { getLevelBadgeClassName } from '../../utils/resolver';
 
-export interface Exercise {
-  id: number;
-  title: string;
-  level: number;
-  subjectId: string;
-  titleColor: string;
-  iconImg: string;
-  path: string;
-  description?: string;
-  pdfUrl?: string;
-}
+export type { Exercise };
 
 interface ExerciseModalProps {
   exercise: Exercise;
