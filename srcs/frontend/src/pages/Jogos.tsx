@@ -25,7 +25,7 @@ function GamesContent() {
 
   const ageSubjects: Subject[] = [
     { id: 'todos',  label: 'Todos os Jogos',     iconImg: './src/assets/controller.webp' },
-    { id: '4-6',   label: '4 à 6 anos', iconImg: './src/assets/puzzle.png' },
+    { id: '4-6',   label: '4 à 6 anos', iconImg: './src/assets/puzzle.webp' },
     { id: '6-9',   label: '6 à 9 anos', iconImg: './src/assets/abc.webp' },
     { id: '9-12',  label: '9 à 12 anos', iconImg: './src/assets/sudoku.webp' },
   ];
@@ -50,7 +50,7 @@ function GamesContent() {
 
   return (
     <main className="relative min-h-screen lg:h-screen w-full px-3 md:px-5 py-2 font-['Nunito',sans-serif] overflow-x-hidden overflow-y-auto lg:overflow-y-hidden flex flex-col">
-      <NightModeBackground dayImage="/src/assets/content2.png" nightImage="/src/assets/noite.png" />
+      <NightModeBackground dayImage="/src/assets/content2.webp" nightImage="/src/assets/noite.webp" />
 
       {/* Layout Dividido */}
       <div className="max-w-[95%] w-full mx-auto flex flex-col lg:flex-row gap-3 lg:gap-20 relative z-10 mt-40 mb-20 pb-2 flex-1 min-h-0">

@@ -66,7 +66,7 @@ export function NightModeToggle() {
   return (
     <>
       <img
-        src={isNightMode ? './src/assets/moon2.png' : './src/assets/sun.png'}
+        src={isNightMode ? './src/assets/moon2.webp' : './src/assets/sun.webp'}
         alt=""
         aria-hidden="true"
         className="pointer-events-none fixed top-[14%] left-[15%] z-0 w-28 sm:w-36 md:w-44 lg:w-20 object-contain rotate-24 transition-all duration-700"

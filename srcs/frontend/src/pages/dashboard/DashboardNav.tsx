@@ -2,7 +2,7 @@
 
 
 import { CircleUserRound } from 'lucide-react'
-import cloudLogo from '../../assets/cloud_logo.png'
+import cloudLogo from '../../assets/cloud_logo.webp'
 
 const DashboardNav = () => {
     return (

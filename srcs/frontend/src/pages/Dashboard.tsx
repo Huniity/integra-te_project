@@ -1,6 +1,6 @@
 import { useState, type ComponentType } from 'react'
-import bg from '../assets/content2.png'
-import cloudMenu from '../assets/cloud_menu2.png'
+import bg from '../assets/content2.webp'
+import cloudMenu from '../assets/cloud_menu2.webp'
 
 import Aside from '../components/core/Aside'
 import MainContent from '../components/core/MainContent'
