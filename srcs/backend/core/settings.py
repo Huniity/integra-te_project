@@ -105,6 +105,8 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "core.wsgi.application"
 
+X_FRAME_OPTIONS = "SAMEORIGIN"
+
 
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases

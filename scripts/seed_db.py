@@ -306,7 +306,6 @@ def seed_database():
                 level=1,
                 description="Aprende a resolver equações de primeiro grau com exemplos simples.",
                 video_url="https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-                duration=15,
                 publicado=True,
             ),
             Aula(
@@ -315,7 +314,6 @@ def seed_database():
                 level=2,
                 description="Resolução de sistemas de duas equações com duas incógnitas.",
                 video_url="https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-                duration=20,
                 publicado=True,
             ),
             Aula(
@@ -324,7 +322,6 @@ def seed_database():
                 level=1,
                 description="Nomes, verbos, adjetivos e advérbios — aprende a identificá-los.",
                 video_url="https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-                duration=12,
                 publicado=True,
             ),
             Aula(
@@ -333,7 +330,6 @@ def seed_database():
                 level=2,
                 description="Sujeito, predicado e complementos numa frase simples.",
                 video_url="https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-                duration=18,
                 publicado=True,
             ),
             Aula(
@@ -342,7 +338,6 @@ def seed_database():
                 level=1,
                 description="Produtores, consumidores e decompositores no ecossistema.",
                 video_url="https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-                duration=14,
                 publicado=True,
             ),
             Aula(
@@ -351,7 +346,6 @@ def seed_database():
                 level=2,
                 description="Os planetas, as suas características e as suas órbitas.",
                 video_url="https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-                duration=16,
                 publicado=True,
             ),
         ]
