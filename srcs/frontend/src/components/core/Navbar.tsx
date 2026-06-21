@@ -511,11 +511,11 @@ export function Navbar() {
           <div className="flex items-center gap-2">
             <SearchBar className="relative flex w-[120px] sm:w-[160px] lg:w-[220px] items-center rounded-full border border-white/40 bg-white/15 backdrop-blur-xs shadow-[0_14px_36px_rgba(31,38,135,0.22)] ring-1 ring-white/20"/>
             <a
-              href="/admin/"
-              aria-label="Django Admin"
+              href="/login"
+              aria-label="Login — aceder à área de administração"
               className="w-9 h-9 sm:w-10 sm:h-10 bg-white/15 rounded-full flex items-center justify-center shadow-[0_14px_36px_rgba(31,38,135,0.22)] border border-white/40 ring-1 ring-white/20 hover:scale-110 active:scale-95 transition-transform cursor-pointer backdrop-blur-xs"
             >
-              <img src="/src/assets/lock.webp" alt="Admin" className="w-5 h-5 object-contain" />
+              <img src="/src/assets/lock.webp" alt="login" className="w-5 h-5 object-contain" />
             </a>
           </div>
 

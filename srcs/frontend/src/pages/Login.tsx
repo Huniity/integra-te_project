@@ -75,7 +75,7 @@ function LoginContent() {
           />
 
           {/* Form content sits on top of the cloud */}
-          <div className="absolute inset-0 flex flex-col items-center justify-center px-[18%] gap-4">
+          <div className="absolute inset-0 flex flex-col items-center justify-center px-[25%] gap-4">
 
             <h1 className="font-['Fredoka',sans-serif] text-2xl sm:text-3xl font-black text-[#1e3a8a] text-center">
               Entrar
