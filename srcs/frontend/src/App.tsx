@@ -14,6 +14,7 @@ import Videos    from './pages/Videos'
 import Ler       from './pages/Ler'
 import Dashboard from './pages/Dashboard'
 import './App.css'
+import Login from './pages/Login'
 
 function PageStub({ title }: { title: string }) {
   return (
@@ -30,6 +31,7 @@ export default function App() {
       <Navbar />
       <Routes>
         <Route path="/"            element={<Home />} />
+        <Route path="/login"         element={<Login />} />
         <Route path="/aprender"    element={<Aprender />} />
         <Route path="/resolver"    element={<Resolver />} />
         <Route path="/jogos"       element={<Jogos />} />
