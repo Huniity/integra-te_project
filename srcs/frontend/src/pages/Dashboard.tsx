@@ -5,7 +5,7 @@ import cloudMenu from '../assets/cloud_menu2.webp'
 
 import Aside from '../components/core/Aside'
 import MainContent from '../components/core/MainContent'
-import { NightModeBackground, NightModeToggle } from '../components/core/NightMode'
+import { NightModeBackground } from '../components/core/NightMode'
 import { TABS } from './dashboard/TabPanel'
 import OverviewPanel from './dashboard/OverviewPanel'
 import ExerciciosPanel from './dashboard/ExerciciosPanel'
@@ -49,9 +49,8 @@ function DashboardInner() {
     return (
         <div className="relative flex h-screen w-screen flex-col overflow-hidden">
             <NightModeBackground dayImage={bg} nightImage={bgNight} />
-            <NightModeToggle />
 
-            <section className="relative flex flex-1 gap-6 px-16 py-8 min-h-0 mt-[5%]">
+            <section className="relative flex flex-1 gap-3 sm:gap-4 lg:gap-6 px-3 sm:px-8 md:px-12 lg:px-16 py-4 sm:py-6 lg:py-8 min-h-0 mt-[5%]">
                 <Aside
                     subjects={DASHBOARD_SUBJECTS}
                     activeSubject={activeTab}

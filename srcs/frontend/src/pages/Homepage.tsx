@@ -96,17 +96,17 @@ function HomeContent() {
 
   return (
     <main
-      className="relative h-screen w-full bg-cover bg-center bg-no-repeat bg-fixed px-3 md:px-6 pt-3 md:pt-4 pb-2 font-['Nunito',sans-serif] overflow-hidden flex flex-col"
-      style={{ backgroundImage: 'url(./src/assets/content2.webp)' }}
+      className="relative h-screen w-full px-3 md:px-6 pt-3 md:pt-14 pb-2 font-['Nunito',sans-serif] overflow-hidden flex flex-col"
     >
 
       <NightModeBackground dayImage='./src/assets/content2.webp' nightImage='./src/assets/noite.webp' />
-      <div className="hidden lg:block absolute top-[14%] right-[14%] z-50">
+
+      <div className="hidden lg:block">
         <NightModeToggle />
       </div>
 
       <section className="max-w-6xl w-full mx-auto flex-1 min-h-0 relative z-10 flex items-center py-1">
-        <div className="w-full relative z-10 scale-110 lg:scale-100 grid grid-cols-2 gap-x-4 gap-y-12 sm:gap-x-4 justify-items-center content-center items-start md:flex md:flex-wrap md:justify-center md:gap-x-14 md:gap-y-12 lg:grid lg:grid-cols-4 lg:gap-x-20 lg:gap-y-24 lg:items-end">
+        <div className="w-full relative z-10 grid grid-cols-2 gap-x-3 gap-y-10 sm:gap-x-4 sm:gap-y-12 justify-items-center content-center items-start md:flex md:flex-wrap md:justify-center md:gap-x-14 md:gap-y-12 lg:grid lg:grid-cols-4 lg:gap-x-20 lg:gap-y-24 lg:items-end">
           {menuButtons.map((btn) => (
             <div key={btn.id} className="flex flex-col items-center relative w-full md:w-[28%] lg:w-full group">
 
@@ -144,7 +144,7 @@ function HomeContent() {
                     alt=""
                     className="absolute inset-0 w-full h-full object-contain drop-shadow-md max-w-none scale-200"
                   />
-                  <span className="relative z-10 font-['Fredoka',sans-serif] text-sm md:text-base lg:text-[1.7rem] text-[#1e3a8a] font-black tracking-wide pb-2 sm:pb-3 text-center px-1">
+                  <span className="relative z-10 font-['Fredoka',sans-serif] text-sm sm:text-base lg:text-[1.7rem] text-[#1e3a8a] font-black tracking-wide pb-2 sm:pb-3 text-center px-1">
                     {btn.label}
                   </span>
                 </div>

@@ -1,19 +1,12 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { NightModeBackground, NightModeProvider, NightModeToggle, useNightMode } from '../components/core/NightMode';
+import { NightModeBackground, useNightMode } from '../components/core/NightMode';
 import Footer from '../components/core/Footer';
 
 export default function About() {
-  return (
-    <NightModeProvider>
-      <AboutContent />
-    </NightModeProvider>
-  );
+  return <AboutContent />;
 }
 
 function AboutContent() {
   const { isNightMode } = useNightMode();
-  const navigate = useNavigate();
 
   const sectionBg = isNightMode
     ? 'bg-slate-900/50 backdrop-blur-xs rounded-3xl shadow-[0_18px_45px_rgba(0,0,0,0.3)] border border-white/10 text-white'
@@ -29,49 +22,20 @@ function AboutContent() {
 
   return (
     <main
-      className="relative h-screen w-full bg-cover bg-center bg-no-repeat bg-fixed font-['Nunito',sans-serif] overflow-hidden flex flex-col justify-between"
-      style={{ backgroundImage: 'url(./src/assets/content2.png)' }}
+      className="relative h-screen w-full px-3 md:px-6 font-['Nunito',sans-serif] overflow-x-hidden overflow-y-auto flex flex-col [&::-webkit-scrollbar]:hidden"
+      style={{ scrollbarWidth: 'none' }}
     >
-      <NightModeBackground dayImage='./src/assets/content2.png' nightImage='./src/assets/noite.png' />
+      <NightModeBackground dayImage='./src/assets/content2.webp' nightImage='./src/assets/noite.webp' />
 
-      <div className={`absolute top-0 inset-x-0 z-40 px-3 md:px-6 py-3 ${isNightMode ? 'text-white' : 'text-white'}`}>
-        <header className="max-w-7xl w-full mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 md:gap-3">
-          <div className="flex items-center gap-4 w-full sm:w-auto justify-end relative z-40">
-            <div className="lg:hidden shrink-0">
-              <NightModeToggle />
-            </div>
-          </div>
-        </header>
-      </div>
-
-      <div className="hidden lg:block absolute top-[14%] right-[14%] z-50">
-        <NightModeToggle />
-      </div>
-
-      {/* Fullscreen scroll container passing completely behind header and footer */}
-      <div
-        className="absolute inset-0 w-full h-full z-10 overflow-y-auto px-3 md:px-6"
-        style={{
-          scrollbarWidth: 'none',
-          msOverflowStyle: 'none',
-          WebkitOverflowScrolling: 'touch'
-        }}
-      >
-        <style>{`
-          div::-webkit-scrollbar {
-            display: none !important;
-          }
-        `}</style>
-
-        <div className="max-w-3xl w-full mx-auto flex flex-col pt-24 pb-36 px-1">
+        <div className="max-w-3xl w-full mx-auto flex flex-col mt-40 pb-10 relative z-10 px-1">
 
           {/* SECÇÃO PRINCIPAL UNIFICADA */}
-          <section className={`w-full p-6 md:p-10 flex flex-col gap-8 ${sectionBg}`}>
+          <section className={`w-full p-4 sm:p-6 md:p-10 flex flex-col gap-6 sm:gap-8 ${sectionBg}`}>
 
             {/* Bloco do Título Principal */}
             <div className="text-center shrink-0">
               <h1
-                className="font-['Fredoka',sans-serif] text-3xl md:text-5xl font-black drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)] inline-block tracking-wide text-white"
+                className="font-['Fredoka',sans-serif] text-2xl sm:text-3xl md:text-5xl font-black drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)] inline-block tracking-wide text-white"
                 style={!isNightMode ? { textShadow: '-1px 0 #2563eb, 0 1px #2563eb, 1px 0 #2563eb, 0 -1px #2563eb, 1px 1px #2563eb, -1px -1px #2563eb' } : {}}
               >
                 Sobre o <span className="text-[#ffdf6d]">Projeto</span>
@@ -93,7 +57,7 @@ function AboutContent() {
             </div>
 
             {/* Grid de Pilares */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-5">
               {[
                 { title: 'Educação', desc: 'Promoção do sucesso escolar com recursos adaptados.', tag: 'Do infantário ao 4.º ciclo' },
                 { title: 'Inclusão', desc: 'Combate à discriminação e ao absentismo escolar.', tag: 'Zero exclusão' },
@@ -115,7 +79,7 @@ function AboutContent() {
                   >
                     {pilar.desc}
                   </p>
-                  <span className={`inline-block text-[10px] md:text-xs font-black tracking-wider uppercase px-3 py-1.5 rounded-full ${cardTag}`}>
+                  <span className={`inline-block text-[10px] font-black tracking-wider uppercase px-2 sm:px-3 py-1 sm:py-1.5 rounded-full ${cardTag}`}>
                     {pilar.tag}
                   </span>
                 </div>
@@ -135,7 +99,7 @@ function AboutContent() {
                   { num: 'Loulé', color: 'text-purple-500', label: 'Impacto local' },
                 ].map((stat) => (
                   <div key={stat.label} className="pt-4 md:pt-0 md:pl-4 first:pt-0 first:pl-0 text-center flex flex-col items-center">
-                    <div className={`font-['Fredoka',sans-serif] font-black text-3xl md:text-4xl ${stat.color}`}>{stat.num}</div>
+                    <div className={`font-['Fredoka',sans-serif] font-black text-2xl sm:text-3xl md:text-4xl ${stat.color}`}>{stat.num}</div>
                     <div
                       className="text-[10px] md:text-xs font-black uppercase tracking-tight"
                       style={{ color: isNightMode ? '#94a3b8' : '#64748b' }}
@@ -187,7 +151,7 @@ function AboutContent() {
           </section>
 
         </div>
-      </div>
+
       <Footer />
     </main>
   );

@@ -45,13 +45,13 @@ export function NightModeBackground({ dayImage, nightImage }: NightModeBackgroun
   return (
     <>
       <div
-        className={`pointer-events-none absolute inset-0 z-0 bg-cover bg-center bg-no-repeat bg-fixed transition-opacity duration-700 ${
+        className={`pointer-events-none fixed inset-0 z-0 bg-cover bg-center bg-no-repeat transition-opacity duration-700 ${
           isNightMode ? 'opacity-0' : 'opacity-100'
         }`}
         style={{ backgroundImage: `url(${dayImage})` }}
       />
       <div
-        className={`pointer-events-none absolute inset-0 z-0 bg-cover bg-center bg-no-repeat bg-fixed transition-opacity duration-700 ${
+        className={`pointer-events-none fixed inset-0 z-0 bg-cover bg-center bg-no-repeat transition-opacity duration-700 ${
           isNightMode ? 'opacity-100' : 'opacity-0'
         }`}
         style={{ backgroundImage: `url(${nightImage})` }}
@@ -69,14 +69,34 @@ export function NightModeToggle() {
         src={isNightMode ? './src/assets/moon2.webp' : './src/assets/sun.webp'}
         alt=""
         aria-hidden="true"
-        className="pointer-events-none fixed top-[17%] left-[6%] z-0 w-28 sm:w-36 md:w-44 lg:w-20 object-contain rotate-[355deg] transition-all duration-700"
+        className="pointer-events-none fixed top-[22%] left-[5%] z-0 w-28 sm:w-36 md:w-44 lg:w-20 object-contain rotate-[355deg] transition-all duration-700"
       />
       <button
         type="button"
         onClick={toggleNightMode}
         aria-label={isNightMode ? 'Ativar Day Mode' : 'Ativar Night Mode'}
-        className="fixed top-[17%] left-[6%] z-10 h-28 w-28 sm:h-36 sm:w-36 md:h-44 md:w-44 lg:h-20 lg:w-20 rounded-full bg-transparent transition-transform duration-500 hover:scale-110"
+        className="fixed lg:top-[17%] lg:left-[6%] xl:top-[17%] xl:left-[6%] z-10 h-28 w-28 sm:h-36 sm:w-36 md:h-44 md:w-44 lg:h-20 lg:w-20 rounded-full bg-transparent transition-transform duration-500 hover:scale-110"
       />
     </>
+  );
+}
+
+export function NightModeNavButton() {
+  const { isNightMode, toggleNightMode } = useNightMode();
+
+  return (
+    <button
+      type="button"
+      onClick={toggleNightMode}
+      aria-label={isNightMode ? 'Ativar Day Mode' : 'Ativar Night Mode'}
+      className="flex h-10 w-10 items-center justify-center rounded-full bg-white/15 border border-white/40 backdrop-blur-xs shadow-[0_14px_36px_rgba(31,38,135,0.22)] ring-1 ring-white/20 hover:scale-110 active:scale-95 transition-transform cursor-pointer"
+    >
+      <img
+        src={isNightMode ? './src/assets/moon2.webp' : './src/assets/sun.webp'}
+        alt=""
+        aria-hidden="true"
+        className="w-6 h-6 object-contain"
+      />
+    </button>
   );
 }

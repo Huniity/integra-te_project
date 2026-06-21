@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { NightModeBackground, NightModeProvider, NightModeToggle, useNightMode } from '../components/core/NightMode';
+import { NightModeBackground, useNightMode } from '../components/core/NightMode';
 import Aside from '../components/core/Aside';
 import type { SubjectId } from '../components/core/Aside';
 import MainContent from '../components/core/MainContent';
 import type { FilterType } from '../components/core/MainContent';
-import AprenderCarousel, { useCarousel, AprenderCarouselNav } from '../components/aprender/AprenderCarousel';
+import { useCarousel, CarouselNav } from '../components/core/Carousel';
+import AprenderCard from '../components/aprender/AprenderCard';
 import AprenderModal from '../components/aprender/AprenderModal';
 import { subjects } from '../utils/aprender';
 
@@ -14,15 +14,10 @@ import type { Aula } from '../api/contracts/aulas';
 import Footer from '../components/core/Footer';
 
 export default function Aprender() {
-  return (
-    <NightModeProvider>
-      <AprenderContent />
-    </NightModeProvider>
-  );
+  return <AprenderContent />;
 }
 
 function AprenderContent() {
-  const navigate = useNavigate();
   const { isNightMode } = useNightMode();
   const [activeSubject, setActiveSubject] = useState<SubjectId | string>('todos');
   const [activeFilter, setActiveFilter] = useState<FilterType>('todos');
@@ -47,10 +42,6 @@ function AprenderContent() {
   const [aulas, setAulas] = useState<Aula[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  const navItems = [
-    { iconImg: './src/assets/lock.webp', label: 'Admin', path: '/admin/' },
-  ];
-
   const filteredAulas =
     aulas.filter(
       (ex) =>
@@ -58,7 +49,7 @@ function AprenderContent() {
         (activeFilter === 'nivel' ? selectedLevel === 'todos' || ex.level === selectedLevel : true),
     );
 
-  const carousel = useCarousel(filteredAulas);
+  const carousel = useCarousel(filteredAulas, { mobile: 2, tablet: 4, desktop: 6 });
 
   useEffect(() => {
       const loadAulas = async () => {
@@ -105,7 +96,7 @@ function AprenderContent() {
       <NightModeBackground dayImage="./src/assets/content2.webp" nightImage="./src/assets/noite.webp" />
 
       {/* Body: Sidebar + Main */}
-      <div className="max-w-[95%] w-full mx-auto flex flex-col lg:flex-row gap-3 lg:gap-20 relative z-10 mt-30 pb-2 flex-1 min-h-0">
+      <div className="max-w-[95%] w-full mx-auto flex flex-col lg:flex-row gap-3 lg:gap-20 relative z-10 mt-16 sm:mt-20 lg:mt-24 xl:mt-30 pb-2 flex-1 min-h-0">
 
         <Aside subjects={subjects} activeSubject={activeSubject} onSelectSubject={setActiveSubject} />
 
@@ -130,16 +121,19 @@ function AprenderContent() {
                 <p className="text-gray-400 text-lg font-semibold">Nenhum exercício disponível</p>
               </div>
             ) : (
-              <AprenderCarousel
-                pageItems={carousel.pageItems}
-                onSelect={setSelectedAula}
+              <div
+                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 items-stretch"
                 onTouchStart={carousel.onTouchStart}
                 onTouchEnd={carousel.onTouchEnd}
-              />
+              >
+                {carousel.pageItems.map(aula => (
+                  <AprenderCard key={aula.id} aula={aula} onSelect={setSelectedAula} />
+                ))}
+              </div>
             )}
           </MainContent>
 
-          <AprenderCarouselNav
+          <CarouselNav
             page={carousel.page}
             totalPages={carousel.totalPages}
             onPrev={carousel.prev}
@@ -151,7 +145,6 @@ function AprenderContent() {
       {selectedAula && (
         <AprenderModal aula={selectedAula} onClose={() => setSelectedAula(null)} />
       )}
-      <NightModeToggle />
       <Footer />
     </main>
   );

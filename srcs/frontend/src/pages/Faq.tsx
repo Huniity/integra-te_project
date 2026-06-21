@@ -1,10 +1,7 @@
-
-
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { NightModeBackground, NightModeProvider, NightModeToggle, useNightMode } from '../components/core/NightMode';
+import { NightModeBackground, useNightMode } from '../components/core/NightMode';
 import Footer from '../components/core/Footer';
-
 
 interface FaqItem {
   question: string;
@@ -13,11 +10,7 @@ interface FaqItem {
 }
 
 export default function Faq() {
-  return (
-    <NightModeProvider>
-      <FaqContent />
-    </NightModeProvider>
-  );
+  return <FaqContent />;
 }
 
 function FaqContent() {
@@ -83,13 +76,11 @@ function FaqContent() {
   return (
     <main
       className="relative h-screen w-full bg-cover bg-center bg-no-repeat bg-fixed font-['Nunito',sans-serif] overflow-hidden flex flex-col justify-between"
-      style={{ backgroundImage: 'url(./src/assets/content2.png)' }}
+      style={{ backgroundImage: 'url(./src/assets/content2.webp)' }}
     >
-      <NightModeBackground dayImage='./src/assets/content2.png' nightImage='./src/assets/noite.png' />
+      <NightModeBackground dayImage='./src/assets/content2.webp' nightImage='./src/assets/noite.webp' />
 
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;900&family=Fredoka+One&display=swap');
-
         @keyframes slideUp {
           from { opacity: 0; transform: translateY(24px); }
           to   { opacity: 1; transform: translateY(0); }
@@ -100,19 +91,6 @@ function FaqContent() {
           transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s ease, padding 0.35s ease;
         }
       `}</style>
-
-      {/* Header com NightModeToggle */}
-      <header className="max-w-7xl w-full mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 md:gap-3 mb-2 md:mb-3 relative z-40 shrink-0 px-3 md:px-6 pt-3 md:pt-4">
-        <div className="flex items-center gap-4 w-full sm:w-auto justify-end relative z-40">
-          <div className="lg:hidden shrink-0">
-            <NightModeToggle />
-          </div>
-        </div>
-      </header>
-
-      <div className="hidden lg:block absolute top-[14%] right-[14%] z-50">
-        <NightModeToggle />
-      </div>
 
       {/* Content wrapper com Scrollbar Oculta */}
       <div
@@ -129,10 +107,10 @@ function FaqContent() {
           }
         `}</style>
 
-        <div className="max-w-3xl w-full mx-auto flex flex-col pt-16 pb-36 px-4 md:px-6">
+        <div className="max-w-3xl w-full mx-auto flex flex-col pt-12 sm:pt-16 pb-16 sm:pb-24 md:pb-36 px-3 sm:px-4 md:px-6">
 
           {/* SECÇÃO PRINCIPAL COM O TEU SECTIONBG */}
-          <section className={`w-full p-6 md:p-10 ${sectionBg}`}>
+          <section className={`w-full p-4 sm:p-6 md:p-10 ${sectionBg}`}>
 
             <div className="text-center shrink-0 mb-8">
               <div className="animate-slideUp inline-flex items-center gap-2 bg-[#9b59b6] text-white text-xs font-bold tracking-wider uppercase px-5 py-2 rounded-full mb-6 shadow-lg">
@@ -140,7 +118,7 @@ function FaqContent() {
                 Dúvidas Frequentes
               </div>
 
-              <h1 className="animate-slideUp font-['Fredoka',sans-serif] text-3xl md:text-5xl font-black drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)] inline-block tracking-wide text-white">
+              <h1 className="animate-slideUp font-['Fredoka',sans-serif] text-2xl sm:text-3xl md:text-5xl font-black drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)] inline-block tracking-wide text-white">
                 Perguntas Frequentes
               </h1>
 
@@ -159,7 +137,7 @@ function FaqContent() {
                   <button
                     key={filter.id}
                     onClick={() => { setActiveFilter(filter.id as any); setOpenIndex(null); }}
-                    className={`px-5 py-2.5 rounded-2xl font-bold text-sm transition-all duration-200 transform active:scale-95 shadow-sm
+                    className={`px-3 sm:px-5 py-2 sm:py-2.5 rounded-2xl font-bold text-sm transition-all duration-200 transform active:scale-95 shadow-sm
                       ${activeFilter === filter.id
                         ? 'text-white scale-105 shadow-md border border-white/20'
                         : 'bg-white text-[#1a3a6a] hover:bg-gray-100'
@@ -234,7 +212,7 @@ function FaqContent() {
             </div>
 
                         {/* Rodapé Interno com a cor injetada diretamente via JS */}
-            <div className={`mt-12 p-8 text-center shrink-0 rounded-2xl border ${cardBg}`}>
+            <div className={`mt-8 sm:mt-12 p-4 sm:p-6 md:p-8 text-center shrink-0 rounded-2xl border ${cardBg}`}>
               <h3
                 className="font-['Fredoka',sans-serif] font-black text-lg mb-2"
                 style={{ color: isNightMode ? '#ffffff' : '#0c447c' }}

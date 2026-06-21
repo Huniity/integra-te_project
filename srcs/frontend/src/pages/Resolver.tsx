@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { NightModeBackground, NightModeProvider, NightModeToggle, useNightMode } from '../components/core/NightMode';
+import { NightModeBackground, useNightMode } from '../components/core/NightMode';
 import Aside from '../components/core/Aside';
 import type { SubjectId } from '../components/core/Aside';
 import MainContent from '../components/core/MainContent';
@@ -13,11 +13,7 @@ import { exerciciosApi } from '../services/api/exercicios.api';
 import Footer from '../components/core/Footer';
 
 export default function Resolver() {
-  return (
-    <NightModeProvider>
-      <ResolverContent />
-    </NightModeProvider>
-  );
+  return <ResolverContent />;
 }
 
 function ResolverContent() {
@@ -41,7 +37,7 @@ function ResolverContent() {
       (activeFilter === 'nivel' ? selectedLevel === 'todos' || ex.level === selectedLevel : true),
   );
 
-  const carousel = useCarousel(filteredExercises);
+  const carousel = useCarousel(filteredExercises, { mobile: 2, tablet: 4, desktop: 6 });
 
   useEffect(() => {
     const load = async () => {
@@ -77,7 +73,7 @@ function ResolverContent() {
         className={`pointer-events-none fixed top-[14%] left-[-5%] z-1 w-28 sm:w-36 md:w-44 lg:w-100 object-contain rotate-24 transition-opacity duration-700 ${isNightMode ? 'opacity-0' : 'opacity-100'}`} />
       <NightModeBackground dayImage="./src/assets/content2.webp" nightImage="./src/assets/noite.webp" />
 
-      <div className="max-w-[95%] w-full mx-auto flex flex-col lg:flex-row gap-3 lg:gap-20 relative z-10 mt-30 pb-2 flex-1 min-h-0">
+      <div className="max-w-[95%] w-full mx-auto flex flex-col lg:flex-row gap-3 lg:gap-20 relative z-10 mt-16 sm:mt-20 lg:mt-24 xl:mt-30 pb-2 flex-1 min-h-0">
         <Aside subjects={subjects} activeSubject={activeSubject} onSelectSubject={setActiveSubject} />
 
         <div className="flex-1 min-h-0 flex flex-col gap-2">
@@ -101,7 +97,7 @@ function ResolverContent() {
               </div>
             ) : (
               <div
-                className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 items-stretch"
+                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 items-stretch"
                 onTouchStart={carousel.onTouchStart}
                 onTouchEnd={carousel.onTouchEnd}
               >
@@ -125,7 +121,6 @@ function ResolverContent() {
       {selectedExercise && (
         <ExerciseModal exercise={selectedExercise} onClose={() => setSelectedExercise(null)} />
       )}
-      <NightModeToggle />
       <Footer />
     </main>
   );

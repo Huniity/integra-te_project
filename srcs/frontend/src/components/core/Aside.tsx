@@ -20,7 +20,7 @@ export default function Aside({ subjects, activeSubject, onSelectSubject, title 
   return (
     <>
       {/* Mobile + Tablet*/}
-      <section className="lg:hidden bg-white/90 rounded-2xl p-2.5 shadow-lg border border-white/60 backdrop-blur-sm">
+      <section className="mt-25 lg:hidden bg-white/90 rounded-2xl p-2.5 shadow-lg border border-white/60 backdrop-blur-sm">
         <h2 className="font-['Fredoka',sans-serif] text-sm font-black text-[#1e3a8a] mb-2 flex items-center justify-center gap-1 text-center">
           {title}
         </h2>

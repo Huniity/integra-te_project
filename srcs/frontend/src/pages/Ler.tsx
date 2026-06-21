@@ -1,22 +1,17 @@
 import { useState, useEffect } from 'react';
-import { NightModeBackground, NightModeProvider, NightModeToggle, useNightMode } from '../components/core/NightMode';
+import { NightModeBackground, useNightMode } from '../components/core/NightMode';
 import Aside from '../components/core/Aside';
 import type { SubjectId } from '../components/core/Aside';
 import MainContent from '../components/core/MainContent';
 import { useCarousel, CarouselNav } from '../components/core/Carousel';
 import BookCard from '../components/Ler/BookCard';
-import BookModal from '../components/Ler/BookModal';
 import Footer from '../components/core/Footer';
 import { livrosApi } from '../services/api/livros.api';
 import type { Livro } from '../api/contracts/livros';
 import { ageSubjects } from '../utils/ler';
 
 export default function Read() {
-  return (
-    <NightModeProvider>
-      <ReadContent />
-    </NightModeProvider>
-  );
+  return <ReadContent />;
 }
 
 function ReadContent() {
@@ -45,7 +40,7 @@ function ReadContent() {
     (livro) => activeSubject === 'todos' || livro.faixa_etaria === activeSubject,
   );
 
-  const carousel = useCarousel(filteredBooks);
+  const carousel = useCarousel(filteredBooks, { mobile: 2, tablet: 4, desktop: 6 });
 
   return (
     <main className="relative min-h-screen lg:h-screen w-full px-3 md:px-5 py-2 font-['Nunito',sans-serif] overflow-x-hidden overflow-y-auto lg:overflow-y-hidden flex flex-col">
@@ -67,7 +62,7 @@ function ReadContent() {
         className={`pointer-events-none fixed top-[14%] left-[-5%] z-1 w-28 sm:w-36 md:w-44 lg:w-100 object-contain rotate-24 transition-opacity duration-700 ${isNightMode ? 'opacity-0' : 'opacity-100'}`} />
       <NightModeBackground dayImage="./src/assets/content2.webp" nightImage="./src/assets/noite.webp" />
 
-      <div className="max-w-[95%] w-full mx-auto flex flex-col lg:flex-row gap-3 lg:gap-20 relative z-10 mt-30 pb-2 flex-1 min-h-0">
+      <div className="max-w-[95%] w-full mx-auto flex flex-col lg:flex-row gap-3 lg:gap-20 relative z-10 mt-16 sm:mt-20 lg:mt-24 xl:mt-30 pb-2 flex-1 min-h-0">
         <Aside subjects={ageSubjects} activeSubject={activeSubject} onSelectSubject={setActiveSubject} title="Idades" />
 
         <div className="flex-1 min-h-0 flex flex-col gap-2">
@@ -85,7 +80,7 @@ function ReadContent() {
               </div>
             ) : (
               <div
-                className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 items-stretch"
+                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 items-stretch"
                 onTouchStart={carousel.onTouchStart}
                 onTouchEnd={carousel.onTouchEnd}
               >
@@ -107,7 +102,6 @@ function ReadContent() {
       </div>
 
       {selectedBook && <BookModal book={selectedBook} onClose={() => setSelectedBook(null)} />}
-      <NightModeToggle />
       <Footer />
     </main>
   );

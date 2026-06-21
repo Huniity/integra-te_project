@@ -4,7 +4,10 @@ import { motion, AnimatePresence } from 'framer-motion'
 import type { Variants } from 'framer-motion'
 import { SearchBar } from './SearchBar'
 import { Search } from 'lucide-react'
-import Logo from '../../assets/integrate.png'
+import Logo from '../../assets/integrate.webp'
+import { NightModeNavButton, useNightMode } from './NightMode'
+import CloudDay   from '../../assets/cloud_logo1.webp'
+import CloudNight from '../../assets/cloud_logo2.webp'
 
 /* Types */
 interface NavItem {
@@ -398,6 +401,7 @@ export function Navbar() {
   const burgerRef    = useRef<HTMLButtonElement>(null)
   const navigate     = useNavigate()
   const { pathname } = useLocation()
+  const { isNightMode } = useNightMode()
 
   /* Hide the button for the page the user is already on */
   const visibleNav = NAV.filter(item => item.path !== pathname)
@@ -419,7 +423,7 @@ export function Navbar() {
     <header
       role="banner"
       className="
-        fixed top-15 left-2 right-0 z-50
+        fixed top-8 left-2 right-0 z-50
         bg-transparent
       "
     >
@@ -463,10 +467,21 @@ export function Navbar() {
               <>
                 <button
                     onClick={() => navigate('/')}
-                    className="ml-[-7%] h-22 w-[270px] flex items-center justify-center bg-center bg-no-repeat bg-[length:100%_100%] hover:scale-105 transition-transform cursor-pointer"
-
+                    className="ml-[-7%] h-16 md:h-22 w-[190px] md:w-[270px] flex items-center justify-center relative overflow-visible hover:scale-105 transition-transform duration-300 cursor-pointer"
                     >
-                    <img src={Logo} alt="INTEGRA-TE" className="h-24 mt-3 w-[280px] object-contain rotate-[9deg]" />
+                    <img
+                      src={CloudDay}
+                      alt=""
+                      aria-hidden="true"
+                      className={`absolute w-[300%] h-[300%] object-contain pointer-events-none transition-opacity duration-700 ${isNightMode ? 'opacity-0' : 'opacity-100'}`}
+                    />
+                    <img
+                      src={CloudNight}
+                      alt=""
+                      aria-hidden="true"
+                      className={`absolute w-[300%] h-[300%] object-contain pointer-events-none transition-opacity duration-700 ${isNightMode ? 'opacity-100' : 'opacity-0'}`}
+                    />
+                    <img src={Logo} alt="INTEGRA-TE" className="relative z-10 h-16 md:h-24 mt-2 md:mt-10 w-[200px] md:w-[250px] object-contain rotate-[9deg]" />
                     {/* <span className="font-['Fredoka',sans-serif] text-xl md:text-[1.4rem] font-black tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-[#005bb7] to-[#3b82f6]">
                         INTEGRA-TE
                     </span> */}
@@ -492,17 +507,20 @@ export function Navbar() {
         {/* Right controls — flush to the right viewport edge */}
         <div className="ml-auto flex items-center gap-2 shrink-0">
 
-          {/* SearchBar + Admin lock — hidden on mobile (burger handles nav there) */}
-          <div className="hidden md:flex items-center gap-2">
-            <SearchBar className="relative flex w-[220px] items-center rounded-full border border-white/40 bg-white/15 backdrop-blur-xs shadow-[0_14px_36px_rgba(31,38,135,0.22)] ring-1 ring-white/20"/>
+          {/* SearchBar + Admin lock — always visible */}
+          <div className="flex items-center gap-2">
+            <SearchBar className="relative flex w-[120px] sm:w-[160px] lg:w-[220px] items-center rounded-full border border-white/40 bg-white/15 backdrop-blur-xs shadow-[0_14px_36px_rgba(31,38,135,0.22)] ring-1 ring-white/20"/>
             <a
               href="/admin/"
               aria-label="Django Admin"
-              className="w-10 h-10 bg-white/15 rounded-full flex items-center justify-center shadow-[0_14px_36px_rgba(31,38,135,0.22)] border border-white/40 ring-1 ring-white/20 hover:scale-110 active:scale-95 transition-transform cursor-pointer backdrop-blur-xs"
+              className="w-9 h-9 sm:w-10 sm:h-10 bg-white/15 rounded-full flex items-center justify-center shadow-[0_14px_36px_rgba(31,38,135,0.22)] border border-white/40 ring-1 ring-white/20 hover:scale-110 active:scale-95 transition-transform cursor-pointer backdrop-blur-xs"
             >
               <img src="/src/assets/lock.webp" alt="Admin" className="w-5 h-5 object-contain" />
             </a>
           </div>
+
+          {/* Night mode toggle — always visible */}
+          <NightModeNavButton />
 
           {/* Burger — mobile only, not needed on homepage (grid is the nav) */}
           {pathname !== '/' && (

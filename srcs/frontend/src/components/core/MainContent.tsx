@@ -62,7 +62,7 @@ export default function MainContent({
         />
         <div className="relative z-10 flex items-center gap-3">
           <h1
-            className="font-['Fredoka',sans-serif] text-3xl font-black text-white"
+            className="font-['Fredoka',sans-serif] text-xl sm:text-2xl lg:text-3xl font-black text-white"
             style={{
               textShadow:
                 '-1px 0 #2563eb, 0 1px #2563eb, 1px 0 #2563eb, 0 -1px #2563eb, 1px 1px #2563eb, -1px -1px #2563eb, 1px -1px #2563eb, -1px 1px #2563eb',
@@ -74,7 +74,7 @@ export default function MainContent({
 
         {/* Filter buttons — only rendered when handlers are provided */}
         {showFilters && (
-          <div className="relative z-10 self-center sm:self-auto flex flex-wrap justify-center items-center rounded-2xl sm:rounded-full p-1 gap-12">
+          <div className="relative z-10 self-center sm:self-auto flex flex-wrap justify-center items-center rounded-2xl sm:rounded-full p-1 gap-2 sm:gap-4 lg:gap-12">
             <button
               onClick={onSelectAll}
               className={`px-3 py-1.5 rounded-full text-md font-extrabold transition-all cursor-pointer shadow-[0_4px_12px_rgba(15,23,42,0.12)] ${

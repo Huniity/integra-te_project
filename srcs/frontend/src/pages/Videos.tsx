@@ -1,12 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Play } from 'lucide-react';
-import { NightModeBackground, NightModeProvider, NightModeToggle, useNightMode } from '../components/core/NightMode';
+import { NightModeBackground, useNightMode } from '../components/core/NightMode';
 import Aside from '../components/core/Aside';
 import type { SubjectId } from '../components/core/Aside';
 import MainContent from '../components/core/MainContent';
 import { useCarousel, CarouselNav } from '../components/core/Carousel';
-import VideoCard from '../components/videos/VideoCard';
-import VideoModal from '../components/videos/VideoModal';
 import { subjects } from '../utils/videos';
 import { videosApi } from '../services/api/videos.api';
 import { aulasApi } from '../services/api/aulas.api';
@@ -63,11 +61,7 @@ function exercicioToVideo(e: Exercicio): Video {
 }
 
 export default function Videos() {
-  return (
-    <NightModeProvider>
-      <VideosContent />
-    </NightModeProvider>
-  );
+  return <VideosContent />;
 }
 
 function VideosContent() {
@@ -81,7 +75,7 @@ function VideosContent() {
     (v) => activeSubject === 'todos' || v.disciplina_slug === activeSubject,
   );
 
-  const carousel = useCarousel(filtered);
+  const carousel = useCarousel(filtered, { mobile: 2, tablet: 6, desktop: 6 });
 
   useEffect(() => {
     const load = async () => {
@@ -133,7 +127,7 @@ function VideosContent() {
         className={`pointer-events-none fixed top-[14%] left-[-5%] z-1 w-28 sm:w-36 md:w-44 lg:w-100 object-contain rotate-24 transition-opacity duration-700 ${isNightMode ? 'opacity-0' : 'opacity-100'}`} />
       <NightModeBackground dayImage="./src/assets/content2.webp" nightImage="./src/assets/noite.webp" />
 
-      <div className="max-w-[95%] w-full mx-auto flex flex-col lg:flex-row gap-3 lg:gap-20 relative z-10 mt-30 pb-2 flex-1 min-h-0">
+      <div className="max-w-[95%] w-full mx-auto flex flex-col lg:flex-row gap-3 lg:gap-20 relative z-10 mt-16 sm:mt-20 lg:mt-24 xl:mt-30 pb-2 flex-1 min-h-0">
         <Aside subjects={subjects} activeSubject={activeSubject} onSelectSubject={setActiveSubject} />
 
         <div className="flex-1 min-h-0 flex flex-col gap-2">
@@ -151,7 +145,7 @@ function VideosContent() {
               </div>
             ) : (
               <div
-                className="grid grid-cols-1 sm:flex-1 sm:min-h-0 sm:grid-cols-3 sm:grid-rows-2 gap-2"
+                className="grid grid-cols-1 sm:grid-cols-3 gap-2"
                 onTouchStart={carousel.onTouchStart}
                 onTouchEnd={carousel.onTouchEnd}
               >
@@ -173,7 +167,6 @@ function VideosContent() {
       </div>
 
       {selected && <VideoModal video={selected} onClose={() => setSelected(null)} />}
-      <NightModeToggle />
       <Footer />
     </main>
   );

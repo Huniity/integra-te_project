@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Download, FileText } from 'lucide-react';
-import { NightModeBackground, NightModeProvider, NightModeToggle, useNightMode } from '../components/core/NightMode';
+import { NightModeBackground, useNightMode } from '../components/core/NightMode';
 import Aside from '../components/core/Aside';
 import type { SubjectId } from '../components/core/Aside';
 import MainContent from '../components/core/MainContent';
@@ -85,11 +84,7 @@ function livroToDescarregavel(l: Livro): Descarregavel {
 }
 
 export default function Descarregar() {
-  return (
-    <NightModeProvider>
-      <DescarregarContent />
-    </NightModeProvider>
-  );
+  return <DescarregarContent />;
 }
 
 function DescarregarContent() {
@@ -103,7 +98,7 @@ function DescarregarContent() {
     (item) => activeSubject === 'todos' || item.disciplina_slug === activeSubject,
   );
 
-  const carousel = useCarousel(filtered, { desktop: 9 });
+  const carousel = useCarousel(filtered, { mobile: 4, tablet: 6, desktop: 6 });
 
   useEffect(() => {
     const load = async () => {
@@ -161,7 +156,7 @@ function DescarregarContent() {
         className={`pointer-events-none fixed top-[14%] left-[-5%] z-1 w-28 sm:w-36 md:w-44 lg:w-100 object-contain rotate-24 transition-opacity duration-700 ${isNightMode ? 'opacity-0' : 'opacity-100'}`} />
       <NightModeBackground dayImage="./src/assets/content2.webp" nightImage="./src/assets/noite.webp" />
 
-      <div className="max-w-[95%] w-full mx-auto flex flex-col lg:flex-row gap-3 lg:gap-20 relative z-10 mt-30 pb-2 flex-1 min-h-0">
+      <div className="max-w-[95%] w-full mx-auto flex flex-col lg:flex-row gap-3 lg:gap-20 relative z-10 mt-16 sm:mt-20 lg:mt-24 xl:mt-30 pb-2 flex-1 min-h-0">
         <Aside subjects={subjects} activeSubject={activeSubject} onSelectSubject={setActiveSubject} />
 
         <div className="flex-1 min-h-0 flex flex-col gap-2">
@@ -179,7 +174,7 @@ function DescarregarContent() {
               </div>
             ) : (
               <div
-                className="grid grid-cols-1 sm:flex-1 sm:min-h-0 sm:grid-cols-3 sm:grid-rows-3 gap-2"
+                className="grid grid-cols-1 sm:grid-cols-3 gap-2"
                 onTouchStart={carousel.onTouchStart}
                 onTouchEnd={carousel.onTouchEnd}
               >
@@ -201,57 +196,7 @@ function DescarregarContent() {
       </div>
 
       {selected && <PdfModal item={selected} onClose={() => setSelected(null)} />}
-      <NightModeToggle />
       <Footer />
     </main>
-  );
-}
-
-function DownloadCard({ item }: { item: Descarregavel }) {
-  const href = item.ficheiro_url ?? item.url_externa;
-
-  return (
-    <div className="flex flex-col gap-3 rounded-2xl bg-white/20 border border-white/30 backdrop-blur-xs p-4 shadow-[0_4px_16px_rgba(31,38,135,0.15)] hover:bg-white/25 transition-colors">
-
-      {/* Icon + title */}
-      <div className="flex items-start gap-3">
-        <span className="shrink-0 flex h-12 w-12 items-center justify-center rounded-xl bg-white/30 border border-white/20">
-          {item.thumbnail_url
-            ? <img src={item.thumbnail_url} alt="" className="h-10 w-10 object-cover rounded-lg" />
-            : <FileText size={24} className="text-white" aria-hidden="true" />
-          }
-        </span>
-        <div className="min-w-0">
-          <p className="font-['Fredoka',sans-serif] font-black text-white text-base leading-tight line-clamp-2">
-            {item.titulo}
-          </p>
-          <p className="text-white/60 text-xs mt-0.5">{item.disciplina_nome} · {item.tema_titulo}</p>
-        </div>
-      </div>
-
-      {/* Description */}
-      {item.corpo && (
-        <p className="text-white/75 text-sm leading-snug line-clamp-2">{item.corpo}</p>
-      )}
-
-      {/* Download button */}
-      {href ? (
-        <a
-          href={href}
-          download
-          target="_blank"
-          rel="noopener noreferrer"
-          className="mt-auto inline-flex items-center justify-center gap-2 rounded-full px-4 py-2 bg-white text-[#1e3a8a] font-['Fredoka',sans-serif] font-black text-sm shadow-[0_4px_12px_rgba(37,99,235,0.25)] hover:bg-white/90 active:scale-95 transition-all"
-        >
-          <Download size={16} aria-hidden="true" />
-          Descarregar
-        </a>
-      ) : (
-        <span className="mt-auto inline-flex items-center justify-center gap-2 rounded-full px-4 py-2 bg-white/20 text-white/50 font-['Fredoka',sans-serif] font-black text-sm cursor-not-allowed">
-          <Download size={16} aria-hidden="true" />
-          Indisponível
-        </span>
-      )}
-    </div>
   );
 }

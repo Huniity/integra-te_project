@@ -12,7 +12,6 @@ import Jogos     from './pages/Jogos'
 import Descarregar from './pages/Descarregar'
 import Videos    from './pages/Videos'
 import Ler       from './pages/Ler'
-import Styleguide from './pages/Styleguide'
 import Dashboard from './pages/Dashboard'
 import './App.css'
 
@@ -41,7 +40,6 @@ export default function App() {
         <Route path="/faq"         element={<Faq />} />
         <Route path="/privacidade" element={<Privacy />} />
         <Route path="/contactar"   element={<Contact />} />
-        <Route path="/styleguide"  element={<Styleguide />} />
         <Route path="/dashboard"   element={<Dashboard />} />
         <Route path="*"            element={<PageStub title="Página não encontrada" />} />
       </Routes>

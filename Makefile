@@ -236,3 +236,20 @@ convert-clean: ## Convert webp/webp assets to WebP and delete originals (runs fr
 
 embed:
 	docker compose -f compose.dev.yaml exec backend python manage.py embed_object
+
+convert2:
+	cd srcs/frontend && node -e " \
+	const sharp = require('sharp'); \
+	const fs = require('fs'); \
+	const path = require('path'); \
+	const dir = 'src/assets'; \
+	const files = fs.readdirSync(dir).filter(f => /\.(png|jpe?g)$$/i.test(f)); \
+	Promise.all(files.map(f => { \
+		const input = path.join(dir, f); \
+		const output = path.join(dir, f.replace(/\.(png|jpe?g)$$/i, '.webp')); \
+		return sharp(input).webp({ quality: 80 }).toFile(output) \
+			.then(() => { \
+				fs.unlinkSync(input); \
+				console.log('Converted & Deleted:', f, '->', output); \
+			}); \
+	})).then(() => console.log('All assets successfully converted and cleaned up!'));"
