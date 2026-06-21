@@ -16,6 +16,8 @@ interface MainContentProps {
   selectedLevel?: number | 'todos';
   onSelectAll?: () => void;
   onSelectLevel?: (level: number | 'todos') => void;
+  /** When true, content area uses overflow-hidden + flex-col so children can fill height with h-full */
+  fillContent?: boolean;
   children: ReactNode;
 }
 
@@ -25,6 +27,7 @@ export default function MainContent({
   selectedLevel,
   onSelectAll,
   onSelectLevel,
+  fillContent = false,
   children,
 }: MainContentProps) {
   const [isLevelMenuOpen, setIsLevelMenuOpen] = useState(false);
@@ -135,7 +138,7 @@ export default function MainContent({
       </div>
 
       {/* Content */}
-      <div className="flex-1 min-h-0 overflow-y-auto px-4 py-3">
+      <div className={`flex-1 min-h-0 px-4 py-3 ${fillContent ? 'overflow-hidden flex flex-col' : 'overflow-y-auto'}`}>
         {children}
       </div>
     </div>

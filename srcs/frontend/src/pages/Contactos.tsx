@@ -2,7 +2,6 @@ import { useState, useId, type FormEvent } from 'react'
 import { Send, CheckCircle2, AlertCircle, Loader2, Mail, MapPin } from 'lucide-react'
 import {
   NightModeBackground,
-  NightModeProvider,
   NightModeToggle,
   useNightMode,
 } from '../components/core/NightMode'
@@ -104,11 +103,7 @@ function validate(form: FormState): FieldErrors {
 
 /* ─── Page root ──────────────────────────────────────────────────────────── */
 export default function Contact() {
-  return (
-    <NightModeProvider>
-      <ContactContent />
-    </NightModeProvider>
-  )
+  return <ContactContent />
 }
 
 /* ─── Inner content (needs NightMode context) ────────────────────────────── */
