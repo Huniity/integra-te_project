@@ -1,6 +1,7 @@
 from django.db import models
 import uuid
 
+
 ANO_ESCOLAR = (
     ("1º Ano", "1º Ano"),
     ("2º Ano", "2º Ano"),
@@ -31,6 +32,10 @@ DIFICULDADE = (
 
 
 class Disciplina(models.Model):
+    """
+    Model representing a discipline.
+    """
+
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     nome = models.CharField(max_length=200)
     slug = models.SlugField(max_length=500)
@@ -41,6 +46,10 @@ class Disciplina(models.Model):
 
 
 class Tema(models.Model):
+    """
+    Model representing a subject theme.
+    """
+
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     disciplina = models.ForeignKey(Disciplina, on_delete=models.CASCADE)
     titulo = models.CharField(max_length=200)
@@ -57,6 +66,10 @@ class Tema(models.Model):
 
 
 class Conteudo(models.Model):
+    """
+    Model representing content.
+    """
+
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     tema = models.ForeignKey(Tema, on_delete=models.CASCADE)
     tipo = models.CharField(max_length=200, choices=TIPO)
@@ -77,16 +90,23 @@ class Conteudo(models.Model):
 
 
 class Jogo(models.Model):
+    """
+    Model representing a game.
+    """
+
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     disciplina = models.ForeignKey(
         Disciplina, on_delete=models.CASCADE, null=True, blank=True
     )
     titulo = models.CharField(max_length=200)
     descricao = models.CharField(max_length=500)
-    faixa_etaria = models.CharField(max_length=200)
+    faixa_etaria = models.CharField(max_length=200, blank=True)
+    subject_id = models.CharField(max_length=200, blank=True)
+    level = models.IntegerField(null=True, blank=True)
+    thumbnail_url = models.CharField(max_length=500, blank=True)
+    video_url = models.URLField(max_length=500, null=True, blank=True)
     url_externa = models.URLField(max_length=500, null=True, blank=True)
     ficheiro = models.FileField(upload_to="jogos/", null=True, blank=True)
-    tamanho_kb = models.IntegerField(null=True, blank=True)
     publicado = models.BooleanField(default=False)
     criado_em = models.DateTimeField(auto_now_add=True)
 
@@ -95,6 +115,10 @@ class Jogo(models.Model):
 
 
 class Livro(models.Model):
+    """
+    Model representing a book.
+    """
+
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     titulo = models.CharField(max_length=200)
     autor = models.CharField(max_length=200)
@@ -111,6 +135,10 @@ class Livro(models.Model):
 
 
 class Exercicio(models.Model):
+    """
+    Model representing an exercise.
+    """
+
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     title = models.CharField(max_length=200)
     level = models.IntegerField()
@@ -120,6 +148,9 @@ class Exercicio(models.Model):
     path = models.CharField(max_length=500, blank=True)
     description = models.TextField(blank=True)
     pdf_url = models.URLField(max_length=500, null=True, blank=True)
+    thumbnail_url = models.CharField(max_length=500, blank=True)
+    video_url = models.URLField(max_length=500, null=True, blank=True)
+    ficheiro = models.FileField(upload_to="exercicios/", null=True, blank=True)
     publicado = models.BooleanField(default=False)
 
     def __str__(self):
@@ -127,6 +158,10 @@ class Exercicio(models.Model):
 
 
 class Aula(models.Model):
+    """
+    Model representing a lesson.
+    """
+
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     title = models.CharField(max_length=200)
     subject_id = models.CharField(max_length=200)
@@ -134,7 +169,7 @@ class Aula(models.Model):
     description = models.TextField(blank=True)
     video_url = models.URLField(max_length=500, null=True, blank=True)
     thumbnail_url = models.CharField(max_length=500, blank=True)
-    duration = models.IntegerField(null=True, blank=True)
+    ficheiro = models.FileField(upload_to="aulas/", null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     publicado = models.BooleanField(default=False)
 
@@ -143,6 +178,10 @@ class Aula(models.Model):
 
 
 class MaterialOriginal(models.Model):
+    """
+    Model representing original material.
+    """
+
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     titulo = models.CharField(max_length=200)
     autor = models.CharField(max_length=200)
@@ -153,4 +192,7 @@ class MaterialOriginal(models.Model):
     publicado = models.BooleanField(default=False)
 
     def __str__(self):
+        """
+        Return the title of the original material.
+        """
         return self.titulo

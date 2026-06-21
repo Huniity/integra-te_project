@@ -1,5 +1,6 @@
 import { Routes, Route } from 'react-router-dom'
 import Navbar    from './components/core/Navbar'
+import { NightModeProvider } from './components/core/NightMode'
 import Home      from './pages/Homepage'
 import About     from './pages/About'
 import Faq       from './pages/Faq'
@@ -26,7 +27,7 @@ function PageStub({ title }: { title: string }) {
 
 export default function App() {
   return (
-    <>
+    <NightModeProvider>
       <Navbar />
       <Routes>
         <Route path="/"            element={<Home />} />
@@ -44,6 +45,6 @@ export default function App() {
         <Route path="/dashboard"   element={<Dashboard />} />
         <Route path="*"            element={<PageStub title="Página não encontrada" />} />
       </Routes>
-    </>
+    </NightModeProvider>
   )
 }

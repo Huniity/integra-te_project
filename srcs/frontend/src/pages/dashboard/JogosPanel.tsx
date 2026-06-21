@@ -1,10 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import { Pencil, Trash2, Plus, X, FileText, Eye } from 'lucide-react'
-import { exerciciosApi } from '../../services/api/exercicios.api'
-import type { Exercicio, ExercicioPayload } from '../../api/contracts/exercicios'
+import { jogosApi } from '../../services/api/jogos.api'
+import type { Jogo, JogoPayload } from '../../api/contracts/jogos'
 import Pagination from '../../components/core/Pagination'
-import ExerciseModal from '../../components/resolver/ExerciseModal'
-import type { Exercise } from '../../components/resolver/ExerciseModal'
 
 const SUBJECTS = [
     { id: 'matematica', label: 'Matemática' },
@@ -26,24 +24,24 @@ const LEVEL_COLORS: Record<number, string> = {
 
 const PAGE_SIZE = 8
 
-const EMPTY: ExercicioPayload = {
-    title: '', subjectId: 'matematica', level: 1,
-    description: '', thumbnailUrl: '', videoUrl: '', ficheiro: null,
+const EMPTY: JogoPayload = {
+    titulo: '', subjectId: 'matematica', level: 1,
+    descricao: '', thumbnailUrl: '', videoUrl: '', ficheiro: null,
     publicado: false,
 }
 
-function ExercicioModal({ initial, currentFicheiroUrl, onSave, onClose }: {
-    initial: ExercicioPayload
+function JogoModal({ initial, currentFicheiroUrl, onSave, onClose }: {
+    initial: JogoPayload
     currentFicheiroUrl?: string
-    onSave: (p: ExercicioPayload) => Promise<void>
+    onSave: (p: JogoPayload) => Promise<void>
     onClose: () => void
 }) {
-    const [form, setForm] = useState<ExercicioPayload>(initial)
+    const [form, setForm] = useState<JogoPayload>(initial)
     const [saving, setSaving] = useState(false)
     const [error, setError] = useState<string | null>(null)
     const fileRef = useRef<HTMLInputElement>(null)
 
-    const set = <K extends keyof ExercicioPayload>(k: K, v: ExercicioPayload[K]) => setForm(f => ({ ...f, [k]: v }))
+    const set = <K extends keyof JogoPayload>(k: K, v: JogoPayload[K]) => setForm(f => ({ ...f, [k]: v }))
 
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault()
@@ -57,27 +55,27 @@ function ExercicioModal({ initial, currentFicheiroUrl, onSave, onClose }: {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
             <div className="w-full max-w-lg rounded-2xl bg-white shadow-2xl max-h-[90vh] overflow-y-auto">
                 <div className="flex items-center justify-between border-b border-gray-100 px-6 py-4 sticky top-0 bg-white">
-                    <h2 className="text-lg font-bold text-gray-800">{initial.title ? 'Editar Exercício' : 'Novo Exercício'}</h2>
+                    <h2 className="text-lg font-bold text-gray-800">{initial.titulo ? 'Editar Jogo' : 'Novo Jogo'}</h2>
                     <button onClick={onClose} className="rounded-full p-1 hover:bg-gray-100 cursor-pointer"><X size={18} /></button>
                 </div>
                 <form onSubmit={handleSubmit} className="flex flex-col gap-4 p-6">
                     <div>
                         <label className="mb-1 block text-xs font-semibold text-gray-500 uppercase tracking-wide">Título *</label>
-                        <input required value={form.title} onChange={e => set('title', e.target.value)}
+                        <input required value={form.titulo} onChange={e => set('titulo', e.target.value)}
                             className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400" />
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
                         <div>
                             <label className="mb-1 block text-xs font-semibold text-gray-500 uppercase tracking-wide">Matéria *</label>
-                            <select value={form.subjectId} onChange={e => set('subjectId', e.target.value)}
+                            <select value={form.subjectId ?? 'matematica'} onChange={e => set('subjectId', e.target.value)}
                                 className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400">
                                 {SUBJECTS.map(s => <option key={s.id} value={s.id}>{s.label}</option>)}
                             </select>
                         </div>
                         <div>
                             <label className="mb-1 block text-xs font-semibold text-gray-500 uppercase tracking-wide">Nível *</label>
-                            <select value={form.level} onChange={e => set('level', Number(e.target.value))}
+                            <select value={form.level ?? 1} onChange={e => set('level', Number(e.target.value))}
                                 className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400">
                                 <option value={1}>Nível 1</option>
                                 <option value={2}>Nível 2</option>
@@ -98,7 +96,7 @@ function ExercicioModal({ initial, currentFicheiroUrl, onSave, onClose }: {
                             </div>
                             <div className="w-14 h-14 rounded-xl overflow-hidden border border-gray-200 bg-gray-50 shrink-0">
                                 <img
-                                    src={form.thumbnailUrl || SUBJECT_IMG[form.subjectId] || './src/assets/math.webp'}
+                                    src={form.thumbnailUrl || SUBJECT_IMG[form.subjectId ?? 'matematica'] || './src/assets/math.webp'}
                                     alt=""
                                     className="w-full h-full object-cover"
                                     onError={e => { (e.target as HTMLImageElement).src = './src/assets/math.webp' }}
@@ -109,7 +107,7 @@ function ExercicioModal({ initial, currentFicheiroUrl, onSave, onClose }: {
 
                     <div>
                         <label className="mb-1 block text-xs font-semibold text-gray-500 uppercase tracking-wide">Descrição</label>
-                        <textarea rows={3} value={form.description ?? ''} onChange={e => set('description', e.target.value)}
+                        <textarea rows={3} value={form.descricao ?? ''} onChange={e => set('descricao', e.target.value)}
                             className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 resize-none" />
                     </div>
 
@@ -123,15 +121,15 @@ function ExercicioModal({ initial, currentFicheiroUrl, onSave, onClose }: {
                     </div>
 
                     <div>
-                        <label className="mb-1 block text-xs font-semibold text-gray-500 uppercase tracking-wide">PDF (opcional)</label>
+                        <label className="mb-1 block text-xs font-semibold text-gray-500 uppercase tracking-wide">Ficheiro do Jogo</label>
                         {currentFicheiroUrl && !form.ficheiro && (
                             <a href={(() => { try { return new URL(currentFicheiroUrl).pathname } catch { return currentFicheiroUrl } })()}
                                 target="_blank" rel="noopener noreferrer"
                                 className="flex items-center gap-1.5 text-xs text-blue-600 hover:underline mb-1">
-                                <FileText size={13} /> PDF atual
+                                <FileText size={13} /> Ficheiro atual
                             </a>
                         )}
-                        <input ref={fileRef} type="file" accept="application/pdf"
+                        <input ref={fileRef} type="file"
                             onChange={e => set('ficheiro', e.target.files?.[0] ?? null)}
                             className="w-full text-sm text-gray-500 file:mr-3 file:rounded-lg file:border-0 file:bg-blue-50 file:px-3 file:py-1.5 file:text-xs file:font-semibold file:text-blue-700 hover:file:bg-blue-100 cursor-pointer" />
                         {form.ficheiro && <p className="mt-1 text-xs text-gray-400">{(form.ficheiro as File).name}</p>}
@@ -156,35 +154,39 @@ function ExercicioModal({ initial, currentFicheiroUrl, onSave, onClose }: {
     )
 }
 
-const ExerciciosPanel = ({ autoCreate }: { autoCreate?: boolean }) => {
-    const [exercicios, setExercicios] = useState<Exercicio[]>([])
+const JogosPanel = ({ autoCreate }: { autoCreate?: boolean }) => {
+    const [jogos, setJogos] = useState<Jogo[]>([])
     const [isLoading, setIsLoading] = useState(true)
     const [page, setPage] = useState(1)
-    const [modal, setModal] = useState<{ open: boolean; exercicio: Exercicio | null }>({ open: false, exercicio: null })
-    const [previewEx, setPreviewEx] = useState<Exercicio | null>(null)
+    const [modal, setModal] = useState<{ open: boolean; jogo: Jogo | null }>({ open: false, jogo: null })
     const [deleteId, setDeleteId] = useState<string | null>(null)
 
     async function load() {
         setIsLoading(true)
-        setExercicios(await exerciciosApi.getExercicios())
+        setJogos(await jogosApi.getJogos())
         setIsLoading(false)
     }
 
     useEffect(() => { load() }, [])
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    useEffect(() => { if (autoCreate) setModal({ open: true, exercicio: null }) }, [])
+    useEffect(() => { if (autoCreate) setModal({ open: true, jogo: null }) }, [])
 
-    const totalPages = Math.max(1, Math.ceil(exercicios.length / PAGE_SIZE))
-    const pageItems = exercicios.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
+    const totalPages = Math.max(1, Math.ceil(jogos.length / PAGE_SIZE))
+    const pageItems = jogos.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
 
-    async function handleSave(payload: ExercicioPayload) {
-        if (modal.exercicio) await exerciciosApi.updateExercicio(modal.exercicio.id, payload)
-        else await exerciciosApi.createExercicio(payload)
+    async function handleSave(payload: JogoPayload) {
+        if (modal.jogo) await jogosApi.updateJogo(modal.jogo.id, payload)
+        else await jogosApi.createJogo(payload)
         await load()
     }
 
+    function openJogo(j: Jogo) {
+        const url = j.videoUrl || j.url_externa || j.ficheiro_url
+        if (url) window.open(url, '_blank')
+    }
+
     async function handleDelete(id: string) {
-        await exerciciosApi.deleteExercicio(id)
+        await jogosApi.deleteJogo(id)
         setDeleteId(null)
         await load()
     }
@@ -192,10 +194,10 @@ const ExerciciosPanel = ({ autoCreate }: { autoCreate?: boolean }) => {
     return (
         <div className="flex-1 min-h-0 flex flex-col gap-3">
             <div className="flex items-center justify-between shrink-0">
-                <p className="text-white/70 text-sm font-semibold">{exercicios.length} exercício{exercicios.length !== 1 ? 's' : ''}</p>
-                <button onClick={() => setModal({ open: true, exercicio: null })}
+                <p className="text-white/70 text-sm font-semibold">{jogos.length} jogo{jogos.length !== 1 ? 's' : ''}</p>
+                <button onClick={() => setModal({ open: true, jogo: null })}
                     className="flex items-center gap-1.5 rounded-xl bg-blue-600 px-4 py-2 text-sm font-bold text-white hover:bg-blue-700 cursor-pointer">
-                    <Plus size={16} /> Novo Exercício
+                    <Plus size={16} /> Novo Jogo
                 </button>
             </div>
 
@@ -204,8 +206,8 @@ const ExerciciosPanel = ({ autoCreate }: { autoCreate?: boolean }) => {
                     <div className="flex h-40 items-center justify-center">
                         <div className="h-8 w-8 animate-spin rounded-full border-4 border-blue-200 border-t-blue-600" />
                     </div>
-                ) : exercicios.length === 0 ? (
-                    <div className="flex h-40 items-center justify-center text-gray-400 font-semibold">Nenhum exercício encontrado</div>
+                ) : jogos.length === 0 ? (
+                    <div className="flex h-40 items-center justify-center text-gray-400 font-semibold">Nenhum jogo encontrado</div>
                 ) : (
                     <table className="w-full text-sm">
                         <thead className="sticky top-0 z-10">
@@ -218,34 +220,36 @@ const ExerciciosPanel = ({ autoCreate }: { autoCreate?: boolean }) => {
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-100">
-                            {pageItems.map(ex => (
-                                <tr key={ex.id} className="hover:bg-gray-50 transition-colors">
+                            {pageItems.map(jogo => (
+                                <tr key={jogo.id} className="hover:bg-gray-50 transition-colors">
                                     <td className="px-4 py-3 font-semibold text-gray-800">
-                                        {ex.title}
-                                        {ex.description && <p className="text-xs font-normal text-gray-400 mt-0.5 line-clamp-1">{ex.description}</p>}
+                                        {jogo.titulo}
+                                        {jogo.descricao && <p className="text-xs font-normal text-gray-400 mt-0.5 line-clamp-1">{jogo.descricao}</p>}
                                     </td>
-                                    <td className="px-4 py-3 text-gray-600">{SUBJECTS.find(s => s.id === ex.subjectId)?.label ?? ex.subjectId}</td>
+                                    <td className="px-4 py-3 text-gray-600">{SUBJECTS.find(s => s.id === jogo.subjectId)?.label ?? jogo.subjectId ?? '—'}</td>
                                     <td className="px-4 py-3">
-                                        <span className={`inline-block rounded-full px-2.5 py-0.5 text-xs font-bold ${LEVEL_COLORS[ex.level] ?? 'bg-gray-100 text-gray-600'}`}>Nível {ex.level}</span>
+                                        {jogo.level ? (
+                                            <span className={`inline-block rounded-full px-2.5 py-0.5 text-xs font-bold ${LEVEL_COLORS[jogo.level] ?? 'bg-gray-100 text-gray-600'}`}>Nível {jogo.level}</span>
+                                        ) : <span className="text-gray-400">—</span>}
                                     </td>
                                     <td className="px-4 py-3">
-                                        <span className={`inline-block rounded-full px-2.5 py-0.5 text-xs font-bold ${ex.publicado ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-400'}`}>
-                                            {ex.publicado ? 'Publicado' : 'Rascunho'}
+                                        <span className={`inline-block rounded-full px-2.5 py-0.5 text-xs font-bold ${jogo.publicado ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-400'}`}>
+                                            {jogo.publicado ? 'Publicado' : 'Rascunho'}
                                         </span>
                                     </td>
                                     <td className="px-4 py-3">
                                         <div className="flex items-center justify-end gap-1">
-                                            {deleteId === ex.id ? (
+                                            {deleteId === jogo.id ? (
                                                 <>
                                                     <span className="text-xs text-red-500 font-semibold mr-1">Eliminar?</span>
-                                                    <button onClick={() => handleDelete(ex.id)} className="rounded px-2 py-1 text-xs font-bold text-white bg-red-500 hover:bg-red-600 cursor-pointer">Sim</button>
+                                                    <button onClick={() => handleDelete(jogo.id)} className="rounded px-2 py-1 text-xs font-bold text-white bg-red-500 hover:bg-red-600 cursor-pointer">Sim</button>
                                                     <button onClick={() => setDeleteId(null)} className="rounded px-2 py-1 text-xs font-bold text-gray-600 bg-gray-100 hover:bg-gray-200 cursor-pointer">Não</button>
                                                 </>
                                             ) : (
                                                 <>
-                                                    <button onClick={() => setPreviewEx(ex)} className="rounded p-1.5 text-gray-400 hover:bg-purple-50 hover:text-purple-600 cursor-pointer" title="Visualizar"><Eye size={15} /></button>
-                                                    <button onClick={() => setModal({ open: true, exercicio: ex })} className="rounded p-1.5 text-gray-400 hover:bg-blue-50 hover:text-blue-600 cursor-pointer" title="Editar"><Pencil size={15} /></button>
-                                                    <button onClick={() => setDeleteId(ex.id)} className="rounded p-1.5 text-gray-400 hover:bg-red-50 hover:text-red-500 cursor-pointer" title="Eliminar"><Trash2 size={15} /></button>
+                                                    <button onClick={() => openJogo(jogo)} disabled={!jogo.videoUrl && !jogo.url_externa && !jogo.ficheiro_url} className="rounded p-1.5 text-gray-400 hover:bg-purple-50 hover:text-purple-600 disabled:opacity-30 cursor-pointer" title="Abrir Jogo"><Eye size={15} /></button>
+                                                    <button onClick={() => setModal({ open: true, jogo })} className="rounded p-1.5 text-gray-400 hover:bg-blue-50 hover:text-blue-600 cursor-pointer" title="Editar"><Pencil size={15} /></button>
+                                                    <button onClick={() => setDeleteId(jogo.id)} className="rounded p-1.5 text-gray-400 hover:bg-red-50 hover:text-red-500 cursor-pointer" title="Eliminar"><Trash2 size={15} /></button>
                                                 </>
                                             )}
                                         </div>
@@ -257,29 +261,27 @@ const ExerciciosPanel = ({ autoCreate }: { autoCreate?: boolean }) => {
                 )}
             </div>
 
-            <Pagination page={page} totalPages={totalPages} totalItems={exercicios.length} pageSize={PAGE_SIZE} onPage={setPage} />
-
-            {previewEx && <ExerciseModal exercise={previewEx as unknown as Exercise} onClose={() => setPreviewEx(null)} />}
+            <Pagination page={page} totalPages={totalPages} totalItems={jogos.length} pageSize={PAGE_SIZE} onPage={setPage} />
 
             {modal.open && (
-                <ExercicioModal
-                    currentFicheiroUrl={modal.exercicio?.ficheiro_url}
-                    initial={modal.exercicio ? {
-                        title: modal.exercicio.title,
-                        subjectId: modal.exercicio.subjectId,
-                        level: modal.exercicio.level,
-                        description: modal.exercicio.description ?? '',
-                        thumbnailUrl: modal.exercicio.thumbnailUrl ?? '',
-                        videoUrl: modal.exercicio.videoUrl ?? '',
+                <JogoModal
+                    currentFicheiroUrl={modal.jogo?.ficheiro_url}
+                    initial={modal.jogo ? {
+                        titulo: modal.jogo.titulo,
+                        subjectId: modal.jogo.subjectId ?? 'matematica',
+                        level: modal.jogo.level ?? 1,
+                        thumbnailUrl: modal.jogo.thumbnailUrl ?? '',
+                        descricao: modal.jogo.descricao ?? '',
+                        videoUrl: modal.jogo.videoUrl ?? '',
                         ficheiro: null,
-                        publicado: modal.exercicio.publicado,
+                        publicado: modal.jogo.publicado,
                     } : EMPTY}
                     onSave={handleSave}
-                    onClose={() => setModal({ open: false, exercicio: null })}
+                    onClose={() => setModal({ open: false, jogo: null })}
                 />
             )}
         </div>
     )
 }
 
-export default ExerciciosPanel
+export default JogosPanel

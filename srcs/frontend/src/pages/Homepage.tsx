@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { NightModeBackground, NightModeProvider, NightModeToggle, useNightMode } from '../components/core/NightMode';
+import { NightModeBackground, NightModeToggle, useNightMode } from '../components/core/NightMode';
 import Footer from '../components/core/Footer';
 
 interface MenuButton {
@@ -13,11 +13,7 @@ interface MenuButton {
 }
 
 export default function Home () {
-  return (
-    <NightModeProvider>
-      <HomeContent />
-    </NightModeProvider>
-  );
+  return <HomeContent />;
 }
 
 function HomeContent() {

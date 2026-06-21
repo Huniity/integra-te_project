@@ -1,5 +1,11 @@
 import { getLevelBadgeClassName } from '../../utils/aprender';
-import type { Aula } from '../../api/contracts/aprender';
+import type { Aula } from '../../api/contracts/aulas';
+
+const SUBJECT_IMG: Record<string, string> = {
+    matematica:       './src/assets/math.webp',
+    portugues:        './src/assets/book3.png',
+    'estudo-do-meio': './src/assets/science.png',
+};
 
 interface AprenderCardProps {
   aula: Aula;
@@ -13,20 +19,13 @@ export default function AprenderCard({ aula, onSelect }: AprenderCardProps) {
         {aula.title}
       </p>
 
-      <div className="w-24 h-24 flex items-center justify-center my-1">
-        {aula.thumbnail_url ? (
-          <img
-            src={aula.thumbnail_url}
-            alt={aula.title}
-            className="w-full h-full object-cover rounded-xl drop-shadow-md group-hover:scale-110 transition-transform duration-200"
-          />
-        ) : (
-          <div className="w-full h-full bg-blue-50 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
-            <svg xmlns="http://www.w3.org/2000/svg" className="w-10 h-10 text-blue-300" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/>
-            </svg>
-          </div>
-        )}
+      <div className="w-24 h-24 flex items-center justify-center my-1 group-hover:scale-110 transition-transform duration-200">
+        <img
+          src={aula.thumbnailUrl ?? SUBJECT_IMG[aula.subjectId] ?? './src/assets/math.webp'}
+          alt=""
+          aria-hidden="true"
+          className="w-full h-full object-contain drop-shadow-md"
+        />
       </div>
 
       <span className={`-mt-2 mb-2.5 px-3 py-0.5 rounded-full uppercase relative z-10 text-[10px] font-extrabold tracking-[0.05em] ${getLevelBadgeClassName(aula.level)}`}>

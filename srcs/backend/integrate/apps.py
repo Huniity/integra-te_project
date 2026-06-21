@@ -2,4 +2,8 @@ from django.apps import AppConfig
 
 
 class IntegrateConfig(AppConfig):
-    name = 'integrate'
+    """
+    Configuration for the 'integrate' application.
+    """
+
+    name = "integrate"

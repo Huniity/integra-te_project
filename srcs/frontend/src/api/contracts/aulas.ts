@@ -1,11 +1,23 @@
 export interface Aula {
-  id: number;
+  id: string;
   title: string;
   subjectId: string;
   level: number;
   description?: string;
   videoUrl?: string;
   thumbnailUrl?: string;
-  duration?: number;
+  ficheiro_url?: string;
   createdAt?: string;
+  publicado: boolean;
+}
+
+export interface AulaPayload {
+  title: string;
+  subjectId: string;
+  level: number;
+  description?: string;
+  videoUrl?: string;
+  thumbnailUrl?: string;
+  ficheiro?: File | null;
+  publicado: boolean;
 }
