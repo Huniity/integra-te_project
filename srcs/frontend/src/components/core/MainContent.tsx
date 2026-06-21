@@ -55,7 +55,7 @@ export default function MainContent({
       {/* Header */}
       <div className="relative px-5 pt-3 pb-2 flex flex-col items-center sm:flex-row sm:items-center justify-between gap-2 overflow-visible">
         <img
-          src="./src/assets/stars.png"
+          src="./src/assets/stars.webp"
           alt=""
           aria-hidden="true"
           className="pointer-events-none absolute inset-x-[-50] top-1/2 h-[100%] w-2/3 -translate-y-2/3 mx-auto object-contain"

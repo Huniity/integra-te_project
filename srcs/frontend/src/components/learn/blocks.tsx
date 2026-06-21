@@ -144,7 +144,7 @@ export function VideoBlock({ block }: { block: Conteudo }) {
   const videoId  = block.url_externa ? extractYouTubeId(block.url_externa) : null
   const thumbSrc =
     mediaUrl(block.thumbnail) ??
-    (videoId ? `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg` : null)
+    (videoId ? `https://i.ytimg.com/vi/${videoId}/hqdefault.webp` : null)
 
   if (!videoId) {
     return (

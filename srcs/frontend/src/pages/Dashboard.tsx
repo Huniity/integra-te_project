@@ -1,7 +1,7 @@
 import { useState, type ComponentType, createElement } from 'react'
-import bg from '../assets/content2.png'
-import bgNight from '../assets/noite.png'
-import cloudMenu from '../assets/cloud_menu2.png'
+import bg from '../assets/content2.webp'
+import bgNight from '../assets/noite.webp'
+import cloudMenu from '../assets/cloud_menu2.webp'
 
 import Aside from '../components/core/Aside'
 import MainContent from '../components/core/MainContent'

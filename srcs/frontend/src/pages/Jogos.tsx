@@ -1,13 +1,14 @@
 import { useState, useEffect } from 'react';
 import { NightModeBackground, NightModeProvider, NightModeToggle, useNightMode } from '../components/core/NightMode';
 import Aside from '../components/core/Aside';
-import type { Subject, SubjectId } from '../components/core/Aside';
+import type { SubjectId } from '../components/core/Aside';
 import MainContent from '../components/core/MainContent';
 import { useCarousel, CarouselNav } from '../components/core/Carousel';
 import JogoCard from '../components/jogos/JogoCard';
 import Footer from '../components/core/Footer';
 import { jogosApi } from '../services/api/jogos.api';
 import type { Jogo } from '../api/contracts/jogos';
+import { ageSubjects } from '../utils/jogos';
 
 export default function Games() {
   return (
@@ -23,12 +24,6 @@ function GamesContent() {
   const [jogos, setJogos] = useState<Jogo[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  const ageSubjects: Subject[] = [
-    { id: 'todos', label: 'Todos os Jogos', iconImg: './src/assets/controller.webp' },
-    { id: '4-6',   label: '4 à 6 anos',    iconImg: './src/assets/puzzle.png' },
-    { id: '6-9',   label: '6 à 9 anos',    iconImg: './src/assets/abc.webp' },
-    { id: '9-12',  label: '9 à 12 anos',   iconImg: './src/assets/sudoku.webp' },
-  ];
 
   useEffect(() => {
     const load = async () => {
@@ -52,21 +47,23 @@ function GamesContent() {
 
   return (
     <main className="relative min-h-screen lg:h-screen w-full px-3 md:px-5 py-2 font-['Nunito',sans-serif] overflow-x-hidden overflow-y-auto lg:overflow-y-hidden flex flex-col">
-      <img src="./src/assets/bush.png" alt="" aria-hidden="true"
-        className={`pointer-events-none fixed bottom-[-9%] left-[-5%] z-2 w-28 sm:w-36 md:w-44 lg:w-52 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-0' : 'opacity-100'}`} />
-      <img src="./src/assets/bush_night.png" alt="" aria-hidden="true"
-        className={`pointer-events-none fixed bottom-[-9%] left-[-5%] z-2 w-28 sm:w-36 md:w-44 lg:w-52 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-100' : 'opacity-0'}`} />
-      <img src="./src/assets/bush2.png" alt="" aria-hidden="true"
-        className={`pointer-events-none fixed bottom-[-9%] right-[-4%] z-2 w-28 sm:w-36 md:w-44 lg:w-52 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-0' : 'opacity-100'}`} />
-      <img src="./src/assets/bush2_night.png" alt="" aria-hidden="true"
-        className={`pointer-events-none fixed bottom-[-9%] right-[-4%] z-2 w-28 sm:w-36 md:w-44 lg:w-52 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-100' : 'opacity-0'}`} />
+
+      {/* Decorative elements */}
+      <img src="./src/assets/bush.webp" alt="" aria-hidden="true"
+        className={`pointer-events-none fixed bottom-[-1%] left-[-2%] z-2 w-28 sm:w-36 md:w-44 lg:w-62 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-0' : 'opacity-100'}`} />
+      <img src="./src/assets/bush_night.webp" alt="" aria-hidden="true"
+        className={`pointer-events-none fixed bottom-[-1%] left-[-3%] z-2 w-28 sm:w-36 md:w-44 lg:w-70 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-100' : 'opacity-0'}`} />
+      <img src="./src/assets/bush2.webp" alt="" aria-hidden="true"
+        className={`pointer-events-none fixed bottom-[-1%] right-[-2%] z-2 w-28 sm:w-36 md:w-44 lg:w-62 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-0' : 'opacity-100'}`} />
+      <img src="./src/assets/bush2_night.webp" alt="" aria-hidden="true"
+        className={`pointer-events-none fixed bottom-[-1%] right-[-2%] z-2 w-28 sm:w-36 md:w-44 lg:w-62 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-100' : 'opacity-0'}`} />
       <img src="./src/assets/books.webp" alt="" aria-hidden="true"
-        className={`pointer-events-none fixed bottom-[0%] left-[0%] z-1 w-28 sm:w-36 md:w-44 lg:w-36 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-0' : 'opacity-100'}`} />
-      <img src="./src/assets/books_night.png" alt="" aria-hidden="true"
-        className={`pointer-events-none fixed bottom-[0%] left-[0%] z-1 w-28 sm:w-36 md:w-44 lg:w-36 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-100' : 'opacity-0'}`} />
-      <img src="./src/assets/rainbow.png" alt="" aria-hidden="true"
+        className={`pointer-events-none fixed bottom-[2%] left-[3%] z-1 w-28 sm:w-36 md:w-44 lg:w-46 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-0' : 'opacity-100'}`} />
+      <img src="./src/assets/books_night.webp" alt="" aria-hidden="true"
+        className={`pointer-events-none fixed bottom-[2%] left-[3%] z-1 w-28 sm:w-36 md:w-44 lg:w-46 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-100' : 'opacity-0'}`} />
+      <img src="./src/assets/rainbow.webp" alt="" aria-hidden="true"
         className={`pointer-events-none fixed top-[14%] left-[-5%] z-1 w-28 sm:w-36 md:w-44 lg:w-100 object-contain rotate-24 transition-opacity duration-700 ${isNightMode ? 'opacity-0' : 'opacity-100'}`} />
-      <NightModeBackground dayImage="./src/assets/content2.png" nightImage="./src/assets/noite.png" />
+      <NightModeBackground dayImage="./src/assets/content2.webp" nightImage="./src/assets/noite.webp" />
 
       <div className="max-w-[95%] w-full mx-auto flex flex-col lg:flex-row gap-3 lg:gap-20 relative z-10 mt-30 pb-2 flex-1 min-h-0">
         <Aside subjects={ageSubjects} activeSubject={activeSubject} onSelectSubject={setActiveSubject} title="Idades" />

@@ -170,31 +170,28 @@ function ContactContent() {
     >
 
       {/* ── Decorative elements (identical to Resolver) ── */}
+      <img src="/src/assets/bush.webp" alt="" aria-hidden="true"
+        className={`pointer-events-none fixed bottom-[-1%] left-[-2%] z-2 w-28 sm:w-36 md:w-44 lg:w-62 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-0' : 'opacity-100'}`} />
+      <img src="/src/assets/bush_night.webp" alt="" aria-hidden="true"
+        className={`pointer-events-none fixed bottom-[-1%] left-[-3%] z-2 w-28 sm:w-36 md:w-44 lg:w-70 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-100' : 'opacity-0'}`} />
+      <img src="/src/assets/bush2.webp" alt="" aria-hidden="true"
+        className={`pointer-events-none fixed bottom-[-1%] right-[-2%] z-2 w-28 sm:w-36 md:w-44 lg:w-62 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-0' : 'opacity-100'}`} />
+      <img src="/src/assets/bush2_night.webp" alt="" aria-hidden="true"
+        className={`pointer-events-none fixed bottom-[-1%] right-[-2%] z-2 w-28 sm:w-36 md:w-44 lg:w-62 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-100' : 'opacity-0'}`} />
+      <img src="/src/assets/books.webp" alt="" aria-hidden="true"
+        className={`pointer-events-none fixed bottom-[2%] left-[3%] z-1 w-28 sm:w-36 md:w-44 lg:w-46 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-0' : 'opacity-100'}`} />
+      <img src="/src/assets/books_night.webp" alt="" aria-hidden="true"
+        className={`pointer-events-none fixed bottom-[2%] left-[3%] z-1 w-28 sm:w-36 md:w-44 lg:w-46 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-100' : 'opacity-0'}`} />
       <img
-        src="/src/assets/bush.webp"
-        alt="" aria-hidden="true"
-        className="pointer-events-none fixed bottom-[-9%] left-[-5%] z-2 w-28 sm:w-36 md:w-44 lg:w-52 object-contain"
-      />
-      <img
-        src="/src/assets/bush2.webp"
-        alt="" aria-hidden="true"
-        className="pointer-events-none fixed bottom-[-9%] right-[-4%] z-2 w-28 sm:w-36 md:w-44 lg:w-52 object-contain"
-      />
-      <img
-        src="/src/assets/books.webp"
-        alt="" aria-hidden="true"
-        className="pointer-events-none fixed bottom-[0%] left-[0%] z-1 w-28 sm:w-36 md:w-44 lg:w-36 object-contain"
-      />
-      <img
-        src="/src/assets/rainbow.png"
+        src="/src/assets/rainbow.webp"
         alt="" aria-hidden="true"
         className={`pointer-events-none fixed top-[14%] left-[-5%] z-1 w-28 sm:w-36 md:w-44 lg:w-100 object-contain rotate-24 transition-opacity duration-700 ${
           isNightMode ? 'opacity-0' : 'opacity-100'
         }`}
       />
       <NightModeBackground
-        dayImage="/src/assets/content2.png"
-        nightImage="/src/assets/noite.png"
+        dayImage="/src/assets/content2.webp"
+        nightImage="/src/assets/noite.webp"
       />
 
       {/* ── Content panel (no sidebar) ── */}
@@ -206,7 +203,7 @@ function ContactContent() {
           {/* Panel header — title only, no filter */}
           <div className="relative px-5 pt-3 pb-2 flex items-center overflow-visible">
             <img
-              src="/src/assets/stars.png"
+              src="/src/assets/stars.webp"
               alt="" aria-hidden="true"
               className="pointer-events-none absolute inset-x-0 top-1/2 h-[100%] w-2/3 -translate-y-2/3 mx-auto object-contain"
             />

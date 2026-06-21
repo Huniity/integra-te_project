@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { NightModeBackground, NightModeProvider, NightModeToggle, useNightMode } from '../components/core/NightMode';
 import Aside from '../components/core/Aside';
-import type { Subject, SubjectId } from '../components/core/Aside';
+import type { SubjectId } from '../components/core/Aside';
 import MainContent from '../components/core/MainContent';
 import { useCarousel, CarouselNav } from '../components/core/Carousel';
 import BookCard from '../components/Ler/BookCard';
@@ -9,6 +9,7 @@ import BookModal from '../components/Ler/BookModal';
 import Footer from '../components/core/Footer';
 import { livrosApi } from '../services/api/livros.api';
 import type { Livro } from '../api/contracts/livros';
+import { ageSubjects } from '../utils/ler';
 
 export default function Read() {
   return (
@@ -25,12 +26,6 @@ function ReadContent() {
   const [livros, setLivros] = useState<Livro[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  const ageSubjects: Subject[] = [
-    { id: 'todos', label: 'Todos os Livros', iconImg: './src/assets/blue_book.webp' },
-    { id: '4-6',  label: '4 à 6 anos',      iconImg: './src/assets/orange_book.webp' },
-    { id: '6-9',  label: '6 à 9 anos',      iconImg: './src/assets/green_book.webp' },
-    { id: '9-12', label: '9 à 12 anos',     iconImg: './src/assets/pink_book.webp' },
-  ];
 
   useEffect(() => {
     const load = async () => {
@@ -54,21 +49,23 @@ function ReadContent() {
 
   return (
     <main className="relative min-h-screen lg:h-screen w-full px-3 md:px-5 py-2 font-['Nunito',sans-serif] overflow-x-hidden overflow-y-auto lg:overflow-y-hidden flex flex-col">
-      <img src="./src/assets/bush.png" alt="" aria-hidden="true"
-        className={`pointer-events-none fixed bottom-[-9%] left-[-5%] z-2 w-28 sm:w-36 md:w-44 lg:w-52 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-0' : 'opacity-100'}`} />
-      <img src="./src/assets/bush_night.png" alt="" aria-hidden="true"
-        className={`pointer-events-none fixed bottom-[-9%] left-[-5%] z-2 w-28 sm:w-36 md:w-44 lg:w-52 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-100' : 'opacity-0'}`} />
-      <img src="./src/assets/bush2.png" alt="" aria-hidden="true"
-        className={`pointer-events-none fixed bottom-[-9%] right-[-4%] z-2 w-28 sm:w-36 md:w-44 lg:w-52 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-0' : 'opacity-100'}`} />
-      <img src="./src/assets/bush2_night.png" alt="" aria-hidden="true"
-        className={`pointer-events-none fixed bottom-[-9%] right-[-4%] z-2 w-28 sm:w-36 md:w-44 lg:w-52 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-100' : 'opacity-0'}`} />
+
+      {/* Decorative elements */}
+      <img src="./src/assets/bush.webp" alt="" aria-hidden="true"
+        className={`pointer-events-none fixed bottom-[-1%] left-[-2%] z-2 w-28 sm:w-36 md:w-44 lg:w-62 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-0' : 'opacity-100'}`} />
+      <img src="./src/assets/bush_night.webp" alt="" aria-hidden="true"
+        className={`pointer-events-none fixed bottom-[-1%] left-[-3%] z-2 w-28 sm:w-36 md:w-44 lg:w-70 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-100' : 'opacity-0'}`} />
+      <img src="./src/assets/bush2.webp" alt="" aria-hidden="true"
+        className={`pointer-events-none fixed bottom-[-1%] right-[-2%] z-2 w-28 sm:w-36 md:w-44 lg:w-62 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-0' : 'opacity-100'}`} />
+      <img src="./src/assets/bush2_night.webp" alt="" aria-hidden="true"
+        className={`pointer-events-none fixed bottom-[-1%] right-[-2%] z-2 w-28 sm:w-36 md:w-44 lg:w-62 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-100' : 'opacity-0'}`} />
       <img src="./src/assets/books.webp" alt="" aria-hidden="true"
-        className={`pointer-events-none fixed bottom-[0%] left-[0%] z-1 w-28 sm:w-36 md:w-44 lg:w-36 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-0' : 'opacity-100'}`} />
-      <img src="./src/assets/books_night.png" alt="" aria-hidden="true"
-        className={`pointer-events-none fixed bottom-[0%] left-[0%] z-1 w-28 sm:w-36 md:w-44 lg:w-36 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-100' : 'opacity-0'}`} />
-      <img src="./src/assets/rainbow.png" alt="" aria-hidden="true"
+        className={`pointer-events-none fixed bottom-[2%] left-[3%] z-1 w-28 sm:w-36 md:w-44 lg:w-46 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-0' : 'opacity-100'}`} />
+      <img src="./src/assets/books_night.webp" alt="" aria-hidden="true"
+        className={`pointer-events-none fixed bottom-[2%] left-[3%] z-1 w-28 sm:w-36 md:w-44 lg:w-46 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-100' : 'opacity-0'}`} />
+      <img src="./src/assets/rainbow.webp" alt="" aria-hidden="true"
         className={`pointer-events-none fixed top-[14%] left-[-5%] z-1 w-28 sm:w-36 md:w-44 lg:w-100 object-contain rotate-24 transition-opacity duration-700 ${isNightMode ? 'opacity-0' : 'opacity-100'}`} />
-      <NightModeBackground dayImage="./src/assets/content2.png" nightImage="./src/assets/noite.png" />
+      <NightModeBackground dayImage="./src/assets/content2.webp" nightImage="./src/assets/noite.webp" />
 
       <div className="max-w-[95%] w-full mx-auto flex flex-col lg:flex-row gap-3 lg:gap-20 relative z-10 mt-30 pb-2 flex-1 min-h-0">
         <Aside subjects={ageSubjects} activeSubject={activeSubject} onSelectSubject={setActiveSubject} title="Idades" />
@@ -113,5 +110,67 @@ function ReadContent() {
       <NightModeToggle />
       <Footer />
     </main>
+  );
+}
+
+interface BookModalProps {
+  book: Livro;
+  onClose: () => void;
+}
+
+function BookModal({ book, onClose }: BookModalProps) {
+  return (
+    <div
+      onClick={onClose}
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm px-4"
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="relative flex w-full max-w-sm flex-col items-center rounded-3xl bg-white p-6 shadow-2xl"
+      >
+        <button
+          type="button"
+          onClick={onClose}
+          className="absolute top-3 right-3 flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 text-gray-500 hover:bg-gray-200 transition-colors cursor-pointer"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M6 6l12 12M18 6L6 18" />
+          </svg>
+        </button>
+
+        <div className="w-28 h-36 flex items-center justify-center my-2">
+          <img
+            src={book.capa_url ?? './src/assets/blue_book.webp'}
+            alt={book.titulo}
+            className="w-full h-full object-contain drop-shadow-md"
+          />
+        </div>
+
+        <h3 className="font-['Fredoka',sans-serif] text-2xl font-black text-center text-blue-600 mb-1 mt-2">
+          {book.titulo}
+        </h3>
+
+        {book.autor && (
+          <p className="text-xs text-gray-400 font-semibold text-center mb-2">{book.autor}</p>
+        )}
+
+        {book.resumo && (
+          <p className="text-sm text-gray-500 font-medium text-center leading-relaxed mb-6 px-4">
+            {book.resumo}
+          </p>
+        )}
+
+        {book.ficheiro_url && (
+          <a
+            href={book.ficheiro_url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-full text-center text-white font-extrabold text-sm py-3 rounded-full bg-gradient-to-br from-blue-600 to-blue-700 shadow-md hover:scale-102 active:scale-98 transition-all cursor-pointer"
+          >
+            Começar Leitura
+          </a>
+        )}
+      </div>
+    </div>
   );
 }

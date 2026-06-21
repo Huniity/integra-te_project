@@ -42,7 +42,7 @@ function HomeContent() {
       label: 'Aprender',
       hint: 'Explora os temas',
       bgImg: './src/assets/red_dot.webp',
-      iconImg: './src/assets/blackboard.png',
+      iconImg: './src/assets/blackboard.webp',
       path: '/aprender'
     },
     {
@@ -97,10 +97,10 @@ function HomeContent() {
   return (
     <main
       className="relative h-screen w-full bg-cover bg-center bg-no-repeat bg-fixed px-3 md:px-6 pt-3 md:pt-4 pb-2 font-['Nunito',sans-serif] overflow-hidden flex flex-col"
-      style={{ backgroundImage: 'url(./src/assets/content2.png)' }}
+      style={{ backgroundImage: 'url(./src/assets/content2.webp)' }}
     >
 
-      <NightModeBackground dayImage='./src/assets/content2.png' nightImage='./src/assets/noite.png' />
+      <NightModeBackground dayImage='./src/assets/content2.webp' nightImage='./src/assets/noite.webp' />
       <div className="hidden lg:block absolute top-[14%] right-[14%] z-50">
         <NightModeToggle />
       </div>
