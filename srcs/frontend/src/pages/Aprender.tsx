@@ -5,12 +5,12 @@ import Aside from '../components/core/Aside';
 import type { SubjectId } from '../components/core/Aside';
 import MainContent from '../components/core/MainContent';
 import type { FilterType } from '../components/core/MainContent';
-import AprenderCard from '../components/aprender/AprenderCard';
+import AprenderCarousel, { useCarousel, AprenderCarouselNav } from '../components/aprender/AprenderCarousel';
 import AprenderModal from '../components/aprender/AprenderModal';
 import { subjects } from '../utils/aprender';
 
-import { aulasApi } from '../services/api/aprender.api';
-import type { Aula } from '../api/contracts/aprender';
+import { aulasApi } from '../services/api/aulas.api';
+import type { Aula } from '../api/contracts/aulas';
 import Footer from '../components/core/Footer';
 
 export default function Aprender() {
@@ -57,6 +57,8 @@ function AprenderContent() {
         (activeSubject === 'todos' || ex.subjectId === activeSubject) &&
         (activeFilter === 'nivel' ? selectedLevel === 'todos' || ex.level === selectedLevel : true),
     );
+
+  const carousel = useCarousel(filteredAulas);
 
   useEffect(() => {
       const loadAulas = async () => {
@@ -109,37 +111,48 @@ function AprenderContent() {
       <NightModeBackground dayImage="./src/assets/content2.png" nightImage="./src/assets/noite.png" />
 
       {/* Body: Sidebar + Main */}
-      <div className="max-w-[95%] w-full mx-auto flex flex-col lg:flex-row gap-3 lg:gap-20 relative z-10 mt-40 mb-20 pb-2 flex-1 min-h-0">
+      <div className="max-w-[95%] w-full mx-auto flex flex-col lg:flex-row gap-3 lg:gap-20 relative z-10 mt-30 pb-2 flex-1 min-h-0">
 
         <Aside subjects={subjects} activeSubject={activeSubject} onSelectSubject={setActiveSubject} />
 
-        {/* Main Content Panel */}
-        <MainContent
-          title="Aprende connosco!"
-          activeFilter={activeFilter}
-          selectedLevel={selectedLevel}
-          onSelectAll={handleSelectAllLevels}
-          onSelectLevel={handleSelectLevel}
-        >
-          {isLoading ? (
-            <div className="flex items-center justify-center h-64">
-              <div className="text-center">
-                <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mb-4"></div>
-                <p className="text-gray-500 font-semibold">Carregando exercícios...</p>
+        {/* Main Content Panel + nav below */}
+        <div className="flex-1 min-h-0 flex flex-col gap-2">
+          <MainContent
+            title="Aprende connosco!"
+            activeFilter={activeFilter}
+            selectedLevel={selectedLevel}
+            onSelectAll={handleSelectAllLevels}
+            onSelectLevel={handleSelectLevel}
+          >
+            {isLoading ? (
+              <div className="flex items-center justify-center h-64">
+                <div className="text-center">
+                  <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mb-4"></div>
+                  <p className="text-gray-500 font-semibold">Carregando exercícios...</p>
+                </div>
               </div>
-            </div>
-          ) : filteredAulas.length === 0 ? (
-            <div className="flex items-center justify-center h-64">
-              <p className="text-gray-400 text-lg font-semibold">Nenhum exercício disponível</p>
-            </div>
-          ) : (
-            <div className="grid grid-cols-2 min-[640px]:grid-cols-3 gap-3 sm:gap-4 items-stretch rounded-2xl">
-              {filteredAulas.map((ex) => (
-                <AprenderCard key={ex.id} aula={ex} onSelect={setSelectedAula} />
-              ))}
-            </div>
-          )}
-        </MainContent>
+            ) : filteredAulas.length === 0 ? (
+              <div className="flex items-center justify-center h-64">
+                <p className="text-gray-400 text-lg font-semibold">Nenhum exercício disponível</p>
+              </div>
+            ) : (
+              <AprenderCarousel
+                pageItems={carousel.pageItems}
+                onSelect={setSelectedAula}
+                onTouchStart={carousel.onTouchStart}
+                onTouchEnd={carousel.onTouchEnd}
+              />
+            )}
+          </MainContent>
+
+          <AprenderCarouselNav
+            page={carousel.page}
+            totalPages={carousel.totalPages}
+            onPrev={carousel.prev}
+            onNext={carousel.next}
+            onDot={carousel.setPage}
+          />
+        </div>
       </div>
       {selectedAula && (
         <AprenderModal aula={selectedAula} onClose={() => setSelectedAula(null)} />
