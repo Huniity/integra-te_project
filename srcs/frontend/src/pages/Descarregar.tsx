@@ -25,8 +25,8 @@ const SUBJECT_LABEL: Record<string, string> = {
 
 const SUBJECT_IMG: Record<string, string> = {
   matematica:       '/src/assets/math.webp',
-  portugues:        '/src/assets/book3.png',
-  'estudo-do-meio': '/src/assets/science.png',
+  portugues:        '/src/assets/book3.webp',
+  'estudo-do-meio': '/src/assets/science.webp',
 };
 
 function aulaToDescarregavel(a: Aula): Descarregavel {

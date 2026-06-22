@@ -3,8 +3,8 @@ import type { Exercise } from '../resolver/ExerciseModal';
 
 const SUBJECT_IMG: Record<string, string> = {
   matematica:       '/src/assets/math.webp',
-  portugues:        '/src/assets/book3.png',
-  'estudo-do-meio': '/src/assets/science.png',
+  portugues:        '/src/assets/book3.webp',
+  'estudo-do-meio': '/src/assets/science.webp',
 };
 
 interface ExerciseCardProps {
