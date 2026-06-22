@@ -76,9 +76,9 @@ function FaqContent() {
   return (
     <main
       className="relative h-screen w-full bg-cover bg-center bg-no-repeat bg-fixed font-['Nunito',sans-serif] overflow-hidden flex flex-col justify-between"
-      style={{ backgroundImage: 'url(./src/assets/content2.webp)' }}
+      style={{ backgroundImage: 'url(/src/assets/content2.webp)' }}
     >
-      <NightModeBackground dayImage='./src/assets/content2.webp' nightImage='./src/assets/noite.webp' />
+      <NightModeBackground dayImage='/src/assets/content2.webp' nightImage='/src/assets/noite.webp' />
 
       <style>{`
         @keyframes slideUp {

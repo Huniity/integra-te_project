@@ -2,9 +2,9 @@ import { getLevelBadgeClassName } from '../../utils/aprender';
 import type { Aula } from '../../api/contracts/aulas';
 
 const SUBJECT_IMG: Record<string, string> = {
-    matematica:       './src/assets/math.webp',
-    portugues:        './src/assets/book3.png',
-    'estudo-do-meio': './src/assets/science.png',
+    matematica:       '/src/assets/math.webp',
+    portugues:        '/src/assets/book3.png',
+    'estudo-do-meio': '/src/assets/science.png',
 };
 
 interface AprenderCardProps {
@@ -21,7 +21,7 @@ export default function AprenderCard({ aula, onSelect }: AprenderCardProps) {
 
       <div className="w-24 h-24 flex items-center justify-center my-1 group-hover:scale-110 transition-transform duration-200">
         <img
-          src={aula.thumbnailUrl ?? SUBJECT_IMG[aula.subjectId] ?? './src/assets/math.webp'}
+          src={aula.thumbnailUrl ?? SUBJECT_IMG[aula.subjectId] ?? '/src/assets/math.webp'}
           alt=""
           aria-hidden="true"
           className="w-full h-full object-contain drop-shadow-md"

@@ -1,9 +1,9 @@
 import type { Jogo } from '../../api/contracts/jogos';
 
 const SUBJECT_IMG: Record<string, string> = {
-  matematica:       './src/assets/math.webp',
-  portugues:        './src/assets/book3.png',
-  'estudo-do-meio': './src/assets/science.png',
+  matematica:       '/src/assets/math.webp',
+  portugues:        '/src/assets/book3.png',
+  'estudo-do-meio': '/src/assets/science.png',
 };
 
 interface JogoCardProps {

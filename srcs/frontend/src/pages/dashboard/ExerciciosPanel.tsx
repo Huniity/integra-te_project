@@ -13,9 +13,9 @@ const SUBJECTS = [
 ]
 
 const SUBJECT_IMG: Record<string, string> = {
-    matematica:       './src/assets/math.webp',
-    portugues:        './src/assets/book3.png',
-    'estudo-do-meio': './src/assets/science.png',
+    matematica:       '/src/assets/math.webp',
+    portugues:        '/src/assets/book3.png',
+    'estudo-do-meio': '/src/assets/science.png',
 }
 
 const LEVEL_COLORS: Record<number, string> = {
@@ -117,10 +117,10 @@ function ExercicioModal({ initial, currentFicheiroUrl, onSave, onClose }: {
                             </div>
                             <div className="w-14 h-14 rounded-xl overflow-hidden border border-gray-200 bg-gray-50 shrink-0">
                                 <img
-                                    src={thumbPreview || SUBJECT_IMG[form.subjectId] || './src/assets/math.webp'}
+                                    src={thumbPreview || SUBJECT_IMG[form.subjectId] || '/src/assets/math.webp'}
                                     alt=""
                                     className="w-full h-full object-cover"
-                                    onError={e => { (e.target as HTMLImageElement).src = './src/assets/math.webp' }}
+                                    onError={e => { (e.target as HTMLImageElement).src = '/src/assets/math.webp' }}
                                 />
                             </div>
                         </div>

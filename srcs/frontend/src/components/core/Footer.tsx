@@ -1,5 +1,5 @@
 export default function Footer() {
-  const placeholderUrl = "./src/assets/placeholder_600x400.svg";
+  const placeholderUrl = "/src/assets/placeholder_600x400.svg";
 
   return (
     <footer className="w-full mt-2 md:mt-3 flex justify-center relative z-20 shrink-0">

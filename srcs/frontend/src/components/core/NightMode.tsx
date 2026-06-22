@@ -66,7 +66,7 @@ export function NightModeToggle() {
   return (
     <>
       <img
-        src={isNightMode ? './src/assets/moon2.webp' : './src/assets/sun.webp'}
+        src={isNightMode ? '/src/assets/moon2.webp' : '/src/assets/sun.webp'}
         alt=""
         aria-hidden="true"
         className="pointer-events-none fixed top-[22%] left-[5%] z-0 w-28 sm:w-36 md:w-44 lg:w-20 object-contain rotate-[355deg] transition-all duration-700"
@@ -92,7 +92,7 @@ export function NightModeNavButton() {
       className="flex h-10 w-10 items-center justify-center rounded-full bg-white/15 border border-white/40 backdrop-blur-xs shadow-[0_14px_36px_rgba(31,38,135,0.22)] ring-1 ring-white/20 hover:scale-110 active:scale-95 transition-transform cursor-pointer"
     >
       <img
-        src={isNightMode ? './src/assets/moon2.webp' : './src/assets/sun.webp'}
+        src={isNightMode ? '/src/assets/moon2.webp' : '/src/assets/sun.webp'}
         alt=""
         aria-hidden="true"
         className="w-6 h-6 object-contain"

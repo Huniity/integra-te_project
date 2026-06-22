@@ -130,7 +130,7 @@ export function SearchBar({ className }: { className?: string }) {
           }`}
         >
           <img
-            src="./src/assets/microfone2.webp"
+            src="/src/assets/microfone2.webp"
             alt=""
             aria-hidden="true"
             className="w-7 h-7 object-contain"
