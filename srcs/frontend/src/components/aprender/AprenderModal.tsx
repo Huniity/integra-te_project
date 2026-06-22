@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { FileText, Play, X, ExternalLink } from 'lucide-react';
+import { FileText, Play, ExternalLink } from 'lucide-react';
 import { getLevelBadgeClassName } from '../../utils/aprender';
-import { useNightMode } from '../core/NightMode';
 import type { Aula } from '../../api/contracts/aulas';
 
+// Função para converter links normais do YouTube/Vimeo em formato Embed funcional
 function toEmbedUrl(url: string): string | null {
   if (url.includes('youtube.com/watch')) return url.replace('watch?v=', 'embed/');
   if (url.includes('youtu.be/')) return url.replace('youtu.be/', 'www.youtube.com/embed/');
@@ -22,79 +22,66 @@ interface AprenderModalProps {
 }
 
 export default function AprenderModal({ aula, onClose }: AprenderModalProps) {
-  const { isNightMode } = useNightMode();
   const embedUrl = aula.videoUrl ? toEmbedUrl(aula.videoUrl) : null;
   const hasVideo = !!embedUrl || !!aula.videoUrl;
   const hasPdf = !!aula.ficheiro_url;
   const hasBoth = hasVideo && hasPdf;
-  const hasMedia = hasVideo || hasPdf;
 
+  // Estado da aba ativa
   const [tab, setTab] = useState<'video' | 'pdf'>(hasVideo ? 'video' : 'pdf');
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') onClose();
     };
-    document.body.style.overflow = 'hidden';
     window.addEventListener('keydown', handleKeyDown);
-    return () => {
-      document.body.style.overflow = '';
-      window.removeEventListener('keydown', handleKeyDown);
-    };
+    return () => window.removeEventListener('keydown', handleKeyDown);
   }, [onClose]);
 
   const pdfSrc = aula.ficheiro_url ? toProxiedPath(aula.ficheiro_url) : null;
 
   return createPortal(
-    <div
-      onClick={onClose}
-      className="fixed inset-0 z-[9999] bg-slate-950/40 backdrop-blur-sm flex items-center justify-center p-4"
-    >
+    <div onClick={onClose} className="fixed inset-0 z-[9999] overflow-y-auto bg-slate-950/50 backdrop-blur-xs flex items-center justify-center p-4">
       <div
         onClick={(e) => e.stopPropagation()}
-        className={`relative flex w-full ${hasMedia ? 'max-w-4xl' : 'max-w-md'} flex-col items-center rounded-[24px] p-6 border transition-all animate-in zoom-in-95 duration-200
-          ${isNightMode
-            ? 'bg-slate-900 border-white/[0.08] text-white shadow-2xl'
-            : 'bg-white border-slate-100 text-slate-900 shadow-2xl'
-          }`}
+        className="relative flex w-full max-w-2xl flex-col rounded-2xl bg-white dark:bg-slate-900 p-6 shadow-2xl border border-slate-100 dark:border-slate-800"
       >
-        {/* Botão Fechar */}
+        {/* Botão Fechar de Canto Superior (Igual ao ExerciseModal) */}
         <button
           type="button"
           onClick={onClose}
-          className={`absolute top-4 right-4 flex h-9 w-9 items-center justify-center rounded-full border transition-colors cursor-pointer
-            ${isNightMode
-              ? 'bg-slate-800 border-white/10 text-slate-400 hover:text-white'
-              : 'bg-slate-50 border-slate-200/60 text-slate-400 hover:text-slate-700'
-            }`}
+          aria-label="Fechar"
+          className="absolute top-4 right-4 flex h-8 w-8 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors cursor-pointer"
         >
-          <X size={16} strokeWidth={2.5} />
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round">
+            <path d="M6 6l12 12M18 6L6 18" />
+          </svg>
         </button>
 
-        {/* Título Principal */}
-        <div className="w-full pr-8 mb-3">
-          <h2 className="font-['Fredoka',sans-serif] text-2xl font-black text-blue-600 dark:text-blue-400 mb-1 leading-tight">
+        {/* Cabeçalho do Modal: Título legível e nível (Estrutura idêntica ao ExerciseModal) */}
+        <div className="pr-8 mb-4 border-b border-slate-100 dark:border-slate-800 pb-3 flex flex-wrap items-center gap-3">
+          <h2 className="font-['Fredoka'] text-xl sm:text-2xl font-bold text-slate-900 dark:text-white leading-tight">
             {aula.title}
           </h2>
-          <span className={`inline-block px-2.5 py-0.5 rounded-full uppercase text-[9px] font-black tracking-wider shadow-xs ${getLevelBadgeClassName(aula.level)}`}>
+          <span className={`px-2.5 py-0.5 rounded-full uppercase text-[9px] font-black tracking-wide ${getLevelBadgeClassName(aula.level)}`}>
             Nível {aula.level}
           </span>
         </div>
 
-        {/* Descrição em Destaque no Modal */}
+        {/* Descrição opcional inserida suavemente antes do player */}
         {aula.description && (
-          <p className={`text-sm md:text-base leading-relaxed mb-5 w-full text-left font-medium ${isNightMode ? 'text-slate-300' : 'text-slate-600'}`}>
+          <p className="text-sm text-slate-600 dark:text-slate-400 font-medium leading-relaxed mb-4 text-left">
             {aula.description}
           </p>
         )}
 
-        {/* Abas Alternadas (Se houver Vídeo + PDF) */}
+        {/* Abas Alternadas de Média (Apenas renderiza se existirem os dois conteúdos) */}
         {hasBoth && (
-          <div className={`flex w-full max-w-xs mb-5 rounded-xl p-1 gap-1 border ${isNightMode ? 'bg-slate-950/40 border-white/[0.05]' : 'bg-slate-50 border-slate-200/40'}`}>
+          <div className="flex w-full max-w-xs mb-4 rounded-xl p-1 gap-1 border bg-slate-50 dark:bg-slate-950/40 border-slate-200/40 dark:border-white/[0.05]">
             <button
               onClick={() => setTab('video')}
-              className={`flex flex-1 items-center justify-center gap-2 rounded-lg py-2 text-xs font-bold transition-all cursor-pointer ${
-                tab === 'video' ? 'bg-blue-600 text-white shadow-xs' : 'text-slate-400 hover:text-slate-600'
+              className={`flex flex-1 items-center justify-center gap-2 rounded-lg py-1.5 text-xs font-bold transition-all cursor-pointer ${
+                tab === 'video' ? 'bg-blue-600 text-white shadow-xs' : 'text-slate-400 hover:text-slate-600 dark:hover:text-slate-300'
               }`}
             >
               <Play size={12} fill={tab === 'video' ? 'currentColor' : 'none'} />
@@ -102,8 +89,8 @@ export default function AprenderModal({ aula, onClose }: AprenderModalProps) {
             </button>
             <button
               onClick={() => setTab('pdf')}
-              className={`flex flex-1 items-center justify-center gap-2 rounded-lg py-2 text-xs font-bold transition-all cursor-pointer ${
-                tab === 'pdf' ? 'bg-emerald-600 text-white shadow-xs' : 'text-slate-400 hover:text-slate-600'
+              className={`flex flex-1 items-center justify-center gap-2 rounded-lg py-1.5 text-xs font-bold transition-all cursor-pointer ${
+                tab === 'pdf' ? 'bg-emerald-600 text-white shadow-xs' : 'text-slate-400 hover:text-slate-600 dark:hover:text-slate-300'
               }`}
             >
               <FileText size={12} />
@@ -112,52 +99,64 @@ export default function AprenderModal({ aula, onClose }: AprenderModalProps) {
           </div>
         )}
 
-        {/* Reprodutor de Vídeo */}
-        {hasVideo && (!hasBoth || tab === 'video') && (
-          embedUrl ? (
-            <div className="w-full rounded-xl overflow-hidden aspect-video bg-black shadow-md border border-white/5">
-              <iframe
-                src={embedUrl}
-                title={aula.title}
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-                className="w-full h-full border-0"
-              />
-            </div>
-          ) : (
-            <a
-              href={aula.videoUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 rounded-xl bg-blue-600 px-6 py-3 text-sm font-bold text-white shadow-sm hover:bg-blue-700 transition-colors"
-            >
-              <Play size={14} fill="currentColor" /> Abrir Vídeo Externo <ExternalLink size={12} />
-            </a>
-          )
-        )}
+        {/* Área Multimédia do Conteúdo */}
+        <div className="w-full">
+          {/* Aba de Vídeo Ativa */}
+          {hasVideo && (!hasBoth || tab === 'video') && (
+            embedUrl ? (
+              <div className="w-full rounded-xl overflow-hidden aspect-video bg-black shadow-md border border-slate-200 dark:border-white/5">
+                <iframe
+                  src={embedUrl}
+                  title={aula.title}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  className="w-full h-full border-0"
+                />
+              </div>
+            ) : (
+              <div className="p-6 bg-slate-50 dark:bg-slate-950 rounded-xl border border-slate-100 dark:border-slate-800/60 flex flex-col items-center justify-center">
+                <a
+                  href={aula.videoUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 rounded-xl bg-blue-600 px-6 py-3 text-sm font-bold text-white shadow-sm hover:bg-blue-700 transition-colors"
+                >
+                  <Play size={14} fill="currentColor" /> Assistir a Vídeo Externo <ExternalLink size={12} />
+                </a>
+              </div>
+            )
+          )}
 
-        {/* Reprodutor de PDF */}
-        {hasPdf && (!hasBoth || tab === 'pdf') && pdfSrc && (
-          <div className="w-full flex flex-col gap-3">
-            <div className="w-full rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-950 border border-slate-200/50 dark:border-white/5">
+          {/* Aba de PDF Ativa */}
+          {hasPdf && (!hasBoth || tab === 'pdf') && pdfSrc && (
+            <div className="w-full flex flex-col gap-3">
               <iframe
                 src={pdfSrc}
                 title={`PDF — ${aula.title}`}
-                className="w-full border-0 opacity-90"
-                style={{ height: 'min(460px, 48vh)' }}
+                className="w-full rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50"
+                style={{ height: 'min(460px, 50vh)' }}
               />
+              <a
+                href={pdfSrc}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-5 py-2.5 text-xs font-bold text-white shadow-sm hover:bg-emerald-700 transition-colors self-end"
+              >
+                <FileText size={14} />
+                Abrir PDF noutra janela <ExternalLink size={12} />
+              </a>
             </div>
-            <a
-              href={pdfSrc}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-6 py-3 text-sm font-bold text-white shadow-sm hover:bg-emerald-700 transition-colors"
-            >
-              <FileText size={14} />
-              Abrir PDF Completo <ExternalLink size={12} />
-            </a>
-          </div>
-        )}
+          )}
+
+          {/* Caso não exista absolutamente nenhum ficheiro nem vídeo associado */}
+          {!hasVideo && !hasPdf && (
+            <div className="p-6 bg-slate-50 dark:bg-slate-950 rounded-xl border border-slate-100 dark:border-slate-800/60">
+              <p className="text-sm text-slate-600 dark:text-slate-400 font-medium leading-relaxed text-center">
+                Esta aula não possui material audiovisual disponível de momento.
+              </p>
+            </div>
+          )}
+        </div>
       </div>
     </div>,
     document.body,

@@ -8,7 +8,6 @@ import { useCarousel, CarouselNav } from '../components/core/Carousel';
 import AprenderCard from '../components/aprender/AprenderCard';
 import AprenderModal from '../components/aprender/AprenderModal';
 import { subjects } from '../utils/aprender';
-
 import { aulasApi } from '../services/api/aulas.api';
 import type { Aula } from '../api/contracts/aulas';
 import Footer from '../components/core/Footer';
@@ -23,6 +22,8 @@ function AprenderContent() {
   const [activeFilter, setActiveFilter] = useState<FilterType>('todos');
   const [selectedLevel, setSelectedLevel] = useState<number | 'todos'>('todos');
   const [selectedAula, setSelectedAula] = useState<Aula | null>(null);
+  const [aulas, setAulas] = useState<Aula[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const handleSelectAllLevels = () => {
     setActiveFilter('todos');
@@ -39,68 +40,78 @@ function AprenderContent() {
     }
   };
 
-  const [aulas, setAulas] = useState<Aula[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-
-  const filteredAulas =
-    aulas.filter(
-      (ex) =>
-        (activeSubject === 'todos' || ex.subjectId === activeSubject) &&
-        (activeFilter === 'nivel' ? selectedLevel === 'todos' || ex.level === selectedLevel : true),
-    );
+  const filteredAulas = aulas.filter(
+    (ex) =>
+      (activeSubject === 'todos' || ex.subjectId === activeSubject) &&
+      (activeFilter === 'nivel' ? selectedLevel === 'todos' || ex.level === selectedLevel : true),
+  );
 
   const carousel = useCarousel(filteredAulas, { mobile: 2, tablet: 4, desktop: 6 });
+  useEffect(() => {
+    const handleResize = () => {
+      const isDesktopFull = window.innerWidth >= 1280;
+      const existingTag = document.getElementById("anti-scroll-global-style");
+
+      if (isDesktopFull && !existingTag) {
+        const styleTag = document.createElement("style");
+        styleTag.id = "anti-scroll-global-style";
+        styleTag.innerHTML = `
+          html, body, #root, main, .grid-esconde-scroll {
+            scrollbar-width: none !important;
+            -ms-overflow-style: none !important;
+            overflow: hidden !important;
+          }
+          html::-webkit-scrollbar, body::-webkit-scrollbar, #root::-webkit-scrollbar, main::-webkit-scrollbar {
+            display: none !important;
+            width: 0 !important; height: 0 !important;
+          }
+        `;
+        document.head.appendChild(styleTag);
+      } else if (!isDesktopFull && existingTag) {
+        existingTag.remove();
+      }
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      const existingTag = document.getElementById("anti-scroll-global-style");
+      if (existingTag) existingTag.remove();
+    };
+  }, []);
 
   useEffect(() => {
-      const loadAulas = async () => {
-        try {
-          setIsLoading(true);
-          const data = await aulasApi.getAulas();
-
-          setAulas(data);
-        } catch (error) {
-          console.error("Erro ao carregar as aulas:", error);
-        } finally {
-          setIsLoading(false);
-        }
-      };
-
-      loadAulas();
-    }, []);
+    const loadAulas = async () => {
+      try {
+        setIsLoading(true);
+        const data = await aulasApi.getAulas();
+        setAulas(data);
+      } catch (error) {
+        console.error("Erro ao carregar as aulas:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    loadAulas();
+  }, []);
 
   return (
-    <main
-      className="relative min-h-screen lg:h-screen w-full px-3 md:px-5 py-2 font-['Nunito',sans-serif] overflow-x-hidden overflow-y-auto lg:overflow-y-hidden flex flex-col"
-    >
+    <main className="relative min-h-screen lg:h-screen w-full px-3 md:px-5 py-2 font-['Nunito',sans-serif] overflow-x-hidden overflow-y-auto lg:overflow-y-hidden flex flex-col">
       {/* Decorative Elements */}
-      <img src="./src/assets/bush.webp" alt="" aria-hidden="true"
-        className={`pointer-events-none fixed bottom-[-1%] left-[-2%] z-2 w-28 sm:w-36 md:w-44 lg:w-62 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-0' : 'opacity-100'}`} />
-      <img src="./src/assets/bush_night.webp" alt="" aria-hidden="true"
-        className={`pointer-events-none fixed bottom-[-1%] left-[-3%] z-2 w-28 sm:w-36 md:w-44 lg:w-70 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-100' : 'opacity-0'}`} />
-      <img src="./src/assets/bush2.webp" alt="" aria-hidden="true"
-        className={`pointer-events-none fixed bottom-[-1%] right-[-2%] z-2 w-28 sm:w-36 md:w-44 lg:w-62 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-0' : 'opacity-100'}`} />
-      <img src="./src/assets/bush2_night.webp" alt="" aria-hidden="true"
-        className={`pointer-events-none fixed bottom-[-1%] right-[-2%] z-2 w-28 sm:w-36 md:w-44 lg:w-62 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-100' : 'opacity-0'}`} />
-      <img src="./src/assets/books.webp" alt="" aria-hidden="true"
-        className={`pointer-events-none fixed bottom-[2%] left-[3%] z-1 w-28 sm:w-36 md:w-44 lg:w-46 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-0' : 'opacity-100'}`} />
-      <img src="./src/assets/books_night.webp" alt="" aria-hidden="true"
-        className={`pointer-events-none fixed bottom-[2%] left-[3%] z-1 w-28 sm:w-36 md:w-44 lg:w-46 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-100' : 'opacity-0'}`} />
-      <img
-        src="./src/assets/rainbow.webp"
-        alt=""
-        aria-hidden="true"
-        className={`pointer-events-none fixed top-[14%] left-[-5%] z-1 w-28 sm:w-36 md:w-44 lg:w-100 object-contain rotate-24 transition-opacity duration-700 ${
-          isNightMode ? 'opacity-0' : 'opacity-100'
-        }`}
-      />
+      <img src="./src/assets/bush.webp" alt="" aria-hidden="true" className={`pointer-events-none fixed bottom-[-1%] left-[-2%] z-2 w-28 sm:w-36 md:w-44 lg:w-62 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-0' : 'opacity-100'}`} />
+      <img src="./src/assets/bush_night.webp" alt="" aria-hidden="true" className={`pointer-events-none fixed bottom-[-1%] left-[-3%] z-2 w-28 sm:w-36 md:w-44 lg:w-70 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-100' : 'opacity-0'}`} />
+      <img src="./src/assets/bush2.webp" alt="" aria-hidden="true" className={`pointer-events-none fixed bottom-[-1%] right-[-2%] z-2 w-28 sm:w-36 md:w-44 lg:w-62 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-0' : 'opacity-100'}`} />
+      <img src="./src/assets/bush2_night.webp" alt="" aria-hidden="true" className={`pointer-events-none fixed bottom-[-1%] right-[-2%] z-2 w-28 sm:w-36 md:w-44 lg:w-62 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-100' : 'opacity-0'}`} />
+      <img src="./src/assets/books.webp" alt="" aria-hidden="true" className={`pointer-events-none fixed bottom-[2%] left-[3%] z-1 w-28 sm:w-36 md:w-44 lg:w-46 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-0' : 'opacity-100'}`} />
+      <img src="./src/assets/books_night.webp" alt="" aria-hidden="true" className={`pointer-events-none fixed bottom-[2%] left-[3%] z-1 w-28 sm:w-36 md:w-44 lg:w-46 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-100' : 'opacity-0'}`} />
+      <img src="./src/assets/rainbow.webp" alt="" aria-hidden="true" className={`pointer-events-none fixed top-[14%] left-[-5%] z-1 w-28 sm:w-36 md:w-44 lg:w-100 object-contain rotate-24 transition-opacity duration-700 ${isNightMode ? 'opacity-0' : 'opacity-100'}`} />
       <NightModeBackground dayImage="./src/assets/content2.webp" nightImage="./src/assets/noite.webp" />
 
-      {/* Body: Sidebar + Main */}
+      {/* Body: Sidebar + Main com margens originais preservadas */}
       <div className="max-w-[95%] w-full mx-auto flex flex-col lg:flex-row gap-3 lg:gap-20 relative z-10 mt-16 sm:mt-20 lg:mt-24 xl:mt-30 pb-2 flex-1 min-h-0">
-
         <Aside subjects={subjects} activeSubject={activeSubject} onSelectSubject={setActiveSubject} />
 
-        {/* Main Content Panel + nav below */}
         <div className="flex-1 min-h-0 flex flex-col gap-2">
           <MainContent
             title="Aprende connosco!"
@@ -112,7 +123,7 @@ function AprenderContent() {
             {isLoading ? (
               <div className="flex items-center justify-center h-64">
                 <div className="text-center">
-                  <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mb-4"></div>
+                  <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mb-4" />
                   <p className="text-gray-500 font-semibold">Carregando exercícios...</p>
                 </div>
               </div>
@@ -121,12 +132,13 @@ function AprenderContent() {
                 <p className="text-gray-400 text-lg font-semibold">Nenhum exercício disponível</p>
               </div>
             ) : (
+              /* Grid unificada com o breakpoint xl para evitar quebras em 1116px e 1484px */
               <div
-                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 items-stretch"
+                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 xl:grid-rows-2 gap-5 xl:gap-8 items-stretch h-auto xl:h-full w-full xl:overflow-hidden grid-esconde-scroll"
                 onTouchStart={carousel.onTouchStart}
                 onTouchEnd={carousel.onTouchEnd}
               >
-                {carousel.pageItems.map(aula => (
+                {carousel.pageItems.map((aula) => (
                   <AprenderCard key={aula.id} aula={aula} onSelect={setSelectedAula} />
                 ))}
               </div>

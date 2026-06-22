@@ -38,30 +38,35 @@ function ResolverContent() {
   );
 
   const carousel = useCarousel(filteredExercises, { mobile: 2, tablet: 4, desktop: 6 });
-
-
   useEffect(() => {
-    const styleTag = document.createElement("style");
-    styleTag.id = "anti-scroll-global-style";
-    styleTag.innerHTML = `
-      html, body, #root, main, .grid-esconde-scroll {
-        scrollbar-width: none !important;
-        -ms-overflow-style: none !important;
-      }
-      html::-webkit-scrollbar,
-      body::-webkit-scrollbar,
-      #root::-webkit-scrollbar,
-      main::-webkit-scrollbar,
-      .grid-esconde-scroll::-webkit-scrollbar {
-        display: none !important;
-        width: 0 !important;
-        height: 0 !important;
-      }
-    `;
-    document.head.appendChild(styleTag);
+    const handleResize = () => {
+      const isDesktop = window.innerWidth >= 1024;
+      const existingTag = document.getElementById("anti-scroll-global-style");
 
+      if (isDesktop && !existingTag) {
+        const styleTag = document.createElement("style");
+        styleTag.id = "anti-scroll-global-style";
+        styleTag.innerHTML = `
+          html, body, #root, main, .grid-esconde-scroll {
+            scrollbar-width: none !important;
+            -ms-overflow-style: none !important;
+            overflow: hidden !important;
+          }
+          html::-webkit-scrollbar, body::-webkit-scrollbar, #root::-webkit-scrollbar, main::-webkit-scrollbar {
+            display: none !important;
+            width: 0 !important; height: 0 !important;
+          }
+        `;
+        document.head.appendChild(styleTag);
+      } else if (!isDesktop && existingTag) {
+        existingTag.remove();
+      }
+    };
 
+    handleResize();
+    window.addEventListener('resize', handleResize);
     return () => {
+      window.removeEventListener('resize', handleResize);
       const existingTag = document.getElementById("anti-scroll-global-style");
       if (existingTag) existingTag.remove();
     };
@@ -82,25 +87,19 @@ function ResolverContent() {
   }, []);
 
   return (
-    <main className="relative min-h-screen lg:h-screen w-full px-3 md:px-5 py-2 font-['Nunito',sans-serif] overflow-hidden flex flex-col">
+    <main className="relative min-h-screen lg:h-screen w-full px-3 md:px-5 py-2 font-['Nunito',sans-serif] overflow-x-hidden overflow-y-auto lg:overflow-y-hidden flex flex-col">
 
       {/* Decorative elements */}
-      <img src="./src/assets/bush.webp" alt="" aria-hidden="true"
-        className={`pointer-events-none fixed bottom-[-1%] left-[-2%] z-2 w-28 sm:w-36 md:w-44 lg:w-62 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-0' : 'opacity-100'}`} />
-      <img src="./src/assets/bush_night.webp" alt="" aria-hidden="true"
-        className={`pointer-events-none fixed bottom-[-1%] left-[-3%] z-2 w-28 sm:w-36 md:w-44 lg:w-70 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-100' : 'opacity-0'}`} />
-      <img src="./src/assets/bush2.webp" alt="" aria-hidden="true"
-        className={`pointer-events-none fixed bottom-[-1%] right-[-2%] z-2 w-28 sm:w-36 md:w-44 lg:w-62 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-0' : 'opacity-100'}`} />
-      <img src="./src/assets/bush2_night.webp" alt="" aria-hidden="true"
-        className={`pointer-events-none fixed bottom-[-1%] right-[-2%] z-2 w-28 sm:w-36 md:w-44 lg:w-62 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-100' : 'opacity-0'}`} />
-      <img src="./src/assets/books.webp" alt="" aria-hidden="true"
-        className={`pointer-events-none fixed bottom-[2%] left-[3%] z-1 w-28 sm:w-36 md:w-44 lg:w-46 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-0' : 'opacity-100'}`} />
-      <img src="./src/assets/books_night.webp" alt="" aria-hidden="true"
-        className={`pointer-events-none fixed bottom-[2%] left-[3%] z-1 w-28 sm:w-36 md:w-44 lg:w-46 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-100' : 'opacity-0'}`} />
-      <img src="./src/assets/rainbow.webp" alt="" aria-hidden="true"
-        className={`pointer-events-none fixed top-[14%] left-[-5%] z-1 w-28 sm:w-36 md:w-44 lg:w-100 object-contain rotate-24 transition-opacity duration-700 ${isNightMode ? 'opacity-0' : 'opacity-100'}`} />
+      <img src="./src/assets/bush.webp" alt="" aria-hidden="true" className={`pointer-events-none fixed bottom-[-1%] left-[-2%] z-2 w-28 sm:w-36 md:w-44 lg:w-62 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-0' : 'opacity-100'}`} />
+      <img src="./src/assets/bush_night.webp" alt="" aria-hidden="true" className={`pointer-events-none fixed bottom-[-1%] left-[-3%] z-2 w-28 sm:w-36 md:w-44 lg:w-70 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-100' : 'opacity-0'}`} />
+      <img src="./src/assets/bush2.webp" alt="" aria-hidden="true" className={`pointer-events-none fixed bottom-[-1%] right-[-2%] z-2 w-28 sm:w-36 md:w-44 lg:w-62 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-0' : 'opacity-100'}`} />
+      <img src="./src/assets/bush2_night.webp" alt="" aria-hidden="true" className={`pointer-events-none fixed bottom-[-1%] right-[-2%] z-2 w-28 sm:w-36 md:w-44 lg:w-62 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-100' : 'opacity-0'}`} />
+      <img src="./src/assets/books.webp" alt="" aria-hidden="true" className={`pointer-events-none fixed bottom-[2%] left-[3%] z-1 w-28 sm:w-36 md:w-44 lg:w-46 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-0' : 'opacity-100'}`} />
+      <img src="./src/assets/books_night.webp" alt="" aria-hidden="true" className={`pointer-events-none fixed bottom-[2%] left-[3%] z-1 w-28 sm:w-36 md:w-44 lg:w-46 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-100' : 'opacity-0'}`} />
+      <img src="./src/assets/rainbow.webp" alt="" aria-hidden="true" className={`pointer-events-none fixed top-[14%] left-[-5%] z-1 w-28 sm:w-36 md:w-44 lg:w-100 object-contain rotate-24 transition-opacity duration-700 ${isNightMode ? 'opacity-0' : 'opacity-100'}`} />
       <NightModeBackground dayImage="./src/assets/content2.webp" nightImage="./src/assets/noite.webp" />
 
+      {/* REPOSTO: Margens mt e gap idênticos ao do ficheiro Aprender para alinhar as duas páginas perfeitamente */}
       <div className="max-w-[95%] w-full mx-auto flex flex-col lg:flex-row gap-3 lg:gap-20 relative z-10 mt-16 sm:mt-20 lg:mt-24 xl:mt-30 pb-2 flex-1 min-h-0">
         <Aside subjects={subjects} activeSubject={activeSubject} onSelectSubject={setActiveSubject} />
 
@@ -124,8 +123,9 @@ function ResolverContent() {
                 <p className="text-gray-400 text-lg font-semibold">Nenhum exercício disponível</p>
               </div>
             ) : (
+              /* RESOLVIDO: Grid responsiva que ativa o rows-2 e gap maior apenas no desktop (lg:) */
               <div
-                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 items-stretch overflow-y-auto grid-esconde-scroll"
+                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 lg:grid-rows-2 gap-5 lg:gap-8 items-stretch h-auto lg:h-full w-full lg:overflow-hidden grid-esconde-scroll"
                 onTouchStart={carousel.onTouchStart}
                 onTouchEnd={carousel.onTouchEnd}
               >
