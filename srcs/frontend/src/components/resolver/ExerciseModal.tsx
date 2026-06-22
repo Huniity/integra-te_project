@@ -20,39 +20,48 @@ export default function ExerciseModal({ exercise, onClose }: ExerciseModalProps)
   }, [onClose]);
 
   return createPortal(
-    <div onClick={onClose} className="fixed inset-0 z-[9999] overflow-y-auto bg-black/40 backdrop-blur-sm">
-      <div className="flex min-h-full items-center justify-center px-4 py-8">
-        <div onClick={(e) => e.stopPropagation()}
-          className="relative flex w-full max-w-md flex-col items-center rounded-3xl bg-white p-6 shadow-2xl">
-          <button type="button" onClick={onClose} aria-label="Fechar"
-            className="absolute top-3 right-3 flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 text-gray-500 hover:bg-gray-200 transition-colors cursor-pointer">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round">
-              <path d="M6 6l12 12M18 6L6 18" />
-            </svg>
-          </button>
+    <div onClick={onClose} className="fixed inset-0 z-[9999] overflow-y-auto bg-slate-950/50 backdrop-blur-xs flex items-center justify-center p-4">
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="relative flex w-full max-w-2xl flex-col rounded-2xl bg-white dark:bg-slate-900 p-6 shadow-2xl border border-slate-100 dark:border-slate-800"
+      >
+        {/* Botão Fechar de Canto Superior */}
+        <button
+          type="button"
+          onClick={onClose}
+          aria-label="Fechar"
+          className="absolute top-4 right-4 flex h-8 w-8 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors cursor-pointer"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round">
+            <path d="M6 6l12 12M18 6L6 18" />
+          </svg>
+        </button>
 
-          {exercise.iconImg && (
-            <div className="w-20 h-20 flex items-center justify-center my-1 shrink-0">
-              <img src={exercise.iconImg} alt={exercise.title} className="w-full h-full object-contain drop-shadow-md" />
-            </div>
-          )}
-
-          <p className={`font-['Fredoka',sans-serif] text-xl font-semibold text-center mb-2 leading-tight ${exercise.titleColor ?? 'text-gray-800'}`}>
+        {/* Cabeçalho do Modal: Nome bem legível e nível */}
+        <div className="pr-8 mb-4 border-b border-slate-100 dark:border-slate-800 pb-3 flex flex-wrap items-center gap-3">
+          <h2 className="font-['Fredoka'] text-xl sm:text-2xl font-bold text-slate-900 dark:text-white leading-tight">
             {exercise.title}
-          </p>
-
-          <span className={`mb-4 px-3 py-0.5 rounded-full uppercase text-[10px] font-extrabold tracking-[0.05em] ${getLevelBadgeClassName(exercise.level)}`}>
+          </h2>
+          <span className={`px-2.5 py-0.5 rounded-full uppercase text-[9px] font-black tracking-wide ${getLevelBadgeClassName(exercise.level)}`}>
             Nível {exercise.level}
           </span>
+        </div>
 
+        {/* Área do Conteúdo: Sem distrações */}
+        <div className="w-full">
           {(exercise.ficheiro_url ?? exercise.pdfUrl) ? (
-            <iframe src={exercise.ficheiro_url ?? exercise.pdfUrl!} title={exercise.title}
-              className="w-full rounded-xl border border-gray-200"
-              style={{ height: 'min(480px, 60vh)' }} />
+            <iframe
+              src={exercise.ficheiro_url ?? exercise.pdfUrl!}
+              title={exercise.title}
+              className="w-full rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50"
+              style={{ height: 'min(520px, 65vh)' }}
+            />
           ) : (
-            <p className="text-sm text-gray-600 text-center leading-relaxed">
-              {exercise.description ?? 'Sem descrição disponível para este exercício.'}
-            </p>
+            <div className="p-6 bg-slate-50 dark:bg-slate-950 rounded-xl border border-slate-100 dark:border-slate-800/60">
+              <p className="text-sm text-slate-600 dark:text-slate-400 font-medium leading-relaxed">
+                {exercise.description ?? 'Sem descrição disponível para este exercício.'}
+              </p>
+            </div>
           )}
         </div>
       </div>

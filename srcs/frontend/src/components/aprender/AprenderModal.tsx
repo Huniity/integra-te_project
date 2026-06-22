@@ -1,20 +1,19 @@
 import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { FileText, Play } from 'lucide-react';
+import { FileText, Play, X, ExternalLink } from 'lucide-react';
 import { getLevelBadgeClassName } from '../../utils/aprender';
+import { useNightMode } from '../core/NightMode';
 import type { Aula } from '../../api/contracts/aulas';
 
 function toEmbedUrl(url: string): string | null {
-    if (url.includes('youtube.com/watch')) return url.replace('watch?v=', 'embed/');
-    if (url.includes('youtu.be/')) return url.replace('youtu.be/', 'www.youtube.com/embed/');
-    if (url.includes('vimeo.com/')) return url.replace('vimeo.com/', 'player.vimeo.com/video/');
-    return null;
+  if (url.includes('youtube.com/watch')) return url.replace('watch?v=', 'embed/');
+  if (url.includes('youtu.be/')) return url.replace('youtu.be/', 'www.youtube.com/embed/');
+  if (url.includes('vimeo.com/')) return url.replace('vimeo.com/', 'player.vimeo.com/video/');
+  return null;
 }
 
-// Django builds absolute URLs using the Docker-internal host (backend:8000).
-// Strip to path only so Vite's /media proxy can serve it to the browser.
 function toProxiedPath(url: string): string {
-    try { return new URL(url).pathname; } catch { return url; }
+  try { return new URL(url).pathname; } catch { return url; }
 }
 
 interface AprenderModalProps {
@@ -23,6 +22,7 @@ interface AprenderModalProps {
 }
 
 export default function AprenderModal({ aula, onClose }: AprenderModalProps) {
+  const { isNightMode } = useNightMode();
   const embedUrl = aula.videoUrl ? toEmbedUrl(aula.videoUrl) : null;
   const hasVideo = !!embedUrl || !!aula.videoUrl;
   const hasPdf = !!aula.ficheiro_url;
@@ -48,117 +48,116 @@ export default function AprenderModal({ aula, onClose }: AprenderModalProps) {
   return createPortal(
     <div
       onClick={onClose}
-      className="fixed inset-0 z-[9999] overflow-y-auto bg-black/40 backdrop-blur-sm"
+      className="fixed inset-0 z-[9999] bg-slate-950/40 backdrop-blur-sm flex items-center justify-center p-4"
     >
-      <div className="flex min-h-full items-center justify-center px-4 py-8">
-        <div
-          onClick={(e) => e.stopPropagation()}
-          className={`relative flex w-full ${hasMedia ? 'max-w-4xl' : 'max-w-md'} flex-col items-center rounded-3xl bg-white p-6 shadow-2xl`}
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className={`relative flex w-full ${hasMedia ? 'max-w-4xl' : 'max-w-md'} flex-col items-center rounded-[24px] p-6 border transition-all animate-in zoom-in-95 duration-200
+          ${isNightMode
+            ? 'bg-slate-900 border-white/[0.08] text-white shadow-2xl'
+            : 'bg-white border-slate-100 text-slate-900 shadow-2xl'
+          }`}
+      >
+        {/* Botão Fechar */}
+        <button
+          type="button"
+          onClick={onClose}
+          className={`absolute top-4 right-4 flex h-9 w-9 items-center justify-center rounded-full border transition-colors cursor-pointer
+            ${isNightMode
+              ? 'bg-slate-800 border-white/10 text-slate-400 hover:text-white'
+              : 'bg-slate-50 border-slate-200/60 text-slate-400 hover:text-slate-700'
+            }`}
         >
-          <button
-            type="button"
-            onClick={onClose}
-            aria-label="Fechar"
-            className="absolute top-3 right-3 flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 text-gray-500 hover:bg-gray-200 transition-colors cursor-pointer"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round">
-              <path d="M6 6l12 12M18 6L6 18" />
-            </svg>
-          </button>
+          <X size={16} strokeWidth={2.5} />
+        </button>
 
-          <p className="font-['Fredoka',sans-serif] text-xl font-semibold text-center mb-2 leading-tight text-blue-700 pr-8">
+        {/* Título Principal */}
+        <div className="w-full pr-8 mb-3">
+          <h2 className="font-['Fredoka',sans-serif] text-2xl font-black text-blue-600 dark:text-blue-400 mb-1 leading-tight">
             {aula.title}
-          </p>
-
-          <span className={`mb-4 px-3 py-0.5 rounded-full uppercase text-[10px] font-extrabold tracking-[0.05em] ${getLevelBadgeClassName(aula.level)}`}>
+          </h2>
+          <span className={`inline-block px-2.5 py-0.5 rounded-full uppercase text-[9px] font-black tracking-wider shadow-xs ${getLevelBadgeClassName(aula.level)}`}>
             Nível {aula.level}
           </span>
+        </div>
 
-          {aula.description && (
-            <p className="text-sm text-gray-500 text-center leading-relaxed mb-4">
-              {aula.description}
-            </p>
-          )}
+        {/* Descrição em Destaque no Modal */}
+        {aula.description && (
+          <p className={`text-sm md:text-base leading-relaxed mb-5 w-full text-left font-medium ${isNightMode ? 'text-slate-300' : 'text-slate-600'}`}>
+            {aula.description}
+          </p>
+        )}
 
-          {/* Tabs — only shown when both video and PDF exist */}
-          {hasBoth && (
-            <div className="flex w-full mb-4 rounded-xl bg-gray-100 p-1 gap-1">
-              <button
-                onClick={() => setTab('video')}
-                className={`flex flex-1 items-center justify-center gap-2 rounded-lg py-2 text-sm font-bold transition-all cursor-pointer ${
-                  tab === 'video'
-                    ? 'bg-white text-blue-700 shadow-sm'
-                    : 'text-gray-500 hover:text-gray-700'
-                }`}
-              >
-                <Play size={14} />
-                Vídeo
-              </button>
-              <button
-                onClick={() => setTab('pdf')}
-                className={`flex flex-1 items-center justify-center gap-2 rounded-lg py-2 text-sm font-bold transition-all cursor-pointer ${
-                  tab === 'pdf'
-                    ? 'bg-white text-orange-600 shadow-sm'
-                    : 'text-gray-500 hover:text-gray-700'
-                }`}
-              >
-                <FileText size={14} />
-                PDF
-              </button>
+        {/* Abas Alternadas (Se houver Vídeo + PDF) */}
+        {hasBoth && (
+          <div className={`flex w-full max-w-xs mb-5 rounded-xl p-1 gap-1 border ${isNightMode ? 'bg-slate-950/40 border-white/[0.05]' : 'bg-slate-50 border-slate-200/40'}`}>
+            <button
+              onClick={() => setTab('video')}
+              className={`flex flex-1 items-center justify-center gap-2 rounded-lg py-2 text-xs font-bold transition-all cursor-pointer ${
+                tab === 'video' ? 'bg-blue-600 text-white shadow-xs' : 'text-slate-400 hover:text-slate-600'
+              }`}
+            >
+              <Play size={12} fill={tab === 'video' ? 'currentColor' : 'none'} />
+              Vídeo
+            </button>
+            <button
+              onClick={() => setTab('pdf')}
+              className={`flex flex-1 items-center justify-center gap-2 rounded-lg py-2 text-xs font-bold transition-all cursor-pointer ${
+                tab === 'pdf' ? 'bg-emerald-600 text-white shadow-xs' : 'text-slate-400 hover:text-slate-600'
+              }`}
+            >
+              <FileText size={12} />
+              PDF
+            </button>
+          </div>
+        )}
+
+        {/* Reprodutor de Vídeo */}
+        {hasVideo && (!hasBoth || tab === 'video') && (
+          embedUrl ? (
+            <div className="w-full rounded-xl overflow-hidden aspect-video bg-black shadow-md border border-white/5">
+              <iframe
+                src={embedUrl}
+                title={aula.title}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                className="w-full h-full border-0"
+              />
             </div>
-          )}
+          ) : (
+            <a
+              href={aula.videoUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 rounded-xl bg-blue-600 px-6 py-3 text-sm font-bold text-white shadow-sm hover:bg-blue-700 transition-colors"
+            >
+              <Play size={14} fill="currentColor" /> Abrir Vídeo Externo <ExternalLink size={12} />
+            </a>
+          )
+        )}
 
-          {/* Video panel */}
-          {hasVideo && (!hasBoth || tab === 'video') && (
-            embedUrl ? (
-              <div className="w-full rounded-xl overflow-hidden aspect-video bg-black">
-                <iframe
-                  src={embedUrl}
-                  title={aula.title}
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                  className="w-full h-full border-0"
-                />
-              </div>
-            ) : (
-              <a
-                href={aula.videoUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 rounded-xl bg-blue-50 px-4 py-2.5 text-sm font-semibold text-blue-700 hover:bg-blue-100 transition-colors"
-              >
-                <Play size={14} /> Ver Vídeo
-              </a>
-            )
-          )}
-
-          {/* PDF panel */}
-          {hasPdf && (!hasBoth || tab === 'pdf') && pdfSrc && (
-            <div className="w-full flex flex-col gap-2">
+        {/* Reprodutor de PDF */}
+        {hasPdf && (!hasBoth || tab === 'pdf') && pdfSrc && (
+          <div className="w-full flex flex-col gap-3">
+            <div className="w-full rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-950 border border-slate-200/50 dark:border-white/5">
               <iframe
                 src={pdfSrc}
                 title={`PDF — ${aula.title}`}
-                className="w-full rounded-xl border border-gray-100"
-                style={{ height: 'min(640px, 60vh)' }}
+                className="w-full border-0 opacity-90"
+                style={{ height: 'min(460px, 48vh)' }}
               />
-              <a
-                href={pdfSrc}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2 rounded-xl bg-orange-50 px-5 py-2 text-sm font-semibold text-orange-700 hover:bg-orange-100 transition-colors"
-              >
-                <FileText size={14} />
-                Abrir PDF em nova aba
-              </a>
             </div>
-          )}
-
-          {!hasMedia && (
-            <p className="text-sm text-gray-600 text-center leading-relaxed">
-              Sem descrição disponível para esta aula.
-            </p>
-          )}
-        </div>
+            <a
+              href={pdfSrc}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-6 py-3 text-sm font-bold text-white shadow-sm hover:bg-emerald-700 transition-colors"
+            >
+              <FileText size={14} />
+              Abrir PDF Completo <ExternalLink size={12} />
+            </a>
+          </div>
+        )}
       </div>
     </div>,
     document.body,

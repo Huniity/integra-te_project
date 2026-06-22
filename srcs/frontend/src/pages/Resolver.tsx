@@ -39,6 +39,34 @@ function ResolverContent() {
 
   const carousel = useCarousel(filteredExercises, { mobile: 2, tablet: 4, desktop: 6 });
 
+
+  useEffect(() => {
+    const styleTag = document.createElement("style");
+    styleTag.id = "anti-scroll-global-style";
+    styleTag.innerHTML = `
+      html, body, #root, main, .grid-esconde-scroll {
+        scrollbar-width: none !important;
+        -ms-overflow-style: none !important;
+      }
+      html::-webkit-scrollbar,
+      body::-webkit-scrollbar,
+      #root::-webkit-scrollbar,
+      main::-webkit-scrollbar,
+      .grid-esconde-scroll::-webkit-scrollbar {
+        display: none !important;
+        width: 0 !important;
+        height: 0 !important;
+      }
+    `;
+    document.head.appendChild(styleTag);
+
+
+    return () => {
+      const existingTag = document.getElementById("anti-scroll-global-style");
+      if (existingTag) existingTag.remove();
+    };
+  }, []);
+
   useEffect(() => {
     const load = async () => {
       try {
@@ -54,7 +82,7 @@ function ResolverContent() {
   }, []);
 
   return (
-    <main className="relative min-h-screen lg:h-screen w-full px-3 md:px-5 py-2 font-['Nunito',sans-serif] overflow-x-hidden overflow-y-auto lg:overflow-y-hidden flex flex-col">
+    <main className="relative min-h-screen lg:h-screen w-full px-3 md:px-5 py-2 font-['Nunito',sans-serif] overflow-hidden flex flex-col">
 
       {/* Decorative elements */}
       <img src="./src/assets/bush.webp" alt="" aria-hidden="true"
@@ -97,7 +125,7 @@ function ResolverContent() {
               </div>
             ) : (
               <div
-                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 items-stretch"
+                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 items-stretch overflow-y-auto grid-esconde-scroll"
                 onTouchStart={carousel.onTouchStart}
                 onTouchEnd={carousel.onTouchEnd}
               >
