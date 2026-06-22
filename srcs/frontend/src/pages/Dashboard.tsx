@@ -59,7 +59,7 @@ function DashboardInner() {
                     cloudImage={cloudMenu}
                 />
 
-                <MainContent title={activeTabLabel}>
+                <MainContent title={activeTabLabel} logoutBtn={true}>
                     {activeTab === 'dashboard'
                         ? <OverviewPanel onTabSelect={handleTabSelectCreate} />
                         : createElement(ActivePanel, { autoCreate: pendingCreate })
