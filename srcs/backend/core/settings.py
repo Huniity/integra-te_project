@@ -182,3 +182,9 @@ STATIC_ROOT = BASE_DIR / "staticfiles" / "static"
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "staticfiles" / "media"
+
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+    }
+}
