@@ -22,8 +22,7 @@ function AboutContent() {
 
   return (
     <main
-      className="relative h-screen w-full px-3 md:px-6 font-['Nunito',sans-serif] overflow-x-hidden overflow-y-auto flex flex-col [&::-webkit-scrollbar]:hidden"
-      style={{ scrollbarWidth: 'none' }}
+      className="relative min-h-screen w-full px-3 md:px-6 font-['Nunito',sans-serif] overflow-x-hidden"
     >
       <NightModeBackground dayImage='/src/assets/content2.webp' nightImage='/src/assets/noite.webp' />
 

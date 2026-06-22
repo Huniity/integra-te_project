@@ -75,7 +75,7 @@ function FaqContent() {
 
   return (
     <main
-      className="relative h-screen w-full bg-cover bg-center bg-no-repeat bg-fixed font-['Nunito',sans-serif] overflow-hidden flex flex-col justify-between"
+      className="relative min-h-screen w-full bg-cover bg-center bg-no-repeat bg-fixed font-['Nunito',sans-serif] overflow-x-hidden"
       style={{ backgroundImage: 'url(/src/assets/content2.webp)' }}
     >
       <NightModeBackground dayImage='/src/assets/content2.webp' nightImage='/src/assets/noite.webp' />
@@ -92,21 +92,8 @@ function FaqContent() {
         }
       `}</style>
 
-      {/* Content wrapper com Scrollbar Oculta */}
-      <div
-        className="flex-1 max-w-4xl w-full mx-auto relative z-10 flex flex-col min-h-0 overflow-y-auto py-2 pr-1"
-        style={{
-          scrollbarWidth: 'none',
-          msOverflowStyle: 'none',
-          WebkitOverflowScrolling: 'touch'
-        }}
-      >
-        <style>{`
-          div::-webkit-scrollbar {
-            display: none !important;
-          }
-        `}</style>
-
+      {/* Content wrapper */}
+      <div className="max-w-4xl w-full mx-auto relative z-10 flex flex-col">
         <div className="max-w-3xl w-full mx-auto flex flex-col pt-12 sm:pt-16 pb-16 sm:pb-24 md:pb-36 px-3 sm:px-4 md:px-6">
 
           {/* SECÇÃO PRINCIPAL COM O TEU SECTIONBG */}

@@ -274,3 +274,25 @@
     color: white !important;
   }
 }
+
+/* Hides native scrollbars globally (preserve scroll behaviour)
+   Page scroll still works - wheel, touch, arrow keys, page-down, programmatic
+   scrolling. This hides the visible track + thumb so the decorative
+   sky/glass backgrounds aren't cut by the browser chrome. Applies to the
+   document scroller and any nested overflow:auto/scroll element.
+*/
+/* Firefox */
+html {
+  scrollbar-width: none;
+}
+
+/* Chromium / WebKit / Edge — document + any element */
+html::-webkit-scrollbar,
+*::-webkit-scrollbar {
+  display: none;
+}
+
+/* Legacy IE / older Edge */
+* {
+  -ms-overflow-style: none;
+}

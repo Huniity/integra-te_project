@@ -50,7 +50,7 @@ async function submitContact(payload: {
   }
 }
 
-/* ─── Form state & validation ────────────────────────────────────────────── */
+/* Form state & validation */
 interface FormState {
   name          : string
   email         : string
@@ -101,12 +101,12 @@ function validate(form: FormState): FieldErrors {
   return errors
 }
 
-/* ─── Page root ──────────────────────────────────────────────────────────── */
+/* Page root */
 export default function Contact() {
   return <ContactContent />
 }
 
-/* ─── Inner content (needs NightMode context) ────────────────────────────── */
+/* Inner content (needs NightMode context) */
 function ContactContent() {
   const { isNightMode } = useNightMode()
 
@@ -166,11 +166,10 @@ function ContactContent() {
   return (
     <main
       id="main-content"
-      className="relative h-screen w-full px-3 md:px-5 py-2 font-['Nunito',sans-serif] overflow-x-hidden overflow-y-auto flex flex-col [&::-webkit-scrollbar]:hidden"
-      style={{ scrollbarWidth: 'none' }}
+      className="relative min-h-screen w-full px-3 md:px-5 py-2 font-['Nunito',sans-serif] overflow-x-hidden"
     >
 
-      {/* ── Decorative elements (identical to Resolver) ── */}
+      {/* Decorative elements (identical to Resolver) */}
       <img src="/src/assets/bush.webp" alt="" aria-hidden="true"
         className={`pointer-events-none fixed bottom-[-1%] left-[-2%] z-2 w-28 sm:w-36 md:w-44 lg:w-48 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-0' : 'opacity-100'}`} />
       <img src="/src/assets/bush_night.webp" alt="" aria-hidden="true"
@@ -375,8 +374,7 @@ function ContactContent() {
   )
 }
 
-/* ─── Sub-components (form-level, unchanged) ─────────────────────────────── */
-
+/* Sub-components (form-level, unchanged) */
 function inputClass(hasError: boolean): string {
   return `
     w-full rounded-xl border px-3.5 py-2.5

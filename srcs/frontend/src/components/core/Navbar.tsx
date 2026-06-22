@@ -495,7 +495,14 @@ export function Navbar() {
               <>
                 <button
                     onClick={() => navigate('/')}
-                    className="ml-[-7%] h-16 md:h-22 w-[190px] md:w-[270px] flex items-center justify-center relative overflow-visible hover:scale-105 transition-transform duration-300 cursor-pointer"
+                    className={`
+                      ml-[-7%] flex items-center justify-center relative overflow-visible cursor-pointer
+                      hover:scale-105 transition-[transform,height,width] duration-300 ease-out
+                      ${isCompact
+                        ? 'h-10 md:h-14 w-[120px] md:w-[170px]'
+                        : 'h-16 md:h-22 w-[190px] md:w-[270px]'
+                      }
+                    `}
                     >
                     <img
                       src={CloudDay}
@@ -509,10 +516,18 @@ export function Navbar() {
                       aria-hidden="true"
                       className={`absolute w-[300%] h-[300%] object-contain pointer-events-none transition-opacity duration-700 ${isNightMode ? 'opacity-100' : 'opacity-0'}`}
                     />
-                    <img src={Logo} alt="INTEGRA-TE" className="relative z-10 h-16 md:h-24 mt-2 md:mt-10 w-[200px] md:w-[250px] object-contain rotate-[9deg]" />
-                    {/* <span className="font-['Fredoka',sans-serif] text-xl md:text-[1.4rem] font-black tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-[#005bb7] to-[#3b82f6]">
-                        INTEGRA-TE
-                    </span> */}
+                    <img
+                      src={Logo}
+                      alt="INTEGRA-TE"
+                      className={`
+                        relative z-10 object-contain rotate-[9deg]
+                        transition-[height,width,margin] duration-300 ease-out
+                        ${isCompact
+                          ? 'h-10 md:h-14 mt-1 md:mt-6 w-[125px] md:w-[155px]'
+                          : 'h-16 md:h-24 mt-2 md:mt-10 w-[200px] md:w-[250px]'
+                        }
+                      `}
+                    />
                 </button>
               </>
             )}

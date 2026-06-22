@@ -48,8 +48,7 @@ function LoginContent() {
 
   return (
     <main
-      className="relative h-screen w-full px-3 md:px-5 py-2 font-['Nunito',sans-serif] overflow-x-hidden overflow-y-auto flex flex-col [&::-webkit-scrollbar]:hidden"
-      style={{ scrollbarWidth: 'none' }}
+      className="relative min-h-screen w-full px-3 md:px-5 py-2 font-['Nunito',sans-serif] overflow-x-hidden"
     >
       {/* Decorative bushes */}
       <img src="/src/assets/bush.webp" alt="" aria-hidden="true"
@@ -67,7 +66,7 @@ function LoginContent() {
       <div className="flex flex-1 items-center justify-center relative z-10 py-8">
         <div className="relative w-full max-w-md flex items-center justify-center">
 
-          {/* Cloud background image — same technique as the Aside sidebar */}
+          {/* Cloud background image */}
           <img
             src="/src/assets/cloud_menu2.webp"
             alt="" aria-hidden="true"
