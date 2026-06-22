@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useNightMode } from './NightMode';
 import { fetchWithConfig } from '../../services/api';
@@ -7,17 +7,23 @@ import { getCookie, setCookie } from '../../utils/cookies';
 const MIC_CONSENT_COOKIE = 'mic_consent';
 const MIC_CONSENT_DAYS = 180;
 
+interface SearchResult { route: string; label: string; distance: number }
+
 export function SearchBar({ className }: { className?: string }) {
   const navigate = useNavigate();
   const { isNightMode } = useNightMode();
   const [searchText, setSearchText] = useState('');
+  const [results, setResults]       = useState<SearchResult[]>([]);
+  const [showDrop, setShowDrop]     = useState(false);
   const [isRecording, setIsRecording] = useState(false);
   const [isTranscribing, setIsTranscribing] = useState(false);
   const [showConsent, setShowConsent] = useState(false);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const mediaStreamRef = useRef<MediaStream | null>(null);
   const audioChunksRef = useRef<BlobPart[]>([]);
+  const formRef = useRef<HTMLFormElement>(null);
 
+  /* cleanup mic on unmount */
   useEffect(() => {
     return () => {
       if (mediaStreamRef.current) {
@@ -25,6 +31,39 @@ export function SearchBar({ className }: { className?: string }) {
       }
     };
   }, []);
+
+  useEffect(() => {
+    const q = searchText.trim();
+    if (q.length < 2) { setResults([]); setShowDrop(false); return; }
+    const t = setTimeout(async () => {
+      try {
+        const data = await fetchWithConfig<{ results: SearchResult[] }>(
+          `/v1/voice/search/?q=${encodeURIComponent(q)}&top=5`,
+        );
+        setResults(data.results ?? []);
+        setShowDrop(true);
+      } catch { setResults([]); setShowDrop(false); }
+    }, 300);
+    return () => clearTimeout(t);
+  }, [searchText]);
+
+
+  useEffect(() => {
+    const fn = (e: MouseEvent) => {
+      if (formRef.current && !formRef.current.contains(e.target as Node)) setShowDrop(false);
+    };
+    document.addEventListener('mousedown', fn);
+    return () => document.removeEventListener('mousedown', fn);
+  }, []);
+
+  function handleSubmit(e: FormEvent) {
+    e.preventDefault();
+    if (results.length > 0) { navigate(results[0].route); setSearchText(''); setShowDrop(false); }
+  }
+
+  function pick(route: string) {
+    navigate(route); setSearchText(''); setShowDrop(false);
+  }
 
   const startRecording = async () => {
     try {
@@ -117,7 +156,8 @@ export function SearchBar({ className }: { className?: string }) {
   return (
     <>
       <form
-        onSubmit={(event) => event.preventDefault()}
+        ref={formRef}
+        onSubmit={handleSubmit}
         className={className ?? "relative flex w-full sm:w-[280px] max-w-xs items-center rounded-full border border-white/40 bg-white/15 backdrop-blur-xs shadow-[0_14px_36px_rgba(31,38,135,0.22)] ring-1 ring-white/20 sm:absolute sm:left-1/2 sm:-translate-x-1/2"}
       >
         <button
@@ -140,11 +180,27 @@ export function SearchBar({ className }: { className?: string }) {
           type="text"
           value={searchText}
           onChange={(event) => setSearchText(event.target.value)}
+          onFocus={() => results.length > 0 && setShowDrop(true)}
           placeholder="O que procuras?"
           className={`font-['Fredoka',sans-serif] w-full rounded-full bg-white/30 py-2.5 pl-12 pr-3 text-sm font-semibold tracking-wide outline-none transition-colors duration-500 ${
             isNightMode ? 'text-white/90 placeholder-white/90' : 'text-blue-600/90 placeholder-blue-600/90'
           }`}
         />
+
+        {showDrop && results.length > 0 && (
+          <div className="absolute top-[calc(100%+6px)] left-0 right-0 z-[60] rounded-2xl bg-white/95 backdrop-blur-md shadow-[0_8px_32px_rgba(31,38,135,0.18)] border border-white/40 overflow-hidden">
+            {results.map((r, i) => (
+              <button
+                key={i}
+                type="button"
+                onMouseDown={() => pick(r.route)}
+                className="w-full text-left px-4 py-2.5 font-['Fredoka',sans-serif] font-bold text-sm text-[#1e3a8a] hover:bg-blue-50 transition-colors border-b border-neutral-100 last:border-0 cursor-pointer"
+              >
+                {r.label}
+              </button>
+            ))}
+          </div>
+        )}
       </form>
 
       {showConsent && (
