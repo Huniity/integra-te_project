@@ -1,6 +1,6 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.throttling import AnonRateThrottle
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import authenticate
@@ -123,3 +123,15 @@ class LogoutView(APIView):
             "refresh_token", path="/", samesite=COOKIE_CONFIG["samesite"]
         )
         return response
+
+
+class MeView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        return Response(
+            {
+                "username": request.user.username,
+                "is_staff": request.user.is_staff,
+            }
+        )

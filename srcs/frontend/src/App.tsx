@@ -13,6 +13,7 @@ import Descarregar from './pages/Descarregar'
 import Videos    from './pages/Videos'
 import Ler       from './pages/Ler'
 import Dashboard from './pages/Dashboard'
+import RequireAuth from './components/core/RequireAuth'
 import './App.css'
 import Login from './pages/Login'
 
@@ -42,7 +43,7 @@ export default function App() {
         <Route path="/faq"         element={<Faq />} />
         <Route path="/privacidade" element={<Privacy />} />
         <Route path="/contactar"   element={<Contact />} />
-        <Route path="/dashboard"   element={<Dashboard />} />
+        <Route path="/dashboard"   element={<RequireAuth><Dashboard /></RequireAuth>} />
         <Route path="*"            element={<PageStub title="Página não encontrada" />} />
       </Routes>
     </NightModeProvider>
