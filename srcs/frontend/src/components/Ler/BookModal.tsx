@@ -19,7 +19,7 @@ export default function BookModal({ book, onClose }: BookModalProps) {
           </button>
 
           <div className="w-28 h-36 flex items-center justify-center my-2">
-            <img src={book.capa_url ?? './src/assets/blue_book.webp'} alt={book.titulo}
+            <img src={book.capa_url ?? '/src/assets/blue_book.webp'} alt={book.titulo}
               className="w-full h-full object-contain drop-shadow-md" />
           </div>
 

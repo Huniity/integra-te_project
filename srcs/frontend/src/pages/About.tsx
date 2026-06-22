@@ -25,7 +25,7 @@ function AboutContent() {
       className="relative h-screen w-full px-3 md:px-6 font-['Nunito',sans-serif] overflow-x-hidden overflow-y-auto flex flex-col [&::-webkit-scrollbar]:hidden"
       style={{ scrollbarWidth: 'none' }}
     >
-      <NightModeBackground dayImage='./src/assets/content2.webp' nightImage='./src/assets/noite.webp' />
+      <NightModeBackground dayImage='/src/assets/content2.webp' nightImage='/src/assets/noite.webp' />
 
         <div className="max-w-3xl w-full mx-auto flex flex-col mt-40 pb-10 relative z-10 px-1">
 

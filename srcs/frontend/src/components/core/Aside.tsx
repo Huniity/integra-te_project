@@ -52,7 +52,7 @@ export default function Aside({ subjects, activeSubject, onSelectSubject, title 
       <aside className="hidden lg:flex flex-col justify-center items-center gap-2.5 w-64 shrink-0">
         <div className="relative w-full overflow-visible px-2 py-2">
           <img
-            src="./src/assets/cloud_menu.webp"
+            src="/src/assets/cloud_menu.webp"
             alt=""
             aria-hidden="true"
             className="pointer-events-none absolute left-1/2 top-1/2 h-[140%] w-[160%] -translate-x-1/2 -translate-y-1/2 object-fill opacity-95"

@@ -18,6 +18,7 @@ export interface AulaPayload {
   description?: string;
   videoUrl?: string;
   thumbnailUrl?: string;
+  thumbnail?: File | null;
   ficheiro?: File | null;
   publicado: boolean;
 }

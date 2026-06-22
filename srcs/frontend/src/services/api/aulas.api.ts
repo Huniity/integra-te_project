@@ -7,10 +7,11 @@ function toFormData(payload: AulaPayload): FormData {
     fd.append('subjectId', payload.subjectId);
     fd.append('level', String(payload.level));
     fd.append('publicado', String(payload.publicado));
-    if (payload.description)  fd.append('description', payload.description);
-    if (payload.videoUrl)     fd.append('videoUrl', payload.videoUrl);
-    if (payload.thumbnailUrl) fd.append('thumbnailUrl', payload.thumbnailUrl);
-    if (payload.ficheiro)     fd.append('ficheiro', payload.ficheiro);
+    if (payload.description)    fd.append('description', payload.description);
+    if (payload.videoUrl)       fd.append('videoUrl', payload.videoUrl);
+    if (payload.thumbnailUrl)   fd.append('thumbnailUrlInput', payload.thumbnailUrl);
+    if (payload.thumbnail)      fd.append('thumbnail', payload.thumbnail);
+    if (payload.ficheiro)       fd.append('ficheiro', payload.ficheiro);
     return fd;
 }
 
@@ -21,9 +22,9 @@ function toJson(payload: AulaPayload): string {
         level: payload.level,
         publicado: payload.publicado,
     };
-    if (payload.description)  body.description  = payload.description;
-    if (payload.videoUrl)     body.videoUrl     = payload.videoUrl;
-    if (payload.thumbnailUrl) body.thumbnailUrl = payload.thumbnailUrl;
+    if (payload.description)    body.description       = payload.description;
+    if (payload.videoUrl)       body.videoUrl          = payload.videoUrl;
+    if (payload.thumbnailUrl)   body.thumbnailUrlInput = payload.thumbnailUrl;
     return JSON.stringify(body);
 }
 
@@ -38,12 +39,12 @@ export const aulasApi = {
     },
 
     createAula: async (payload: AulaPayload): Promise<Aula> => {
-        const body = payload.ficheiro ? toFormData(payload) : toJson(payload);
+        const body = (payload.ficheiro || payload.thumbnail) ? toFormData(payload) : toJson(payload);
         return fetchWithConfig<Aula>('/aulas/', { method: 'POST', body });
     },
 
     updateAula: async (id: string, payload: AulaPayload): Promise<Aula> => {
-        const body = payload.ficheiro ? toFormData(payload) : toJson(payload);
+        const body = (payload.ficheiro || payload.thumbnail) ? toFormData(payload) : toJson(payload);
         return fetchWithConfig<Aula>(`/aulas/${id}/`, { method: 'PUT', body });
     },
 

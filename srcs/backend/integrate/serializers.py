@@ -104,28 +104,26 @@ class JogosSerializers(serializers.ModelSerializer):
     subjectId = serializers.CharField(
         source="subject_id", allow_blank=True, required=False
     )
-    thumbnailUrl = serializers.CharField(
-        source="thumbnail_url", allow_blank=True, required=False
+    thumbnailUrl = serializers.SerializerMethodField()
+    thumbnail = serializers.ImageField(required=False, allow_null=True, write_only=True)
+    thumbnailUrlInput = serializers.CharField(
+        source="thumbnail_url", allow_blank=True, required=False, write_only=True
     )
     videoUrl = serializers.URLField(source="video_url", allow_null=True, required=False)
     ficheiro_url = serializers.SerializerMethodField()
     ficheiro = serializers.FileField(required=False, allow_null=True, write_only=True)
 
+    def get_thumbnailUrl(self, obj):
+        if obj.thumbnail:
+            return obj.thumbnail.url
+        return obj.thumbnail_url or None
+
     def get_ficheiro_url(self, obj):
-        """
-        Returns the URL of the file associated with the Jogo instance.
-        If the file exists, its URL is returned; otherwise, the external URL is returned.
-        """
         if obj.ficheiro:
             return obj.ficheiro.url
         return obj.url_externa or None
 
     class Meta:
-        """
-        Meta class for the JogosSerializers.
-        Specifies the model and fields to be serialized, along with extra keyword arguments for certain fields.
-        """
-
         model = Jogo
         fields = (
             "id",
@@ -136,6 +134,8 @@ class JogosSerializers(serializers.ModelSerializer):
             "subjectId",
             "level",
             "thumbnailUrl",
+            "thumbnailUrlInput",
+            "thumbnail",
             "videoUrl",
             "url_externa",
             "ficheiro",
@@ -330,28 +330,26 @@ class ExercicioSerializer(serializers.ModelSerializer):
     )
     iconImg = serializers.CharField(source="icon_img", required=False, allow_blank=True)
     pdfUrl = serializers.URLField(source="pdf_url", allow_null=True, required=False)
-    thumbnailUrl = serializers.CharField(
-        source="thumbnail_url", allow_blank=True, required=False
+    thumbnailUrl = serializers.SerializerMethodField()
+    thumbnail = serializers.ImageField(required=False, allow_null=True, write_only=True)
+    thumbnailUrlInput = serializers.CharField(
+        source="thumbnail_url", allow_blank=True, required=False, write_only=True
     )
     videoUrl = serializers.URLField(source="video_url", allow_null=True, required=False)
     ficheiro = serializers.FileField(required=False, allow_null=True, write_only=True)
     ficheiro_url = serializers.SerializerMethodField()
 
+    def get_thumbnailUrl(self, obj):
+        if obj.thumbnail:
+            return obj.thumbnail.url
+        return obj.thumbnail_url or None
+
     def get_ficheiro_url(self, obj):
-        """
-        Returns the URL of the file associated with the Exercicio instance.
-        If the file exists, its URL is returned; otherwise, the PDF URL is returned.
-        """
         if obj.ficheiro:
             return obj.ficheiro.url
         return obj.pdf_url or None
 
     class Meta:
-        """
-        Meta class for the ExercicioSerializer.
-        Specifies the model and fields to be serialized, along with extra keyword arguments for certain fields.
-        """
-
         model = Exercicio
         fields = (
             "id",
@@ -364,6 +362,8 @@ class ExercicioSerializer(serializers.ModelSerializer):
             "description",
             "pdfUrl",
             "thumbnailUrl",
+            "thumbnailUrlInput",
+            "thumbnail",
             "videoUrl",
             "ficheiro",
             "ficheiro_url",
@@ -382,19 +382,26 @@ class AulaSerializer(serializers.ModelSerializer):
 
     subjectId = serializers.CharField(source="subject_id")
     videoUrl = serializers.URLField(source="video_url", allow_null=True, required=False)
-    thumbnailUrl = serializers.CharField(
-        source="thumbnail_url", allow_blank=True, required=False
+    thumbnailUrl = serializers.SerializerMethodField()
+    thumbnail = serializers.ImageField(required=False, allow_null=True, write_only=True)
+    thumbnailUrlInput = serializers.CharField(
+        source="thumbnail_url", allow_blank=True, required=False, write_only=True
     )
     createdAt = serializers.DateTimeField(source="created_at", read_only=True)
     ficheiro = serializers.FileField(required=False, allow_null=True, write_only=True)
     ficheiro_url = serializers.SerializerMethodField()
 
-    class Meta:
-        """
-        Meta class for the AulaSerializer.
-        Specifies the model and fields to be serialized, along with extra keyword arguments for certain fields.
-        """
+    def get_thumbnailUrl(self, obj):
+        if obj.thumbnail:
+            return obj.thumbnail.url
+        return obj.thumbnail_url or None
 
+    def get_ficheiro_url(self, obj):
+        if obj.ficheiro:
+            return obj.ficheiro.url
+        return None
+
+    class Meta:
         model = Aula
         fields = (
             "id",
@@ -404,17 +411,10 @@ class AulaSerializer(serializers.ModelSerializer):
             "description",
             "videoUrl",
             "thumbnailUrl",
+            "thumbnailUrlInput",
+            "thumbnail",
             "ficheiro",
             "ficheiro_url",
             "createdAt",
             "publicado",
         )
-
-    def get_ficheiro_url(self, obj):
-        """
-        Returns the URL of the file associated with the Aula instance.
-        If the file exists, its URL is returned; otherwise, None is returned.
-        """
-        if obj.ficheiro:
-            return obj.ficheiro.url
-        return None

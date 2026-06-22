@@ -21,7 +21,7 @@ export default function BookCard({ livro, onSelect }: BookCardProps) {
           />
         ) : (
           <img
-            src="./src/assets/blue_book.webp"
+            src="/src/assets/blue_book.webp"
             alt=""
             aria-hidden="true"
             className="w-full h-full object-contain drop-shadow-md opacity-80"

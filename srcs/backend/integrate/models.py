@@ -104,6 +104,7 @@ class Jogo(models.Model):
     subject_id = models.CharField(max_length=200, blank=True)
     level = models.IntegerField(null=True, blank=True)
     thumbnail_url = models.CharField(max_length=500, blank=True)
+    thumbnail = models.ImageField(upload_to="thumbnails/jogos/", null=True, blank=True)
     video_url = models.URLField(max_length=500, null=True, blank=True)
     url_externa = models.URLField(max_length=500, null=True, blank=True)
     ficheiro = models.FileField(upload_to="jogos/", null=True, blank=True)
@@ -149,6 +150,9 @@ class Exercicio(models.Model):
     description = models.TextField(blank=True)
     pdf_url = models.URLField(max_length=500, null=True, blank=True)
     thumbnail_url = models.CharField(max_length=500, blank=True)
+    thumbnail = models.ImageField(
+        upload_to="thumbnails/exercicios/", null=True, blank=True
+    )
     video_url = models.URLField(max_length=500, null=True, blank=True)
     ficheiro = models.FileField(upload_to="exercicios/", null=True, blank=True)
     publicado = models.BooleanField(default=False)
@@ -169,6 +173,7 @@ class Aula(models.Model):
     description = models.TextField(blank=True)
     video_url = models.URLField(max_length=500, null=True, blank=True)
     thumbnail_url = models.CharField(max_length=500, blank=True)
+    thumbnail = models.ImageField(upload_to="thumbnails/aulas/", null=True, blank=True)
     ficheiro = models.FileField(upload_to="aulas/", null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     publicado = models.BooleanField(default=False)

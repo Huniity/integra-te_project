@@ -8,7 +8,7 @@ let activeRefreshPromise: Promise<void> | null = null;
 
 const refreshToken = async (): Promise<void> => {
     const baseUrl = API_BASE_URL.replace(/\/$/, "");
-    const response = await fetch(`${baseUrl}/auth/refresh/`, {
+    const response = await fetch(`${baseUrl}/v1/refresh`, {
         method: "POST",
         credentials: "include",
     });

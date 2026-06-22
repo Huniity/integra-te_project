@@ -13,9 +13,9 @@ const SUBJECTS = [
 ]
 
 const SUBJECT_IMG: Record<string, string> = {
-    matematica:       './src/assets/math.webp',
-    portugues:        './src/assets/book3.png',
-    'estudo-do-meio': './src/assets/science.png',
+    matematica:       '/src/assets/math.webp',
+    portugues:        '/src/assets/book3.webp',
+    'estudo-do-meio': '/src/assets/science.webp',
 }
 
 const LEVEL_COLORS: Record<number, string> = {
@@ -38,10 +38,12 @@ function ExercicioModal({ initial, currentFicheiroUrl, onSave, onClose }: {
     onSave: (p: ExercicioPayload) => Promise<void>
     onClose: () => void
 }) {
-    const [form, setForm] = useState<ExercicioPayload>(initial)
+    const [form, setForm] = useState<ExercicioPayload>({ ...initial, thumbnail: null })
     const [saving, setSaving] = useState(false)
     const [error, setError] = useState<string | null>(null)
     const fileRef = useRef<HTMLInputElement>(null)
+    const thumbnailRef = useRef<HTMLInputElement>(null)
+    const [thumbPreview, setThumbPreview] = useState<string | null>(initial.thumbnailUrl || null)
 
     const set = <K extends keyof ExercicioPayload>(k: K, v: ExercicioPayload[K]) => setForm(f => ({ ...f, [k]: v }))
 
@@ -87,21 +89,38 @@ function ExercicioModal({ initial, currentFicheiroUrl, onSave, onClose }: {
                     </div>
 
                     <div>
-                        <label className="mb-1 block text-xs font-semibold text-gray-500 uppercase tracking-wide">Imagem do card (URL)</label>
+                        <label className="mb-1 block text-xs font-semibold text-gray-500 uppercase tracking-wide">Imagem do card</label>
                         <div className="flex items-start gap-3">
-                            <div className="flex-1">
+                            <div className="flex-1 flex flex-col gap-2">
                                 <input type="url" value={form.thumbnailUrl ?? ''}
-                                    onChange={e => set('thumbnailUrl', e.target.value || undefined)}
-                                    placeholder="https://exemplo.com/imagem.png (opcional)"
+                                    onChange={e => {
+                                        set('thumbnailUrl', e.target.value || undefined)
+                                        setThumbPreview(e.target.value || null)
+                                        if (e.target.value) set('thumbnail', null)
+                                    }}
+                                    placeholder="https://exemplo.com/imagem.png"
                                     className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400" />
-                                <p className="mt-1 text-xs text-gray-400">Se vazio, usa a imagem padrão da matéria</p>
+                                <input
+                                    ref={thumbnailRef}
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={e => {
+                                        const file = e.target.files?.[0] ?? null
+                                        set('thumbnail', file)
+                                        if (file) {
+                                            setThumbPreview(URL.createObjectURL(file))
+                                            set('thumbnailUrl', undefined)
+                                        }
+                                    }}
+                                    className="w-full text-sm text-gray-500 file:mr-3 file:rounded-lg file:border-0 file:bg-blue-50 file:px-3 file:py-1.5 file:text-xs file:font-semibold file:text-blue-700 hover:file:bg-blue-100 cursor-pointer" />
+                                <p className="text-xs text-gray-400">URL ou ficheiro. Se vazio, usa a imagem padrão da matéria</p>
                             </div>
                             <div className="w-14 h-14 rounded-xl overflow-hidden border border-gray-200 bg-gray-50 shrink-0">
                                 <img
-                                    src={form.thumbnailUrl || SUBJECT_IMG[form.subjectId] || './src/assets/math.webp'}
+                                    src={thumbPreview || SUBJECT_IMG[form.subjectId] || '/src/assets/math.webp'}
                                     alt=""
                                     className="w-full h-full object-cover"
-                                    onError={e => { (e.target as HTMLImageElement).src = './src/assets/math.webp' }}
+                                    onError={e => { (e.target as HTMLImageElement).src = '/src/assets/math.webp' }}
                                 />
                             </div>
                         </div>

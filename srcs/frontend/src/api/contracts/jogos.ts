@@ -22,6 +22,7 @@ export interface JogoPayload {
   subjectId?: string;
   level?: number;
   thumbnailUrl?: string;
+  thumbnail?: File | null;
   descricao?: string;
   videoUrl?: string;
   ficheiro?: File | null;
