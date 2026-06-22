@@ -8,13 +8,14 @@ import Logo from '../../assets/integrate.webp'
 import { NightModeNavButton, useNightMode } from './NightMode'
 import CloudDay   from '../../assets/cloud_logo1.webp'
 import CloudNight from '../../assets/cloud_logo2.webp'
+import { useNavVisibility, type NavVisibility } from '../../hooks/useNavVisibility'
 
 /* Types */
 interface NavItem {
   id           : string
   label        : string
   path         : string
-  /** Coloured sphere/dot — same assets as Homepage menu buttons */
+  /** Coloured sphere/dot - same assets as Homepage menu buttons */
   bgImg        : string
   /** Icon layered on top of the sphere */
   iconImg      : string
@@ -185,8 +186,8 @@ function BurgerButton({ isOpen, onClick, btnRef }: BurgerButtonProps) {
   )
 }
 
-/* Desktop sphere icon — no label, active state = white ring + scale */
-function DesktopNavIcon({ item }: { item: NavItem }) {
+/* Desktop sphere icon - no label, active state = white ring + scale */
+function DesktopNavIcon({ item, compact }: { item: NavItem; compact: boolean }) {
   return (
     <NavLink
       to={item.path}
@@ -201,22 +202,23 @@ function DesktopNavIcon({ item }: { item: NavItem }) {
           whileTap={{ scale: 0.90 }}
           transition={{ type: 'spring', stiffness: 550, damping: 20 }}
           className={`
-            relative flex h-12 w-12 items-center justify-center rounded-full
-            transition-opacity duration-150
+            relative flex items-center justify-center rounded-full
+            transition-[height,width] duration-200 ease-out
+            ${compact ? 'h-9 w-9' : 'h-12 w-12'}
             ${isActive
               ? 'ring-2 ring-white ring-offset-2 ring-offset-transparent drop-shadow-lg'
               : 'opacity-90 hover:opacity-100'
             }
           `}
         >
-          {/* Coloured sphere — scale kept at 1.2 so bleed stays within the gap budget */}
+          {/* Coloured sphere - scale kept at 1.2 so bleed stays within the gap budget */}
           <img
             src={item.bgImg}
             alt=""
             aria-hidden="true"
             className="absolute inset-0 w-full h-full object-contain scale-[1.2] pointer-events-none"
           />
-          {/* Section icon — scaled up for visibility on larger screens */}
+          {/* Section icon - scaled up for visibility on larger screens */}
           <img
             src={item.iconImg}
             alt=""
@@ -399,12 +401,24 @@ function MobileDrawer({ isOpen, onClose, nav }: MobileDrawerProps) {
 export function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false)
   const burgerRef    = useRef<HTMLButtonElement>(null)
+  const headerRef    = useRef<HTMLElement>(null)
   const navigate     = useNavigate()
   const { pathname } = useLocation()
   const { isNightMode } = useNightMode()
 
+  /* Track the header element so the hook can listen for focusin/focusout */
+  const [headerEl, setHeaderEl] = useState<HTMLElement | null>(null)
+  useEffect(() => { setHeaderEl(headerRef.current) }, [])
+
   /* Hide the button for the page the user is already on */
   const visibleNav = NAV.filter(item => item.path !== pathname)
+
+  /* Scroll-driven visibility — full | shrunk | hidden */
+  const visibility = useNavVisibility({ focusTarget: headerEl })
+
+  /* While the mobile drawer is open, force the header to stay shown */
+  const effective: NavVisibility = menuOpen ? 'full' : visibility
+  const isCompact = effective !== 'full'
 
   const closeMenu = useCallback(() => setMenuOpen(false), [])
 
@@ -419,9 +433,21 @@ export function Navbar() {
     if (!menuOpen) burgerRef.current?.focus()
   }, [menuOpen])
 
+  /* Header animation variants - drives the three visibility states */
+  const headerVariants: Variants = {
+    full   : { y: 0,    opacity: 1 },
+    shrunk : { y: 0,    opacity: 1 },
+    hidden : { y: -120, opacity: 0 },
+  }
+
   return (
-    <header
+    <motion.header
+      ref={headerRef}
       role="banner"
+      initial={false}
+      animate={effective}
+      variants={headerVariants}
+      transition={{ type: 'spring', stiffness: 380, damping: 32 }}
       className="
         fixed top-8 left-2 right-0 z-50
         bg-transparent
@@ -440,12 +466,14 @@ export function Navbar() {
         Saltar para o conteúdo principal
       </a>
 
-      <div className="
-        relative w-full flex h-[var(--nav-h)]
+      <div className={`
+        relative w-full flex
         items-center px-4 sm:px-6
-      ">
+        transition-[height] duration-200 ease-out
+        ${isCompact ? 'h-14' : 'h-[var(--nav-h)]'}
+      `}>
 
-        {/* Logo — flush to the left viewport edge */}
+        {/* Logo - flush to the left viewport edge */}
         <NavLink
           to="/"
           aria-label="INTEGRA-TE — ir para a página inicial"
@@ -461,7 +489,7 @@ export function Navbar() {
               <img
                 src={LOGO_SRC}
                 alt=""
-                className="h-8 w-auto"
+                className={`w-auto transition-[height] duration-200 ease-out ${isCompact ? 'h-6' : 'h-8'}`}
               />
             ) : (
               <>
@@ -491,38 +519,50 @@ export function Navbar() {
           </motion.div>
         </NavLink>
 
-        {/* Desktop navigation — hidden on homepage (grid serves as nav there) */}
+        {/* Desktop navigation - hidden on homepage (grid serves as nav there) */}
         {pathname !== '/' && (
           <nav
             role="navigation"
             aria-label="Navegação principal"
-            className="hidden md:flex items-center gap-6 lg:gap-7 absolute left-1/2 -translate-x-1/2"
+            className={`
+              hidden md:flex items-center absolute left-1/2 -translate-x-1/2
+              transition-[gap] duration-200 ease-out
+              ${isCompact ? 'gap-4 lg:gap-5' : 'gap-6 lg:gap-7'}
+            `}
           >
             {visibleNav.map((item) => (
-              <DesktopNavIcon key={item.id} item={item} />
+              <DesktopNavIcon key={item.id} item={item} compact={isCompact} />
             ))}
           </nav>
         )}
 
-        {/* Right controls — flush to the right viewport edge */}
+        {/* Right controls - flush to the right viewport edge */}
         <div className="ml-auto flex items-center gap-2 shrink-0">
 
-          {/* SearchBar + Admin lock — always visible */}
-          <div className="flex items-center gap-2">
-            <SearchBar className="relative flex w-[120px] sm:w-[160px] lg:w-[220px] items-center rounded-full border border-white/40 bg-white/15 backdrop-blur-xs shadow-[0_14px_36px_rgba(31,38,135,0.22)] ring-1 ring-white/20"/>
+          {/* SearchBar + Admin lock - hidden on mobile (burger handles nav there) */}
+          <div className="hidden md:flex items-center gap-2">
+            <SearchBar className={`
+              relative flex items-center rounded-full border border-white/40 bg-white/15
+              backdrop-blur-xs shadow-[0_14px_36px_rgba(31,38,135,0.22)] ring-1 ring-white/20
+              transition-[width] duration-200 ease-out
+              ${isCompact ? 'w-[170px]' : 'w-[220px]'}
+            `}/>
             <a
-              href="/login"
-              aria-label="Login — aceder à área de administração"
-              className="w-9 h-9 sm:w-10 sm:h-10 bg-white/15 rounded-full flex items-center justify-center shadow-[0_14px_36px_rgba(31,38,135,0.22)] border border-white/40 ring-1 ring-white/20 hover:scale-110 active:scale-95 transition-transform cursor-pointer backdrop-blur-xs"
+              href="/admin/"
+              aria-label="Django Admin"
+              className={`
+                bg-white/15 rounded-full flex items-center justify-center
+                shadow-[0_14px_36px_rgba(31,38,135,0.22)] border border-white/40 ring-1 ring-white/20
+                hover:scale-110 active:scale-95 cursor-pointer backdrop-blur-xs
+                transition-[transform,height,width] duration-200 ease-out
+                ${isCompact ? 'w-8 h-8' : 'w-10 h-10'}
+              `}
             >
-              <img src="/src/assets/lock.webp" alt="login" className="w-5 h-5 object-contain" />
+              <img src="/src/assets/lock.webp" alt="Admin" className={`object-contain transition-[height,width] duration-200 ease-out ${isCompact ? 'w-4 h-4' : 'w-5 h-5'}`} />
             </a>
           </div>
 
-          {/* Night mode toggle — always visible */}
-          <NightModeNavButton />
-
-          {/* Burger — mobile only, not needed on homepage (grid is the nav) */}
+          {/* Burger - mobile only, not needed on homepage (grid is the nav) */}
           {pathname !== '/' && (
             <BurgerButton
               isOpen={menuOpen}
@@ -539,7 +579,7 @@ export function Navbar() {
         onClose={closeMenu}
         nav={visibleNav}
       />
-    </header>
+    </motion.header>
   )
 }
 
