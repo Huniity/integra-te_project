@@ -21,6 +21,7 @@ export interface ExercicioPayload {
   level: number;
   description?: string;
   thumbnailUrl?: string;
+  thumbnail?: File | null;
   videoUrl?: string;
   ficheiro?: File | null;
   publicado: boolean;

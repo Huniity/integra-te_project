@@ -1,6 +1,12 @@
 import { getLevelBadgeClassName } from '../../utils/resolver';
 import type { Exercise } from '../resolver/ExerciseModal';
 
+const SUBJECT_IMG: Record<string, string> = {
+  matematica:       './src/assets/math.webp',
+  portugues:        './src/assets/book3.png',
+  'estudo-do-meio': './src/assets/science.png',
+};
+
 interface ExerciseCardProps {
   exercise: Exercise;
   onSelect: (exercise: Exercise) => void;
@@ -15,9 +21,10 @@ export default function ExerciseCard({ exercise, onSelect }: ExerciseCardProps) 
 
       <div className="w-24 h-24 flex items-center justify-center my-1">
         <img
-          src={exercise.iconImg}
+          src={exercise.thumbnailUrl || exercise.iconImg || SUBJECT_IMG[exercise.subjectId] || './src/assets/math.webp'}
           alt={exercise.title}
           className="w-full h-full object-contain drop-shadow-md group-hover:scale-110 transition-transform duration-200"
+          onError={(e) => { (e.target as HTMLImageElement).src = SUBJECT_IMG[exercise.subjectId] || './src/assets/math.webp'; }}
         />
       </div>
 
