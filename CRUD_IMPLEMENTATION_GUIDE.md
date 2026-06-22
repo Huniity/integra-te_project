@@ -38,7 +38,7 @@ class AulaSerializer(serializers.ModelSerializer):
 File: `srcs/backend/integrate/views.py`
 
 ```python
-# top of file — add ModelViewSet to the import
+# top of file - add ModelViewSet to the import
 from rest_framework.viewsets import ReadOnlyModelViewSet, ModelViewSet
 
 class AulaViewSet(ModelViewSet):
@@ -63,7 +63,7 @@ File: `srcs/frontend/src/api/contracts/aulas.ts`
 
 ```typescript
 export interface Aula {
-  id: string          // UUID — was number, fix it
+  id: string          // UUID - was number, fix it
   title: string
   subjectId: string
   level: number
@@ -472,7 +472,7 @@ class ConteudoWriteSerializer(serializers.ModelSerializer):
             "url_externa", "ficheiro", "thumbnail",
             "dificuldade", "descarregavel", "publicado",
         )
-        # `tipo` is intentionally excluded — the viewset sets it automatically
+        # `tipo` is intentionally excluded - the viewset sets it automatically
 ```
 
 ---
@@ -528,7 +528,7 @@ export interface Video {
   disciplina_slug: string
   disciplina_nome: string
   tema_titulo: string
-  tema: string   // tema UUID — needed to send on create/update
+  tema: string   // tema UUID - needed to send on create/update
 }
 
 // What you POST / PUT
@@ -602,7 +602,7 @@ export const videosApi = {
 The form needs a Tema dropdown. Load them once when the modal opens.
 
 ```typescript
-// Quick inline fetch inside the modal — no need for a full service
+// Quick inline fetch inside the modal - no need for a full service
 const [temas, setTemas] = useState<{ id: string; titulo: string }[]>([])
 
 useEffect(() => {

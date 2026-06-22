@@ -5,6 +5,7 @@ import Home      from './pages/Homepage'
 import About     from './pages/About'
 import Faq       from './pages/Faq'
 import Privacy   from './pages/Privacy'
+import Rgpd      from './pages/Rgpd'
 import Contact   from './pages/Contactos'
 import Aprender  from './pages/Aprender'
 import Resolver  from './pages/Resolver'
@@ -46,6 +47,7 @@ export default function App() {
         <Route path="/sobre"       element={<About />} />
         <Route path="/faq"         element={<Faq />} />
         <Route path="/privacidade" element={<Privacy />} />
+        <Route path="/rgpd"        element={<Rgpd />} />
         <Route path="/contactar"   element={<Contact />} />
         <Route path="/dashboard"   element={<RequireAuth><Dashboard /></RequireAuth>} />
         <Route path="*"            element={<PageStub title="Página não encontrada" />} />
