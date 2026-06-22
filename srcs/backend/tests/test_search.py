@@ -100,11 +100,12 @@ class SearchEndpointTests(TestCase):
 
     def test_disciplina_route(self):
         """
-        Test that the route for a Disciplina search result is in the format "/aprender/{disciplina.slug}".
+        Test that the route for a Disciplina search result is "/aprender", since there is
+        no dedicated per-discipline page to deep-link into.
         """
         response = self.client.get(SEARCH_URL, {"q": "Matemática"})
         routes = [r["route"] for r in response.json()["results"]]
-        self.assertIn("/aprender/matematica", routes)
+        self.assertIn("/aprender", routes)
 
     def test_disciplina_case_insensitive(self):
         """
@@ -127,12 +128,13 @@ class SearchEndpointTests(TestCase):
 
     def test_tema_route(self):
         """
-        Test that the route for a Tema search result is in the format "/{seccao}/{disciplina.slug}/{tema.slug}".
+        Test that the route for a Tema search result is "/{seccao}", since there is no
+        dedicated per-tema page to deep-link into.
         """
         make_tema(self.disc, titulo="Adição", seccao="resolver", slug="adicao")
         response = self.client.get(SEARCH_URL, {"q": "Adição"})
         routes = [r["route"] for r in response.json()["results"]]
-        self.assertIn("/resolver/matematica/adicao", routes)
+        self.assertIn("/resolver", routes)
 
     # Jogo
 
@@ -190,9 +192,10 @@ class SearchEndpointTests(TestCase):
 
     def test_exercicio_route_is_resolver(self):
         """
-        Test that the route for an Exercicio search result is "/resolver".
+        Test that the route for an Exercicio search result deep-links to that
+        exercise's id under "/resolver".
         """
-        Exercicio.objects.create(
+        exercicio = Exercicio.objects.create(
             title="Exercício de Divisão",
             level=1,
             subject_id="matematica",
@@ -200,7 +203,7 @@ class SearchEndpointTests(TestCase):
         )
         response = self.client.get(SEARCH_URL, {"q": "Divisão"})
         routes = [r["route"] for r in response.json()["results"]]
-        self.assertIn("/resolver", routes)
+        self.assertIn(f"/resolver/{exercicio.id}", routes)
 
     # Aula
 
@@ -217,11 +220,12 @@ class SearchEndpointTests(TestCase):
 
     def test_aula_route_is_aprender(self):
         """
-        Test that the route for an Aula search result is "/aprender".
+        Test that the route for an Aula search result deep-links to that
+        lesson's id under "/aprender".
         """
-        Aula.objects.create(
+        aula = Aula.objects.create(
             title="Aula de Geometria", subject_id="matematica", level=2, publicado=True
         )
         response = self.client.get(SEARCH_URL, {"q": "Geometria"})
         routes = [r["route"] for r in response.json()["results"]]
-        self.assertIn("/aprender", routes)
+        self.assertIn(f"/aprender/{aula.id}", routes)

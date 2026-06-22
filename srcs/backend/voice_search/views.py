@@ -85,17 +85,12 @@ def search(request):
     results = []
 
     for obj in Disciplina.objects.filter(nome__icontains=q)[:top]:
-        results.append({"label": obj.nome, "route": f"/aprender/{obj.slug}"})
+        results.append({"label": obj.nome, "route": "/aprender"})
 
     for obj in Tema.objects.filter(titulo__icontains=q).select_related("disciplina")[
         :top
     ]:
-        results.append(
-            {
-                "label": obj.titulo,
-                "route": f"/{obj.seccao}/{obj.disciplina.slug}/{obj.slug}",
-            }
-        )
+        results.append({"label": obj.titulo, "route": f"/{obj.seccao}"})
 
     for obj in Jogo.objects.filter(titulo__icontains=q, publicado=True)[:top]:
         results.append({"label": obj.titulo, "route": f"/jogar/{obj.id}"})
@@ -104,10 +99,10 @@ def search(request):
         results.append({"label": obj.titulo, "route": f"/ler/{obj.id}"})
 
     for obj in Exercicio.objects.filter(title__icontains=q, publicado=True)[:top]:
-        results.append({"label": obj.title, "route": "/resolver"})
+        results.append({"label": obj.title, "route": f"/resolver/{obj.id}"})
 
     for obj in Aula.objects.filter(title__icontains=q, publicado=True)[:top]:
-        results.append({"label": obj.title, "route": "/aprender"})
+        results.append({"label": obj.title, "route": f"/aprender/{obj.id}"})
 
     for obj in MaterialOriginal.objects.filter(titulo__icontains=q, publicado=True)[
         :top

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import { NightModeBackground, useNightMode } from '../components/core/NightMode';
 import Aside from '../components/core/Aside';
 import type { SubjectId } from '../components/core/Aside';
@@ -18,6 +19,8 @@ export default function Resolver() {
 
 function ResolverContent() {
   const { isNightMode } = useNightMode();
+  const { id } = useParams<{ id?: string }>();
+  const navigate = useNavigate();
   const [activeSubject, setActiveSubject] = useState<SubjectId | string>('todos');
   const [activeFilter, setActiveFilter] = useState<FilterType>('todos');
   const [selectedLevel, setSelectedLevel] = useState<number | 'todos'>('todos');
@@ -52,6 +55,16 @@ function ResolverContent() {
     };
     load();
   }, []);
+
+  useEffect(() => {
+    if (!id || exercises.length === 0) return;
+    setSelectedExercise(exercises.find((ex) => ex.id === id) ?? null);
+  }, [id, exercises]);
+
+  const closeExercise = () => {
+    setSelectedExercise(null);
+    if (id) navigate('/resolver', { replace: true });
+  };
 
   return (
     <main className="relative min-h-screen lg:h-screen w-full px-3 md:px-5 py-2 font-['Nunito',sans-serif] overflow-x-hidden overflow-y-auto lg:overflow-y-hidden flex flex-col">
@@ -119,7 +132,7 @@ function ResolverContent() {
       </div>
 
       {selectedExercise && (
-        <ExerciseModal exercise={selectedExercise} onClose={() => setSelectedExercise(null)} />
+        <ExerciseModal exercise={selectedExercise} onClose={closeExercise} />
       )}
       <Footer />
     </main>

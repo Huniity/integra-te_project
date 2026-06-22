@@ -332,7 +332,7 @@ const AulasPanel = ({ autoCreate }: { autoCreate?: boolean }) => {
                                     <td className="px-4 py-3 font-semibold text-gray-800">
                                         {aula.title}
                                         {aula.description && (
-                                            <p className="text-xs font-normal text-gray-400 mt-0.5 line-clamp-1">
+                                            <p className="text-xs font-normal text-gray-400 mt-0.5 line-clamp-1 truncate max-w-sm overflow-hidden text-ellipsis">
                                                 {aula.description}
                                             </p>
                                         )}

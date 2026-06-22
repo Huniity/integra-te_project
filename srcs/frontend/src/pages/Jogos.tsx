@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import { NightModeBackground, useNightMode } from '../components/core/NightMode';
 import Aside from '../components/core/Aside';
 import type { SubjectId } from '../components/core/Aside';
 import MainContent from '../components/core/MainContent';
 import { useCarousel, CarouselNav } from '../components/core/Carousel';
 import JogoCard from '../components/jogos/JogoCard';
+import JogoModal from '../components/jogos/JogoModal';
 import Footer from '../components/core/Footer';
 import { jogosApi } from '../services/api/jogos.api';
 import type { Jogo } from '../api/contracts/jogos';
@@ -16,9 +18,12 @@ export default function Games() {
 
 function GamesContent() {
   const { isNightMode } = useNightMode();
+  const { id } = useParams<{ id?: string }>();
+  const navigate = useNavigate();
   const [activeSubject, setActiveSubject] = useState<SubjectId | string>('todos');
   const [jogos, setJogos] = useState<Jogo[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedJogo, setSelectedJogo] = useState<Jogo | null>(null);
 
 
   useEffect(() => {
@@ -34,6 +39,16 @@ function GamesContent() {
     };
     load();
   }, []);
+
+  useEffect(() => {
+    if (!id || jogos.length === 0) return;
+    setSelectedJogo(jogos.find((jogo) => jogo.id === id) ?? null);
+  }, [id, jogos]);
+
+  const closeJogo = () => {
+    setSelectedJogo(null);
+    if (id) navigate('/jogos', { replace: true });
+  };
 
   const filteredGames = jogos.filter(
     (jogo) => activeSubject === 'todos' || jogo.faixa_etaria === activeSubject,
@@ -100,6 +115,7 @@ function GamesContent() {
         </div>
       </div>
 
+      {selectedJogo && <JogoModal jogo={selectedJogo} onClose={closeJogo} />}
       <Footer />
     </main>
   );

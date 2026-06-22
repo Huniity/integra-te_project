@@ -34,9 +34,13 @@ export default function App() {
         <Route path="/"            element={<Home />} />
         <Route path="/login"         element={<Login />} />
         <Route path="/aprender"    element={<Aprender />} />
+        <Route path="/aprender/:id" element={<Aprender />} />
         <Route path="/resolver"    element={<Resolver />} />
+        <Route path="/resolver/:id" element={<Resolver />} />
         <Route path="/jogos"       element={<Jogos />} />
+        <Route path="/jogar/:id"   element={<Jogos />} />
         <Route path="/ler"         element={<Ler />} />
+        <Route path="/ler/:id"     element={<Ler />} />
         <Route path="/descarregar" element={<Descarregar />} />
         <Route path="/videos"      element={<Videos />} />
         <Route path="/sobre"       element={<About />} />

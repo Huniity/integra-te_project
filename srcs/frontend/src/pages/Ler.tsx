@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import { NightModeBackground, useNightMode } from '../components/core/NightMode';
 import Aside from '../components/core/Aside';
 import type { SubjectId } from '../components/core/Aside';
@@ -16,6 +17,8 @@ export default function Read() {
 
 function ReadContent() {
   const { isNightMode } = useNightMode();
+  const { id } = useParams<{ id?: string }>();
+  const navigate = useNavigate();
   const [activeSubject, setActiveSubject] = useState<SubjectId | string>('todos');
   const [selectedBook, setSelectedBook] = useState<Livro | null>(null);
   const [livros, setLivros] = useState<Livro[]>([]);
@@ -35,6 +38,16 @@ function ReadContent() {
     };
     load();
   }, []);
+
+  useEffect(() => {
+    if (!id || livros.length === 0) return;
+    setSelectedBook(livros.find((livro) => livro.id === id) ?? null);
+  }, [id, livros]);
+
+  const closeBook = () => {
+    setSelectedBook(null);
+    if (id) navigate('/ler', { replace: true });
+  };
 
   const filteredBooks = livros.filter(
     (livro) => activeSubject === 'todos' || livro.faixa_etaria === activeSubject,
@@ -101,7 +114,7 @@ function ReadContent() {
         </div>
       </div>
 
-      {selectedBook && <BookModal book={selectedBook} onClose={() => setSelectedBook(null)} />}
+      {selectedBook && <BookModal book={selectedBook} onClose={closeBook} />}
       <Footer />
     </main>
   );

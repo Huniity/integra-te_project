@@ -20,7 +20,7 @@ def build_rows():
                 "model_type": "disciplina",
                 "object_id": obj.id,
                 "label": obj.nome,
-                "route": f"/aprender/{obj.slug}",
+                "route": "/aprender",
                 "text": f"{obj.nome} {obj.desc or ''}",
             }
         )
@@ -31,7 +31,7 @@ def build_rows():
                 "model_type": "tema",
                 "object_id": obj.id,
                 "label": obj.titulo,
-                "route": f"/{obj.seccao}/{obj.disciplina.slug}/{obj.slug}",
+                "route": f"/{obj.seccao}",
                 "text": f"{obj.titulo} {obj.desc or ''} {obj.disciplina.nome} ano {obj.ano_escolar}",
             }
         )
@@ -44,7 +44,7 @@ def build_rows():
                 "model_type": "conteudo",
                 "object_id": obj.id,
                 "label": obj.titulo,
-                "route": f"/{obj.tema.seccao}/{obj.tema.disciplina.slug}/{obj.tema.slug}",
+                "route": f"/{obj.tema.seccao}",
                 "text": f"{obj.titulo} {(obj.corpo or '')[:300]} {obj.tema.titulo}",
             }
         )
@@ -78,7 +78,7 @@ def build_rows():
                 "model_type": "material",
                 "object_id": obj.id,
                 "label": obj.titulo,
-                "route": f"/ler/materiais/{obj.id}",
+                "route": "/descarregar",
                 "text": f"{obj.titulo} {obj.autor or ''} {obj.descricao or ''}",
             }
         )
