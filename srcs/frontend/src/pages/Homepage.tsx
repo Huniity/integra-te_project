@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { NightModeBackground, NightModeToggle, useNightMode } from '../components/core/NightMode';
 import Footer from '../components/core/Footer';
+import Info from './../components/core/Info'
 
 interface MenuButton {
   id: string;
@@ -154,7 +155,7 @@ function HomeContent() {
           ))}
         </div>
       </section>
-
+      <Info />
       <Footer />
     </main>
   );
