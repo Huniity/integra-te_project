@@ -10,6 +10,15 @@ from rest_framework.decorators import permission_classes
 
 from pgvector.django import CosineDistance
 from voice_search.models import ObjectVector
+from integrate.models import (
+    Disciplina,
+    Tema,
+    Jogo,
+    Livro,
+    Exercicio,
+    Aula,
+    MaterialOriginal,
+)
 
 
 @lru_cache(maxsize=1)
@@ -35,28 +44,77 @@ def load_whisper():
 @api_view(["POST"])
 @permission_classes([AllowAny])
 def reroute(request):
+    """
+    Reroute the user based on the transcribed audio input by finding the closest matching content in the database using cosine similarity of embeddings.
+    """
     transcript = request.data.get("transcript", "").strip()
     if not transcript:
         return Response({"error": "No transcript."}, status=400)
 
     vector = load_embedder().encode(transcript, normalize_embeddings=True).tolist()
 
-    result = (
-        ObjectVector.objects.annotate(distance=CosineDistance("embedding", vector))
-        .order_by("distance")
-        .first()
+    top = max(1, min(int(request.query_params.get("top", 1)), 10))
+
+    qs = list(
+        ObjectVector.objects.annotate(
+            distance=CosineDistance("embedding", vector)
+        ).order_by("distance")[:top]
     )
 
-    if not result:
-        return Response({"route": "/"})
+    if not qs:
+        return Response({"route": "/", "results": []})
 
-    return Response(
-        {
-            "route": result.route,
-            "label": result.label,
-            "distance": round(result.distance, 4),
-        }
-    )
+    results = [
+        {"route": r.route, "label": r.label, "distance": round(r.distance, 4)}
+        for r in qs
+    ]
+    return Response({"route": results[0]["route"], "results": results})
+
+
+@api_view(["GET"])
+@permission_classes([AllowAny])
+def search(request):
+    """
+    Search for content based on a query string by performing case-insensitive containment queries on relevant fields across multiple models.
+    """
+    q = request.query_params.get("q", "").strip()
+    if len(q) < 2:
+        return Response({"results": []})
+    top = max(1, min(int(request.query_params.get("top", 8)), 20))
+
+    results = []
+
+    for obj in Disciplina.objects.filter(nome__icontains=q)[:top]:
+        results.append({"label": obj.nome, "route": f"/aprender/{obj.slug}"})
+
+    for obj in Tema.objects.filter(titulo__icontains=q).select_related("disciplina")[
+        :top
+    ]:
+        results.append(
+            {
+                "label": obj.titulo,
+                "route": f"/{obj.seccao}/{obj.disciplina.slug}/{obj.slug}",
+            }
+        )
+
+    for obj in Jogo.objects.filter(titulo__icontains=q, publicado=True)[:top]:
+        results.append({"label": obj.titulo, "route": f"/jogar/{obj.id}"})
+
+    for obj in Livro.objects.filter(titulo__icontains=q, publicado=True)[:top]:
+        results.append({"label": obj.titulo, "route": f"/ler/{obj.id}"})
+
+    for obj in Exercicio.objects.filter(title__icontains=q, publicado=True)[:top]:
+        results.append({"label": obj.title, "route": "/resolver"})
+
+    for obj in Aula.objects.filter(title__icontains=q, publicado=True)[:top]:
+        results.append({"label": obj.title, "route": "/aprender"})
+
+    for obj in MaterialOriginal.objects.filter(titulo__icontains=q, publicado=True)[
+        :top
+    ]:
+        results.append({"label": obj.titulo, "route": "/descarregar"})
+
+    return Response({"results": results[:top]})
 
 
 @api_view(["POST"])
