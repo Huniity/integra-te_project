@@ -75,72 +75,46 @@ function FaqContent() {
 
   return (
     <main
-      className="relative h-screen w-full bg-cover bg-center bg-no-repeat bg-fixed font-['Nunito',sans-serif] overflow-hidden flex flex-col justify-between"
-      style={{ backgroundImage: 'url(/src/assets/content2.webp)' }}
+      className="relative h-screen w-full px-3 md:px-6 font-['Nunito',sans-serif] overflow-x-hidden overflow-y-auto flex flex-col [&::-webkit-scrollbar]:hidden"
+      style={{ scrollbarWidth: 'none' }}
     >
       <NightModeBackground dayImage='/src/assets/content2.webp' nightImage='/src/assets/noite.webp' />
 
-      <style>{`
-        @keyframes slideUp {
-          from { opacity: 0; transform: translateY(24px); }
-          to   { opacity: 1; transform: translateY(0); }
-        }
-        .animate-slideUp { animation: slideUp 0.6s ease both; }
-
-        .faq-transition {
-          transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s ease, padding 0.35s ease;
-        }
-      `}</style>
-
-      {/* Content wrapper com Scrollbar Oculta */}
-      <div
-        className="flex-1 max-w-4xl w-full mx-auto relative z-10 flex flex-col min-h-0 overflow-y-auto py-2 pr-1"
-        style={{
-          scrollbarWidth: 'none',
-          msOverflowStyle: 'none',
-          WebkitOverflowScrolling: 'touch'
-        }}
-      >
-        <style>{`
-          div::-webkit-scrollbar {
-            display: none !important;
-          }
-        `}</style>
-
-        <div className="max-w-3xl w-full mx-auto flex flex-col pt-12 sm:pt-16 pb-16 sm:pb-24 md:pb-36 px-3 sm:px-4 md:px-6">
+      <div className="max-w-3xl w-full mx-auto flex flex-col mt-40 pb-10 relative z-10 px-1">
 
           {/* SECÇÃO PRINCIPAL COM O TEU SECTIONBG */}
           <section className={`w-full p-4 sm:p-6 md:p-10 ${sectionBg}`}>
 
             <div className="text-center shrink-0 mb-8">
-              <div className="animate-slideUp inline-flex items-center gap-2 bg-[#9b59b6] text-white text-xs font-bold tracking-wider uppercase px-5 py-2 rounded-full mb-6 shadow-lg">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-                Dúvidas Frequentes
-              </div>
-
-              <h1 className="animate-slideUp font-['Fredoka',sans-serif] text-2xl sm:text-3xl md:text-5xl font-black drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)] inline-block tracking-wide text-white">
-                Perguntas Frequentes
+              <h1
+                className="font-['Fredoka',sans-serif] text-2xl sm:text-3xl md:text-5xl font-black drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)] inline-block tracking-wide text-white"
+                style={!isNightMode ? { textShadow: '-1px 0 #2563eb, 0 1px #2563eb, 1px 0 #2563eb, 0 -1px #2563eb, 1px 1px #2563eb, -1px -1px #2563eb' } : {}}
+              >
+                Perguntas <span className="text-[#ffdf6d]">Frequentes</span>
               </h1>
+              <div className="mx-auto w-24 h-1.5 bg-[#ffdf6d] rounded-full mt-2 shadow-md" />
 
-              <p className={`animate-slideUp max-w-lg text-sm md:text-base leading-relaxed mx-auto font-semibold mt-4 ${isNightMode ? 'text-gray-200' : 'text-blue-50'}`}>
+              <p className="mt-4 text-sm md:text-base leading-relaxed mx-auto font-semibold text-white/90 max-w-lg">
                 Tens alguma dúvida sobre o funcionamento da caravana ou da plataforma? Encontra aqui todas as respostas rápidas!
               </p>
 
-              {/* Filtros customizados combinando com o design */}
-              <div className="animate-slideUp mt-8 flex flex-wrap justify-center gap-2.5">
+              {/* Category filters */}
+              <div className="mt-8 flex flex-wrap justify-center gap-2.5">
                 {[
-                  { id: 'todos', label: 'Todos', color: '#1e40af' },
-                  { id: 'geral', label: 'Geral', color: '#8e44ad' },
-                  { id: 'caravana', label: 'Caravana', color: '#e74c3c' },
-                  { id: 'plataforma', label: 'Plataforma', color: '#2980b9' }
+                  { id: 'todos',     label: 'Todos',      color: '#1e40af' },
+                  { id: 'geral',     label: 'Geral',      color: '#8e44ad' },
+                  { id: 'caravana',  label: 'Caravana',   color: '#e74c3c' },
+                  { id: 'plataforma',label: 'Plataforma', color: '#2980b9' }
                 ].map(filter => (
                   <button
                     key={filter.id}
                     onClick={() => { setActiveFilter(filter.id as any); setOpenIndex(null); }}
-                    className={`px-3 sm:px-5 py-2 sm:py-2.5 rounded-2xl font-bold text-sm transition-all duration-200 transform active:scale-95 shadow-sm
+                    className={`px-3 sm:px-5 py-2 sm:py-2.5 rounded-2xl font-['Fredoka',sans-serif] font-bold text-sm transition-all duration-200 active:scale-95 shadow-sm
                       ${activeFilter === filter.id
-                        ? 'text-white scale-105 shadow-md border border-white/20'
-                        : 'bg-white text-[#1a3a6a] hover:bg-gray-100'
+                        ? 'text-white scale-105 shadow-md'
+                        : isNightMode
+                          ? 'bg-white/10 text-white/80 hover:bg-white/20'
+                          : 'bg-white/70 text-[#1a3a6a] hover:bg-white'
                       }`}
                     style={{ backgroundColor: activeFilter === filter.id ? filter.color : undefined }}
                   >
@@ -165,7 +139,7 @@ function FaqContent() {
                       key={index}
                       className={`${cardBg} overflow-hidden transition-all duration-300 rounded-2xl border`}
                       style={{
-                        borderColor: isOpen ? themeColor : undefined,
+                        borderColor: isOpen ? themeColor : isNightMode ? 'rgba(255,255,255,0.1)' : undefined,
                       }}
                     >
                       <button
@@ -191,13 +165,14 @@ function FaqContent() {
                       </button>
 
                       <div
-                        className="faq-transition overflow-hidden"
+                        className="overflow-hidden"
                         style={{
                           maxHeight: isOpen ? '240px' : '0px',
-                          opacity: isOpen ? 1 : 0
+                          opacity: isOpen ? 1 : 0,
+                          transition: 'max-height 0.35s cubic-bezier(0.4,0,0.2,1), opacity 0.25s ease'
                         }}
                       >
-                        <div className={`p-5 pt-0 text-sm md:text-base leading-relaxed border-t border-dashed ${isNightMode ? 'text-gray-200 border-white/10' : 'text-[#2563eb] border-gray-200/60'}`}>
+                        <div className={`p-5 pt-0 text-sm md:text-base leading-relaxed border-t border-dashed ${isNightMode ? 'text-gray-200 border-white/10' : 'text-[#4a5a7a] border-gray-200/60'}`}>
                           {item.answer}
                         </div>
                       </div>
@@ -228,7 +203,7 @@ function FaqContent() {
               </p>
 
               <button
-                onClick={() => navigate('/contactos')}
+                onClick={() => navigate('/contactar')}
                 className="bg-[#3a6bc8] hover:bg-[#2a5ab8] text-white font-bold text-xs uppercase tracking-wider px-5 py-3 rounded-xl transition-colors shadow-md transform active:scale-95"
               >
                 Enviar Mensagem
@@ -237,8 +212,8 @@ function FaqContent() {
 
           </section>
 
-        </div>
       </div>
+
       <Footer />
     </main>
   );
