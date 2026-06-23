@@ -84,8 +84,8 @@ function ReadContent() {
                 onTouchStart={carousel.onTouchStart}
                 onTouchEnd={carousel.onTouchEnd}
               >
-                {carousel.pageItems.map((livro) => (
-                  <BookCard key={livro.id} livro={livro} onSelect={setSelectedBook} />
+                {carousel.pageItems.map((livro, i) => (
+                  <BookCard key={livro.id} livro={livro} onSelect={setSelectedBook} index={i} />
                 ))}
               </div>
             )}

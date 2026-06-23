@@ -83,8 +83,8 @@ function GamesContent() {
                 onTouchStart={carousel.onTouchStart}
                 onTouchEnd={carousel.onTouchEnd}
               >
-                {carousel.pageItems.map((jogo) => (
-                  <JogoCard key={jogo.id} jogo={jogo} />
+                {carousel.pageItems.map((jogo, i) => (
+                  <JogoCard key={jogo.id} jogo={jogo} index={i} />
                 ))}
               </div>
             )}

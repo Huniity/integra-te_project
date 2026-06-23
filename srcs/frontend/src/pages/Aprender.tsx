@@ -147,8 +147,8 @@ function AprenderContent() {
                 onTouchStart={carousel.onTouchStart}
                 onTouchEnd={carousel.onTouchEnd}
               >
-                {carousel.pageItems.map(aula => (
-                  <AprenderCard key={aula.id} aula={aula} onSelect={setSelectedAula} />
+                {carousel.pageItems.map((aula, i) => (
+                  <AprenderCard key={aula.id} aula={aula} onSelect={setSelectedAula} index={i} />
                 ))}
               </div>
             )}

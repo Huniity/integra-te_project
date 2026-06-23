@@ -123,8 +123,8 @@ function ResolverContent() {
                 onTouchStart={carousel.onTouchStart}
                 onTouchEnd={carousel.onTouchEnd}
               >
-                {carousel.pageItems.map((ex) => (
-                  <ExerciseCard key={ex.id} exercise={ex} onSelect={setSelectedExercise} />
+                {carousel.pageItems.map((ex, i) => (
+                  <ExerciseCard key={ex.id} exercise={ex} onSelect={setSelectedExercise} index={i} />
                 ))}
               </div>
             )}

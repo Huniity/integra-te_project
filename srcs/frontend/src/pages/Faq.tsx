@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import { NightModeBackground, useNightMode } from '../components/core/NightMode';
 import Footer from '../components/core/Footer';
 
@@ -84,7 +85,12 @@ function FaqContent() {
         className={`pointer-events-none fixed bottom-[-29%] left-0 z-30 w-full object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-100' : 'opacity-0'}`} />
       <NightModeBackground dayImage='/src/assets/bg_day.webp' nightImage='/src/assets/bg_night.webp' />
 
-      <div className="max-w-3xl w-full mx-auto flex flex-col mt-40 pb-10 relative z-10 px-1">
+      <motion.div
+        className="max-w-3xl w-full mx-auto flex flex-col mt-40 pb-10 relative z-10 px-1"
+        initial={{ opacity: 0, y: 24 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, ease: 'easeOut' }}
+      >
 
           {/* SECÇÃO PRINCIPAL COM O TEU SECTIONBG */}
           <section className={`w-full p-4 sm:p-6 md:p-10 ${sectionBg}`}>
@@ -216,7 +222,7 @@ function FaqContent() {
 
           </section>
 
-      </div>
+      </motion.div>
 
       <Footer />
       <div className="mb-50"></div>

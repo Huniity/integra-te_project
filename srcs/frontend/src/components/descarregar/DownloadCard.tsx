@@ -1,16 +1,25 @@
+import { motion } from 'framer-motion'
 import { Download, Eye, FileText } from 'lucide-react';
 import type { Descarregavel } from '../../api/contracts/descarregar';
 
 interface DownloadCardProps {
   item: Descarregavel;
   onView: (item: Descarregavel) => void;
+  index?: number;
 }
 
-export default function DownloadCard({ item, onView }: DownloadCardProps) {
+export default function DownloadCard({ item, onView, index = 0 }: DownloadCardProps) {
   const href = item.ficheiro_url ?? item.url_externa;
 
   return (
-    <div className="h-full flex flex-col gap-2 rounded-2xl bg-white/20 border border-white/30 backdrop-blur-xs p-3 shadow-[0_4px_16px_rgba(31,38,135,0.15)] hover:bg-white/25 transition-colors">
+    <motion.div
+      className="h-full flex flex-col gap-2 rounded-2xl bg-white/20 border border-white/30 backdrop-blur-xs p-3 shadow-[0_4px_16px_rgba(31,38,135,0.15)] hover:bg-white/25 transition-colors"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3, delay: index * 0.06, ease: 'easeOut' }}
+      whileHover={{ y: -3, transition: { duration: 0.2, ease: 'easeOut' } }}
+      whileTap={{ scale: 0.98 }}
+    >
       <div className="flex items-start gap-2.5">
         <span className="shrink-0 flex h-10 w-10 items-center justify-center rounded-xl bg-white/30 border border-white/20">
           {item.thumbnail_url
@@ -58,6 +67,6 @@ export default function DownloadCard({ item, onView }: DownloadCardProps) {
           </span>
         )}
       </div>
-    </div>
+    </motion.div>
   );
 }

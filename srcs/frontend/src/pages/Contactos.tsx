@@ -1,4 +1,5 @@
 import { useState, useId, type FormEvent } from 'react'
+import { motion } from 'framer-motion'
 import { Send, CheckCircle2, AlertCircle, Loader2, Mail, MapPin } from 'lucide-react'
 import {
   NightModeBackground,
@@ -208,7 +209,12 @@ function ContactContent() {
       />
 
       {/* ── Content panel ── */}
-      <div className="max-w-[95%] w-full mx-auto relative z-10 mt-40 pb-10">
+      <motion.div
+        className="max-w-[95%] w-full mx-auto relative z-10 mt-40 pb-10"
+        initial={{ opacity: 0, y: 24 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, ease: 'easeOut' }}
+      >
         <div className={`max-w-2xl mx-auto overflow-hidden ${sectionBg}`}>
 
           {/* Panel header */}
@@ -382,7 +388,7 @@ function ContactContent() {
             </div>
           </div>
         </div>
-      </div>
+      </motion.div>
 
       <NightModeToggle />
       <Footer />

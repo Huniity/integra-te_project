@@ -1,13 +1,22 @@
+import { motion } from 'framer-motion'
 import type { Livro } from '../../api/contracts/livros';
 
 interface BookCardProps {
   livro: Livro;
   onSelect: (livro: Livro) => void;
+  index?: number;
 }
 
-export default function BookCard({ livro, onSelect }: BookCardProps) {
+export default function BookCard({ livro, onSelect, index = 0 }: BookCardProps) {
   return (
-    <div className="rounded-2xl min-h-[220px] bg-white border border-gray-100 flex flex-col items-center justify-between p-3 group hover:-translate-y-1 transition-transform duration-200 shadow-sm">
+    <motion.div
+      className="rounded-2xl min-h-[220px] bg-white border border-gray-100 flex flex-col items-center justify-between p-3 group shadow-sm"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3, delay: index * 0.06, ease: 'easeOut' }}
+      whileHover={{ y: -4, transition: { duration: 0.2, ease: 'easeOut' } }}
+      whileTap={{ scale: 0.97 }}
+    >
       <p className="font-['Fredoka',sans-serif] text-base md:text-lg font-semibold text-center mb-1 leading-tight text-blue-600">
         {livro.titulo}
       </p>
@@ -38,6 +47,6 @@ export default function BookCard({ livro, onSelect }: BookCardProps) {
           <path d="M8 5v14l11-7z" />
         </svg>
       </button>
-    </div>
+    </motion.div>
   );
 }

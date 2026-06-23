@@ -274,3 +274,7 @@
     color: white !important;
   }
 }
+
+html, body, #root {
+  background: #0e1f3f;
+}

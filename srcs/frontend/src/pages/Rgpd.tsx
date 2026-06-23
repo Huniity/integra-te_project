@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { motion } from 'framer-motion';
 import { NightModeBackground, useNightMode } from '../components/core/NightMode';
 import Footer from '../components/core/Footer';
 
@@ -47,7 +48,12 @@ function RgpdContent() {
 
             <NightModeBackground dayImage='/src/assets/bg_day.webp' nightImage='/src/assets/bg_night.webp' />
 
-            <div className="max-w-3xl w-full mx-auto flex flex-col mt-40 pb-40 relative z-10 px-1">
+            <motion.div
+              className="max-w-3xl w-full mx-auto flex flex-col mt-40 pb-40 relative z-10 px-1"
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, ease: 'easeOut' }}
+            >
                 <section className={`w-full p-4 sm:p-6 md:p-10 flex flex-col gap-6 sm:gap-8 ${sectionBg}`}>
 
                     {/* Title */}
@@ -329,8 +335,7 @@ function RgpdContent() {
                         Última atualização: Junho de 2026 • Projeto iNTEGRA-TE Loulé
                     </p>
                 </section>
-
-            </div>
+            </motion.div>
             <Footer />
             <div className="mb-50"></div>
 

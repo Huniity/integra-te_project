@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion'
 import { getLevelBadgeClassName } from '../../utils/aprender';
 import type { Aula } from '../../api/contracts/aulas';
 
@@ -10,11 +11,19 @@ const SUBJECT_IMG: Record<string, string> = {
 interface AprenderCardProps {
   aula: Aula;
   onSelect: (aula: Aula) => void;
+  index?: number;
 }
 
-export default function AprenderCard({ aula, onSelect }: AprenderCardProps) {
+export default function AprenderCard({ aula, onSelect, index = 0 }: AprenderCardProps) {
   return (
-    <div className="rounded-2xl min-h-[210px] bg-white border border-gray-100 flex flex-col items-center p-3 group hover:-translate-y-1 transition-transform duration-200">
+    <motion.div
+      className="rounded-2xl min-h-[210px] bg-white border border-gray-100 flex flex-col items-center p-3 group"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3, delay: index * 0.06, ease: 'easeOut' }}
+      whileHover={{ y: -4, transition: { duration: 0.2, ease: 'easeOut' } }}
+      whileTap={{ scale: 0.97 }}
+    >
       <p className="font-['Fredoka',sans-serif] text-lg font-semibold text-center mb-1.5 leading-tight text-blue-700">
         {aula.title}
       </p>
@@ -46,6 +55,6 @@ export default function AprenderCard({ aula, onSelect }: AprenderCardProps) {
           <path d="M8 5v14l11-7z" />
         </svg>
       </button>
-    </div>
+    </motion.div>
   );
 }

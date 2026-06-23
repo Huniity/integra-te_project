@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import { Play } from 'lucide-react';
 import { NightModeBackground, useNightMode } from '../components/core/NightMode';
 import Aside from '../components/core/Aside';
@@ -149,8 +150,8 @@ function VideosContent() {
                 onTouchStart={carousel.onTouchStart}
                 onTouchEnd={carousel.onTouchEnd}
               >
-                {carousel.pageItems.map((video) => (
-                  <VideoCard key={video.id} video={video} onPlay={setSelected} />
+                {carousel.pageItems.map((video, i) => (
+                  <VideoCard key={video.id} video={video} onPlay={setSelected} index={i} />
                 ))}
               </div>
             )}
@@ -173,13 +174,18 @@ function VideosContent() {
 }
 
 /* Video thumbnail card */
-function VideoCard({ video, onPlay }: { video: Video; onPlay: (v: Video) => void }) {
+function VideoCard({ video, onPlay, index = 0 }: { video: Video; onPlay: (v: Video) => void; index?: number }) {
   const src = video.url_externa ?? video.ficheiro_url;
 
   return (
-    <button
+    <motion.button
       onClick={() => onPlay(video)}
-      className="group text-left flex flex-col gap-2 rounded-2xl bg-white/20 border border-white/30 backdrop-blur-xs overflow-hidden shadow-[0_4px_16px_rgba(31,38,135,0.15)] hover:bg-white/25 active:scale-[0.98] transition-all"
+      className="group text-left flex flex-col gap-2 rounded-2xl bg-white/20 border border-white/30 backdrop-blur-xs overflow-hidden shadow-[0_4px_16px_rgba(31,38,135,0.15)] hover:bg-white/25 transition-colors"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3, delay: index * 0.06, ease: 'easeOut' }}
+      whileHover={{ y: -3, transition: { duration: 0.2, ease: 'easeOut' } }}
+      whileTap={{ scale: 0.97 }}
     >
       {/* Thumbnail */}
       <div className="relative w-full aspect-video bg-black/30 overflow-hidden">
@@ -214,7 +220,7 @@ function VideoCard({ video, onPlay }: { video: Video; onPlay: (v: Video) => void
           <p className="text-white/70 text-sm leading-snug line-clamp-2 mt-0.5">{video.corpo}</p>
         )}
       </div>
-    </button>
+    </motion.button>
   );
 }
 

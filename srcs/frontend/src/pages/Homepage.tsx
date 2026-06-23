@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import { NightModeBackground, NightModeToggle, useNightMode } from '../components/core/NightMode';
 import Footer from '../components/core/Footer';
 import RocketFlyby from '../components/core/RocketFlyby';
@@ -112,9 +113,21 @@ function HomeContent() {
       </div>
       <RocketFlyby />
       <section className="max-w-6xl w-full mx-auto flex-1 min-h-0 relative z-10 flex items-center py-1">
-        <div className="w-full relative z-10 grid grid-cols-2 gap-x-3 gap-y-10 sm:gap-x-4 sm:gap-y-12 justify-items-center content-center items-start md:flex md:flex-wrap md:justify-center md:gap-x-14 md:gap-y-12 lg:grid lg:grid-cols-4 lg:gap-x-20 lg:gap-y-24 lg:items-end">
+        <motion.div
+          className="w-full relative z-10 grid grid-cols-2 gap-x-3 gap-y-10 sm:gap-x-4 sm:gap-y-12 justify-items-center content-center items-start md:flex md:flex-wrap md:justify-center md:gap-x-14 md:gap-y-12 lg:grid lg:grid-cols-4 lg:gap-x-20 lg:gap-y-24 lg:items-end"
+          initial="hidden"
+          animate="visible"
+          variants={{ visible: { transition: { staggerChildren: 0.07, delayChildren: 0.1 } } }}
+        >
           {menuButtons.map((btn) => (
-            <div key={btn.id} className="flex flex-col items-center relative w-full md:w-[28%] lg:w-full group">
+            <motion.div
+              key={btn.id}
+              className="flex flex-col items-center relative w-full md:w-[28%] lg:w-full group"
+              variants={{
+                hidden: { opacity: 0, y: 24 },
+                visible: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 220, damping: 22 } }
+              }}
+            >
 
               <div className="hidden md:block absolute -top-14 bg-white/95 text-[#1e3a8a] text-[14px] font-extrabold px-4 py-2 rounded-full border-2 border-white shadow-md whitespace-nowrap z-20 pointer-events-none transition-all duration-300 ease-out
                 invisible opacity-0 translate-y-2
@@ -155,9 +168,9 @@ function HomeContent() {
                 </div>
               </button>
 
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </section>
 
       <Footer />

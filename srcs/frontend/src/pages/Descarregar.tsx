@@ -178,8 +178,8 @@ function DescarregarContent() {
                 onTouchStart={carousel.onTouchStart}
                 onTouchEnd={carousel.onTouchEnd}
               >
-                {carousel.pageItems.map((item) => (
-                  <DownloadCard key={item.id} item={item} onView={setSelected} />
+                {carousel.pageItems.map((item, i) => (
+                  <DownloadCard key={item.id} item={item} onView={setSelected} index={i} />
                 ))}
               </div>
             )}
