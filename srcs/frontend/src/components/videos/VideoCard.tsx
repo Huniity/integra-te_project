@@ -29,10 +29,10 @@ export default function VideoCard({ video, onPlay }: VideoCardProps) {
   return (
     <button
       onClick={() => onPlay(video)}
-      className="group text-left flex flex-col rounded-2xl bg-white/20 border border-white/30 backdrop-blur-xs overflow-hidden shadow-[0_4px_16px_rgba(31,38,135,0.15)] hover:bg-white/30 active:scale-[0.98] transition-all h-full"
+      className="group text-left flex flex-col rounded-[24px] sm:rounded-[32px] bg-white/20 border border-white/30 backdrop-blur-xs overflow-hidden shadow-[0_4px_16px_rgba(31,38,135,0.15)] hover:bg-white/30 active:scale-[0.98] transition-all w-full h-auto lg:h-full lg:min-h-0"
     >
-      {/* Thumbnail — fills remaining card height */}
-      <div className="relative w-full flex-1 min-h-0 overflow-hidden bg-black/40">
+
+      <div className="relative w-full flex-1 min-h-[110px] lg:min-h-0 overflow-hidden bg-black/40">
         {thumbnail ? (
           <img
             src={thumbnail}
@@ -45,7 +45,6 @@ export default function VideoCard({ video, onPlay }: VideoCardProps) {
           </div>
         )}
 
-        {/* Hover play overlay */}
         <span className="absolute inset-0 flex items-center justify-center bg-black/25 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
           <span className="flex h-12 w-12 items-center justify-center rounded-full bg-white shadow-xl">
             <Play size={20} className="text-[#1e3a8a] ml-0.5" fill="#1e3a8a" aria-hidden="true" />
@@ -53,14 +52,13 @@ export default function VideoCard({ video, onPlay }: VideoCardProps) {
         </span>
       </div>
 
-      {/* Text — fixed height */}
-      <div className="shrink-0 px-3 py-2.5 flex flex-col gap-0.5 min-w-0">
-        <p className="font-['Fredoka',sans-serif] font-black text-white text-sm leading-tight line-clamp-2">
+      <div className="shrink-0 px-4 py-3 flex flex-col gap-0.5 min-w-0 w-full mt-auto">
+        <p className="font-['Fredoka',sans-serif] font-black text-white text-sm sm:text-base leading-tight line-clamp-2">
           {video.titulo}
         </p>
         <p className="text-white/55 text-xs truncate">{video.disciplina_nome} · {video.tema_titulo}</p>
         {video.corpo && (
-          <p className="text-white/65 text-xs leading-snug line-clamp-1">{video.corpo}</p>
+          <p className="text-white/65 text-xs leading-snug line-clamp-1 mt-0.5">{video.corpo}</p>
         )}
       </div>
     </button>

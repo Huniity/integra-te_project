@@ -4,6 +4,7 @@ import { NightModeBackground, useNightMode } from '../components/core/NightMode'
 import Aside from '../components/core/Aside';
 import type { SubjectId } from '../components/core/Aside';
 import MainContent from '../components/core/MainContent';
+import type { FilterType } from '../components/core/MainContent';
 import { useCarousel, CarouselNav } from '../components/core/Carousel';
 import { subjects } from '../utils/videos';
 import { videosApi } from '../services/api/videos.api';
@@ -71,11 +72,55 @@ function VideosContent() {
   const [isLoading, setIsLoading] = useState(true);
   const [selected, setSelected] = useState<Video | null>(null);
 
+  /* 🎯 Estados mockados do filtro para garantir que o layout do Header não quebra */
+  const [activeFilter, setActiveFilter] = useState<FilterType>('todos');
+  const [selectedLevel, setSelectedLevel] = useState<number | 'todos'>('todos');
+  const handleSelectAllLevels = () => { setActiveFilter('todos'); setSelectedLevel('todos'); };
+  const handleSelectLevel = (level: number | 'todos') => {
+    if (level === 'todos') { setActiveFilter('todos'); setSelectedLevel('todos'); }
+    else { setActiveFilter('nivel'); setSelectedLevel(level); }
+  };
+
   const filtered = videos.filter(
     (v) => activeSubject === 'todos' || v.disciplina_slug === activeSubject,
   );
 
-  const carousel = useCarousel(filtered, { mobile: 2, tablet: 6, desktop: 6 });
+  /* 🎯 Configurado para carregar exatamente 6 itens por página no desktop */
+  const carousel = useCarousel(filtered, { mobile: 2, tablet: 4, desktop: 6 });
+
+  useEffect(() => {
+    const handleResize = () => {
+      const isDesktop = window.innerWidth >= 1024;
+      const existingTag = document.getElementById("anti-scroll-global-style");
+
+      if (isDesktop && !existingTag) {
+        const styleTag = document.createElement("style");
+        styleTag.id = "anti-scroll-global-style";
+        styleTag.innerHTML = `
+          html, body, #root, main, .grid-esconde-scroll {
+            scrollbar-width: none !important;
+            -ms-overflow-style: none !important;
+            overflow: hidden !important;
+          }
+          html::-webkit-scrollbar, body::-webkit-scrollbar, #root::-webkit-scrollbar, main::-webkit-scrollbar {
+            display: none !important;
+            width: 0 !important; height: 0 !important;
+          }
+        `;
+        document.head.appendChild(styleTag);
+      } else if (!isDesktop && existingTag) {
+        existingTag.remove();
+      }
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      const existingTag = document.getElementById("anti-scroll-global-style");
+      if (existingTag) existingTag.remove();
+    };
+  }, []);
 
   useEffect(() => {
     const load = async () => {
@@ -131,21 +176,29 @@ function VideosContent() {
         <Aside subjects={subjects} activeSubject={activeSubject} onSelectSubject={setActiveSubject} />
 
         <div className="flex-1 min-h-0 flex flex-col gap-2">
-          <MainContent title="Vídeos!" fillContent>
+          {/* 🎯 CORREÇÃO: Passadas as propriedades de filtro idênticas ao ecrã de referência */}
+          <MainContent
+            title="Vídeos!"
+            activeFilter={activeFilter}
+            selectedLevel={selectedLevel}
+            onSelectAll={handleSelectAllLevels}
+            onSelectLevel={handleSelectLevel}
+          >
             {isLoading ? (
-              <div className="flex items-center justify-center h-full">
+              <div className="flex items-center justify-center h-64">
                 <div className="text-center">
-                  <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-white mb-4" />
-                  <p className="text-white/80 font-semibold">A carregar vídeos…</p>
+                  <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mb-4" />
+                  <p className="text-gray-500 font-semibold">A carregar vídeos…</p>
                 </div>
               </div>
             ) : filtered.length === 0 ? (
-              <div className="flex items-center justify-center h-full">
-                <p className="text-white/60 text-lg font-semibold">Nenhum vídeo disponível</p>
+              <div className="flex items-center justify-center h-64">
+                <p className="text-gray-400 text-lg font-semibold">Nenhum vídeo disponível</p>
               </div>
             ) : (
+              /* 📐 GRID FIXA: Configuração de 3 colunas por 2 linhas e gaps idênticos */
               <div
-                className="grid grid-cols-1 sm:grid-cols-3 gap-2"
+                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 lg:grid-rows-2 gap-5 lg:gap-8 items-stretch h-auto lg:h-full w-full lg:overflow-hidden grid-esconde-scroll"
                 onTouchStart={carousel.onTouchStart}
                 onTouchEnd={carousel.onTouchEnd}
               >
@@ -179,7 +232,7 @@ function VideoCard({ video, onPlay }: { video: Video; onPlay: (v: Video) => void
   return (
     <button
       onClick={() => onPlay(video)}
-      className="group text-left flex flex-col gap-2 rounded-2xl bg-white/20 border border-white/30 backdrop-blur-xs overflow-hidden shadow-[0_4px_16px_rgba(31,38,135,0.15)] hover:bg-white/25 active:scale-[0.98] transition-all"
+      className="group text-left flex flex-col gap-2 rounded-[24px] sm:rounded-[32px] bg-white/20 border border-white/30 backdrop-blur-xs overflow-hidden shadow-[0_4px_16px_rgba(31,38,135,0.15)] hover:bg-white/25 active:scale-[0.98] transition-all w-full h-auto lg:h-full lg:min-h-0"
     >
       {/* Thumbnail */}
       <div className="relative w-full aspect-video bg-black/30 overflow-hidden">
@@ -205,7 +258,7 @@ function VideoCard({ video, onPlay }: { video: Video; onPlay: (v: Video) => void
       </div>
 
       {/* Info */}
-      <div className="px-3 pb-3 flex flex-col gap-1">
+      <div className="px-4 pb-4 pt-1 flex flex-col gap-1 mt-auto">
         <p className="font-['Fredoka',sans-serif] font-black text-white text-base leading-tight line-clamp-2">
           {video.titulo}
         </p>
@@ -222,7 +275,6 @@ function VideoCard({ video, onPlay }: { video: Video; onPlay: (v: Video) => void
 function VideoModal({ video, onClose }: { video: Video; onClose: () => void }) {
   const src = video.url_externa ?? video.ficheiro_url;
 
-  /* Close on backdrop click or Escape */
   const handleKey = (e: React.KeyboardEvent) => {
     if (e.key === 'Escape') onClose();
   };
@@ -247,17 +299,9 @@ function VideoModal({ video, onClose }: { video: Video; onClose: () => void }) {
       onKeyDown={handleKey}
       className="fixed inset-0 z-[60] flex items-center justify-center p-4"
     >
-      {/* Backdrop */}
-      <div
-        className="absolute inset-0 bg-black/70 backdrop-blur-sm"
-        onClick={onClose}
-        aria-hidden="true"
-      />
+      <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={onClose} aria-hidden="true" />
 
-      {/* Panel */}
       <div className="relative z-10 w-full max-w-3xl rounded-3xl bg-blue-900/80 border border-white/20 shadow-2xl overflow-hidden">
-
-        {/* Video area */}
         {isEmbed && embedSrc ? (
           <div className="aspect-video w-full">
             <iframe
@@ -278,7 +322,6 @@ function VideoModal({ video, onClose }: { video: Video; onClose: () => void }) {
           </div>
         )}
 
-        {/* Info footer */}
         <div className="px-5 py-4 flex items-start justify-between gap-4">
           <div>
             <h2 className="font-['Fredoka',sans-serif] font-black text-xl text-white leading-tight">
