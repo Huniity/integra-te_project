@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { NightModeBackground, useNightMode } from '../components/core/NightMode';
 import Aside from '../components/core/Aside';
 import type { SubjectId } from '../components/core/Aside';
@@ -21,7 +21,16 @@ function ResolverContent() {
   const { isNightMode } = useNightMode();
   const { id } = useParams<{ id?: string }>();
   const navigate = useNavigate();
-  const [activeSubject, setActiveSubject] = useState<SubjectId | string>('todos');
+  const [searchParams] = useSearchParams();
+  const [activeSubject, setActiveSubject] = useState<SubjectId | string>(
+    searchParams.get('subject') ?? 'todos'
+  );
+
+  useEffect(() => {
+    const s = searchParams.get('subject');
+    if (s) setActiveSubject(s);
+  }, [searchParams]);
+
   const [activeFilter, setActiveFilter] = useState<FilterType>('todos');
   const [selectedLevel, setSelectedLevel] = useState<number | 'todos'>('todos');
   const [selectedExercise, setSelectedExercise] = useState<Exercise | null>(null);

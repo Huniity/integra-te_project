@@ -17,7 +17,8 @@ const refreshToken = async (): Promise<void> => {
 
 export const fetchWithConfig = async <T = unknown>(
     endpoint: string,
-    options: FetchOptions = {}
+    options: FetchOptions = {},
+    timeoutMs = 10000,
 ): Promise<T> => {
     const { _isRetry, ...fetchOptions } = options;
     const baseUrl = API_BASE_URL.replace(/\/$/, "");
@@ -27,7 +28,7 @@ export const fetchWithConfig = async <T = unknown>(
     const isFormData = fetchOptions.body instanceof FormData;
 
     const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 10000);
+    const timeout = setTimeout(() => controller.abort(), timeoutMs);
 
     try {
         const response = await fetch(url, {

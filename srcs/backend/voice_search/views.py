@@ -41,15 +41,158 @@ def load_whisper():
     return whisper.load_model("base")
 
 
+KEYWORD_ROUTES = [
+    (
+        [
+            "exercício",
+            "exercicio",
+            "exercícios",
+            "exercicios",
+            "treinar",
+            "treino",
+            "praticar",
+            "prática",
+            "pratica",
+        ],
+        "/resolver",
+    ),
+    (["jogo", "jogar", "jogos", "brincar", "brincadeira"], "/jogos"),
+    (
+        [
+            "aprender",
+            "aula",
+            "aulas",
+            "estudar",
+            "estudo",
+            "aprendizagem",
+            "matéria",
+            "materia",
+        ],
+        "/aprender",
+    ),
+    (["vídeo", "video", "vídeos", "videos", "ver vídeo", "ver video"], "/videos"),
+    (
+        [
+            "livro",
+            "livros",
+            "ler",
+            "leitura",
+            "história",
+            "historia",
+            "histórias",
+            "historias",
+        ],
+        "/ler",
+    ),
+    (
+        [
+            "descarregar",
+            "download",
+            "ficha",
+            "fichas",
+            "pdf",
+            "ficheiro",
+            "ficheiros",
+            "imprimir",
+        ],
+        "/descarregar",
+    ),
+    (
+        ["contactar", "contacto", "falar", "mensagem", "ajuda", "contactos"],
+        "/contactar",
+    ),
+    (["sobre", "projeto", "projecto", "informação", "informacao"], "/sobre"),
+    (["privacidade", "rgpd", "dados", "proteção", "protecao"], "/privacidade"),
+    (["faq", "perguntas", "dúvidas", "duvidas", "frequentes"], "/faq"),
+]
+
+SUBJECT_KEYWORDS = [
+    (
+        [
+            "português",
+            "portugues",
+            "portuguesa",
+            "gramática",
+            "gramatica",
+            "leitura",
+            "escrita",
+            "ortografia",
+        ],
+        "portugues",
+    ),
+    (
+        [
+            "matemática",
+            "matematica",
+            "matemáticas",
+            "matematicas",
+            "números",
+            "numeros",
+            "contas",
+            "calcular",
+            "cálculo",
+            "calculo",
+            "geometria",
+            "álgebra",
+            "algebra",
+        ],
+        "matematica",
+    ),
+    (
+        [
+            "estudo do meio",
+            "ciências",
+            "ciencias",
+            "natureza",
+            "ambiente",
+            "história",
+            "historia",
+            "ciência",
+            "ciencia",
+        ],
+        "estudo-do-meio",
+    ),
+]
+
+
+def extract_subject(transcript: str):
+    t = transcript.lower()
+    for keywords, subject_id in SUBJECT_KEYWORDS:
+        if any(kw in t for kw in keywords):
+            return subject_id
+    return None
+
+
+def keyword_route(transcript: str):
+    t = transcript.lower()
+    for keywords, route in KEYWORD_ROUTES:
+        if any(kw in t for kw in keywords):
+            subject = extract_subject(transcript)
+            if subject and route in ("/resolver", "/aprender"):
+                return f"{route}?subject={subject}"
+            return route
+    return None
+
+
 @api_view(["POST"])
 @permission_classes([AllowAny])
 def reroute(request):
     """
-    Reroute the user based on the transcribed audio input by finding the closest matching content in the database using cosine similarity of embeddings.
+    Reroute the user based on the transcribed audio input. Checks keyword rules
+    first, then falls back to semantic similarity via embeddings.
     """
     transcript = request.data.get("transcript", "").strip()
     if not transcript:
         return Response({"error": "No transcript."}, status=400)
+
+    forced = keyword_route(transcript)
+    if forced:
+        return Response(
+            {
+                "route": forced,
+                "results": [{"route": forced, "label": transcript, "distance": 0}],
+            }
+        )
 
     vector = load_embedder().encode(transcript, normalize_embeddings=True).tolist()
 

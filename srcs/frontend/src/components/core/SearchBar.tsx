@@ -18,6 +18,7 @@ export function SearchBar({ className }: { className?: string }) {
   const [isRecording, setIsRecording] = useState(false);
   const [isTranscribing, setIsTranscribing] = useState(false);
   const [showConsent, setShowConsent] = useState(false);
+  const [voiceFeedback, setVoiceFeedback] = useState<{ type: 'heard' | 'error'; text: string } | null>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const mediaStreamRef = useRef<MediaStream | null>(null);
   const audioChunksRef = useRef<BlobPart[]>([]);
@@ -93,20 +94,25 @@ export function SearchBar({ className }: { className?: string }) {
         formData.append('audio', audioBlob, 'recording.webm');
 
         setIsTranscribing(true);
+        setVoiceFeedback(null);
         try {
           const { transcript } = await fetchWithConfig<{ transcript: string }>(
             '/v1/voice/transcribe/',
             { method: 'POST', body: formData },
+            30000,
           );
           setSearchText(transcript);
+          setVoiceFeedback({ type: 'heard', text: `"${transcript}"` });
 
           const { route } = await fetchWithConfig<{ route: string }>(
             '/v1/voice/reroute/',
             { method: 'POST', body: JSON.stringify({ transcript }) },
           );
-          navigate(route);
+          setTimeout(() => { navigate(route); setVoiceFeedback(null); }, 1200);
         } catch (error) {
           console.error('Falha ao processar a pesquisa por voz:', error);
+          setVoiceFeedback({ type: 'error', text: 'Não consegui ouvir. Tenta novamente.' });
+          setTimeout(() => setVoiceFeedback(null), 3000);
         } finally {
           setIsTranscribing(false);
         }
@@ -186,6 +192,16 @@ export function SearchBar({ className }: { className?: string }) {
             isNightMode ? 'text-white/90 placeholder-white/90' : 'text-blue-600/90 placeholder-blue-600/90'
           }`}
         />
+
+        {voiceFeedback && (
+          <div className={`absolute top-[calc(100%+8px)] left-0 right-0 z-[60] rounded-2xl px-4 py-2.5 text-sm font-semibold text-center shadow-lg
+            ${voiceFeedback.type === 'error'
+              ? 'bg-red-500/90 text-white'
+              : 'bg-white/95 text-[#1e3a8a]'
+            }`}>
+            {voiceFeedback.type === 'heard' ? '🎙️ Ouvi: ' : ''}{voiceFeedback.text}
+          </div>
+        )}
 
         {showDrop && results.length > 0 && (
           <div className="absolute top-[calc(100%+6px)] left-0 right-0 z-[60] rounded-2xl bg-white/95 backdrop-blur-md shadow-[0_8px_32px_rgba(31,38,135,0.18)] border border-white/40 overflow-hidden">
