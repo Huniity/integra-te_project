@@ -1,4 +1,4 @@
-import { useState, type ComponentType, createElement } from 'react'
+import { useState, useEffect, type ComponentType, createElement } from 'react'
 import bg from '../assets/content2.webp'
 import bgNight from '../assets/noite.webp'
 import cloudMenu from '../assets/cloud_menu2.webp'
@@ -33,6 +33,14 @@ const DASHBOARD_SUBJECTS = TABS.map((tab) => ({
 function DashboardInner() {
     const [activeTab, setActiveTab] = useState<string>(TABS[0].id)
     const [pendingCreate, setPendingCreate] = useState(false)
+    const [username, setUsername] = useState<string | null>(null)
+
+    useEffect(() => {
+        fetch('/api/v1/me', { credentials: 'include' })
+            .then(r => r.json())
+            .then(data => setUsername(data.username))
+            .catch(() => {})
+    }, [])
     const ActivePanel = TAB_PANELS[activeTab]
     const activeTabLabel = TABS.find((t) => t.id === activeTab)?.label ?? ''
 
@@ -59,7 +67,7 @@ function DashboardInner() {
                     cloudImage={cloudMenu}
                 />
 
-                <MainContent title={activeTabLabel} logoutBtn={true}>
+                <MainContent title={activeTabLabel} logoutBtn={true} greeting={activeTab === 'dashboard' && username ? `Olá ${username}, bem-vindo à sua área!` : undefined}>
                     {activeTab === 'dashboard'
                         ? <OverviewPanel onTabSelect={handleTabSelectCreate} />
                         : createElement(ActivePanel, { autoCreate: pendingCreate })

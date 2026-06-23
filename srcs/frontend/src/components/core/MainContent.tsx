@@ -14,6 +14,7 @@ const levelOptions: Array<{ value: number | 'todos'; label: string }> = [
 interface MainContentProps {
   title: string;
   logoutBtn?: boolean;
+  greeting?: string;
   activeFilter?: FilterType;
   selectedLevel?: number | 'todos';
   onSelectAll?: () => void;
@@ -31,6 +32,7 @@ export default function MainContent({
   onSelectLevel,
   fillContent = false,
   logoutBtn = false,
+  greeting,
   children,
 }: MainContentProps) {
   const [isLevelMenuOpen, setIsLevelMenuOpen] = useState(false);
@@ -55,29 +57,39 @@ export default function MainContent({
   return (
     <div className="flex-1 min-h-0 bg-blue-600/30 backdrop-blur-xs rounded-3xl shadow-[0_18px_45px_rgba(31,38,135,0.28)] border border-white/30 ring-1 ring-white/20 overflow-hidden flex flex-col">
       {/* Header */}
-      <div className="relative px-5 pt-3 pb-2 flex flex-col items-center sm:flex-row sm:items-center justify-between gap-2 overflow-visible">
+      <div className="relative px-5 pt-3 pb-2 flex items-center justify-between gap-2 overflow-visible">
         <img
           src="/src/assets/stars.webp"
           alt=""
           aria-hidden="true"
           className="pointer-events-none absolute inset-x-[-50] top-1/2 h-[100%] w-2/3 -translate-y-2/3 mx-auto object-contain"
         />
-        <div className="relative z-10 flex items-center gap-3 flex justify-between w-full sm:w-auto">
-          <h1
-            className="font-['Fredoka',sans-serif] text-xl sm:text-2xl lg:text-3xl font-black text-white"
-            style={{
-              textShadow:
-                '-1px 0 #2563eb, 0 1px #2563eb, 1px 0 #2563eb, 0 -1px #2563eb, 1px 1px #2563eb, -1px -1px #2563eb, 1px -1px #2563eb, -1px 1px #2563eb',
-            }}
-          >
-            {title}
-          </h1>
-          {logoutBtn && <LogoutBtn />}
-        </div>
 
-        {/* Filter buttons — only rendered when handlers are provided */}
-        {showFilters && (
-          <div className="relative z-10 self-center sm:self-auto flex flex-wrap justify-center items-center rounded-2xl sm:rounded-full p-1 gap-2 sm:gap-4 lg:gap-12">
+        {/* Left: title */}
+        <h1
+          className="relative z-10 font-['Fredoka',sans-serif] text-xl sm:text-2xl lg:text-3xl font-black text-white"
+          style={{
+            textShadow:
+              '-1px 0 #2563eb, 0 1px #2563eb, 1px 0 #2563eb, 0 -1px #2563eb, 1px 1px #2563eb, -1px -1px #2563eb, 1px -1px #2563eb, -1px 1px #2563eb',
+          }}
+        >
+          {title}
+        </h1>
+
+        <h1></h1>
+
+        {/* Center: greeting */}
+        {greeting && (
+          <p className="absolute left-2/4 -translate-x-1/2 z-10 font-['Fredoka',sans-serif] text-sm sm:text-xl font-semibold text-white/90 whitespace-nowrap pointer-events-none">
+            {greeting}
+          </p>
+        )}
+
+        {/* Right: filters + logout */}
+        <div className="relative z-10 flex items-center gap-3">
+          {/* Filter buttons — only rendered when handlers are provided */}
+          {showFilters && (
+          <div className="flex flex-wrap justify-center items-center rounded-2xl sm:rounded-full p-1 gap-2 sm:gap-4 lg:gap-12">
             <button
               onClick={onSelectAll}
               className={`px-3 py-1.5 rounded-full text-md font-extrabold transition-all cursor-pointer shadow-[0_4px_12px_rgba(15,23,42,0.12)] ${
@@ -138,6 +150,8 @@ export default function MainContent({
             </div>
           </div>
         )}
+          {logoutBtn && <LogoutBtn />}
+        </div>
       </div>
 
       {/* Content */}

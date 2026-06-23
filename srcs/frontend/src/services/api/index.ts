@@ -55,10 +55,9 @@ export const fetchWithConfig = async <T = unknown>(
                 activeRefreshPromise = null;
 
                 return await fetchWithConfig(endpoint, { ...options, _isRetry: true });
-            } catch (err) {
+            } catch {
                 activeRefreshPromise = null;
-                window.location.href = "/login";
-                return Promise.reject(new Error("Sessão expirada"));
+                throw new Error("Sessão expirada");
             }
         }
 

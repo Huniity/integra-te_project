@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from 'react'
+import { useState, useEffect, type FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Loader2, AlertCircle } from 'lucide-react'
 import { NightModeBackground, useNightMode } from '../components/core/NightMode'
@@ -26,6 +26,14 @@ export default function Login() {
 function LoginContent() {
   const { isNightMode } = useNightMode()
   const navigate = useNavigate()
+
+  useEffect(() => {
+    const controller = new AbortController()
+    fetch('/api/v1/me', { credentials: 'include', signal: controller.signal })
+      .then(r => { if (r.ok) navigate('/dashboard', { replace: true }) })
+      .catch(() => {})
+    return () => controller.abort()
+  }, [navigate])
 
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
