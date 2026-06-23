@@ -395,9 +395,12 @@ function MobileDrawer({ isOpen, onClose, nav }: MobileDrawerProps) {
   )
 }
 
+const HIDE_NAV_PATHS = ['/faq', '/privacidade', '/rgpd', '/sobre']
+
 /* Main Navbar export */
 export function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false)
+  const [navHidden, setNavHidden] = useState(false)
   const burgerRef    = useRef<HTMLButtonElement>(null)
   const navigate     = useNavigate()
   const { pathname } = useLocation()
@@ -419,13 +422,42 @@ export function Navbar() {
     if (!menuOpen) burgerRef.current?.focus()
   }, [menuOpen])
 
+  /* Hide navbar on scroll-down, show on scroll-up — only on content pages */
+  useEffect(() => {
+    setNavHidden(false)
+    if (!HIDE_NAV_PATHS.includes(pathname)) return
+
+    const main = document.querySelector('main')
+    if (!main) return
+
+    let checkY = main.scrollTop
+    const onScroll = () => {
+      if (menuOpen) return
+      const y = main.scrollTop
+      if (y < 20) {
+        setNavHidden(false)
+        checkY = y
+      } else if (y > checkY + 30) {
+        setNavHidden(true)
+        checkY = y
+      } else if (y < checkY - 15) {
+        setNavHidden(false)
+        checkY = y
+      }
+    }
+
+    main.addEventListener('scroll', onScroll, { passive: true })
+    return () => main.removeEventListener('scroll', onScroll)
+  }, [pathname, menuOpen])
+
   return (
     <header
       role="banner"
-      className="
-        fixed top-8 left-2 right-0 z-50
-        bg-transparent
-      "
+      className={`
+        fixed top-8 left-2 right-0 z-50 bg-transparent
+        transition-transform duration-300 ease-in-out
+        ${navHidden ? '-translate-y-[calc(100%+4rem)]' : 'translate-y-0'}
+      `}
     >
      <a
       href="#main-content"

@@ -55,21 +55,21 @@ function AprenderContent() {
   const carousel = useCarousel(filteredAulas, { mobile: 2, tablet: 4, desktop: 6 });
 
   useEffect(() => {
-      const loadAulas = async () => {
-        try {
-          setIsLoading(true);
-          const data = await aulasApi.getAulas();
+    const loadAulas = async () => {
+      try {
+        setIsLoading(true);
+        const data = await aulasApi.getAulas();
 
-          setAulas(data);
-        } catch (error) {
-          console.error("Erro ao carregar as aulas:", error);
-        } finally {
-          setIsLoading(false);
-        }
-      };
+        setAulas(data);
+      } catch (error) {
+        console.error("Erro ao carregar as aulas:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-      loadAulas();
-    }, []);
+    loadAulas();
+  }, []);
 
   useEffect(() => {
     if (!id || aulas.length === 0) return;
@@ -102,10 +102,10 @@ function AprenderContent() {
         src="/src/assets/rainbow.webp"
         alt=""
         aria-hidden="true"
-        className={`pointer-events-none fixed top-[14%] left-[-5%] z-1 w-28 sm:w-36 md:w-44 lg:w-100 object-contain rotate-24 transition-opacity duration-700 ${
-          isNightMode ? 'opacity-0' : 'opacity-100'
-        }`}
+        className={`pointer-events-none fixed top-[14%] left-[-5%] z-1 w-28 sm:w-36 md:w-44 lg:w-100 object-contain rotate-24 transition-opacity duration-700 ${isNightMode ? 'opacity-0' : 'opacity-100'
+          }`}
       />
+
       <NightModeBackground dayImage="/src/assets/content2.webp" nightImage="/src/assets/noite.webp" />
 
       {/* Body: Sidebar + Main */}
