@@ -60,7 +60,7 @@ function HomeContent() {
       hint: 'Vê vídeos educativos',
       bgImg: './src/assets/blue_dot.webp',
       iconImg: './src/assets/video.webp',
-      path: '/videos'         // videos are content blocks inside Aprender
+      path: '/videos'
     },
     {
       id: 'descarregar',
@@ -68,7 +68,7 @@ function HomeContent() {
       hint: 'Descarrega recursos',
       bgImg: './src/assets/darkb_dot.webp',
       iconImg: './src/assets/download.webp',
-      path: '/descarregar'         // downloadable PDFs live in Resolver/Aprender
+      path: '/descarregar'
     },
     {
       id: 'contactar',
@@ -76,7 +76,7 @@ function HomeContent() {
       hint: 'Contacta-nos ou envia-nos uma mensagem',
       bgImg: './src/assets/yellow_dot.webp',
       iconImg: './src/assets/user.webp',
-      path: '/contactar'        // was /contactos — fixed to match App.tsx
+      path: '/contactar'
     },
     {
       id: 'sobre',
@@ -103,14 +103,14 @@ function HomeContent() {
       <NightModeBackground dayImage='./src/assets/bg_day.webp' nightImage='./src/assets/bg_night.webp' />
 
       <img src="/src/assets/bottom_cloud.webp" alt="" aria-hidden="true"
-        className={`pointer-events-none fixed bottom-[-49%] z-30 w-full object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-0' : 'opacity-100'}`} />
+        className={`pointer-events-none fixed bottom-[-29%] left-0 z-10 w-full object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-0' : 'opacity-100'}`} />
       <img src="/src/assets/bottom_cloud2.webp" alt="" aria-hidden="true"
-        className={`pointer-events-none fixed bottom-[-49%] z-30 w-full object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-100' : 'opacity-0'}`} />
+        className={`pointer-events-none fixed bottom-[-29%] left-0 z-10 w-full object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-100' : 'opacity-0'}`} />
 
       <div className="hidden lg:block">
         <NightModeToggle />
       </div>
-
+      <RocketFlyby />
       <section className="max-w-6xl w-full mx-auto flex-1 min-h-0 relative z-10 flex items-center py-1">
         <div className="w-full relative z-10 grid grid-cols-2 gap-x-3 gap-y-10 sm:gap-x-4 sm:gap-y-12 justify-items-center content-center items-start md:flex md:flex-wrap md:justify-center md:gap-x-14 md:gap-y-12 lg:grid lg:grid-cols-4 lg:gap-x-20 lg:gap-y-24 lg:items-end">
           {menuButtons.map((btn) => (
@@ -124,7 +124,6 @@ function HomeContent() {
                 <div className="absolute bottom-[-6px] left-1/2 -translate-x-1/2 w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[6px] border-t-white/95"></div>
               </div>
 
-              {/* ALTERAÇÃO: O botão agora engloba rigidamente a esfera e a nuvem juntas, sem margens mortas em baixo */}
               <button
                 onClick={() => handleNavigation(btn)}
                 className="flex flex-col items-center h-auto w-full relative transform transition-all active:scale-95 duration-200 group-hover:-translate-y-5 md:group-hover:-translate-y-6 cursor-pointer focus:outline-none select-none"

@@ -30,9 +30,9 @@ function AboutContent() {
   const textColor = isNightMode ? '#e2e8f0' : '#4a5a7a';
 
   const tabs = [
-    { id: 'projeto',  label: '🌍 O Projeto',  color: '#3a6bc8' },
-    { id: 'caravana', label: '🚐 A Caravana', color: '#e74c3c' },
-    { id: 'missao',   label: '🎯 A Missão',   color: '#9b59b6' },
+    { id: 'projeto',  label: 'O Projeto',  color: '#3a6bc8' },
+    { id: 'caravana', label: 'A Caravana', color: '#e74c3c' },
+    { id: 'missao',   label: 'A Missão',   color: '#9b59b6' },
   ] as const;
 
   return (
@@ -41,9 +41,9 @@ function AboutContent() {
       style={{ scrollbarWidth: 'none' }}
     >
       <img src="/src/assets/bottom_cloud.webp" alt="" aria-hidden="true"
-        className={`pointer-events-none fixed bottom-[-29%] z-30 w-full object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-0' : 'opacity-100'}`} />
+        className={`pointer-events-none fixed bottom-[-29%] left-0 z-30 w-full object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-0' : 'opacity-100'}`} />
       <img src="/src/assets/bottom_cloud2.webp" alt="" aria-hidden="true"
-        className={`pointer-events-none fixed bottom-[-29%] z-30 w-full object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-100' : 'opacity-0'}`} />
+        className={`pointer-events-none fixed bottom-[-29%] left-0 z-30 w-full object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-100' : 'opacity-0'}`} />
       <NightModeBackground dayImage='/src/assets/day_bg.webp' nightImage='/src/assets/night_bg.webp' />
 
       <div className="max-w-3xl w-full mx-auto flex flex-col mt-40 pb-10 relative z-10 px-1">
@@ -99,12 +99,11 @@ function AboutContent() {
                 </p>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
                   {[
-                    { emoji: '📚', title: 'Educação', desc: 'Do infantário ao 4.º ciclo, com recursos adaptados a cada faixa etária.' },
-                    { emoji: '🤝', title: 'Inclusão', desc: 'Combate ativo à discriminação e ao isolamento social.' },
-                    { emoji: '🏘️', title: 'Comunidade', desc: 'A ponte entre famílias, escolas e técnicos especializados.' },
+                    { title: 'Educação', desc: 'Do infantário ao 4.º ciclo, com recursos adaptados a cada faixa etária.' },
+                    { title: 'Inclusão', desc: 'Combate ativo à discriminação e ao isolamento social.' },
+                    { title: 'Comunidade', desc: 'A ponte entre famílias, escolas e técnicos especializados.' },
                   ].map(item => (
                     <div key={item.title} className={`p-4 rounded-2xl text-center ${innerCardBg}`}>
-                      <div className="text-3xl mb-2">{item.emoji}</div>
                       <h4 className="font-['Fredoka',sans-serif] font-black text-base mb-1" style={{ color: headingColor }}>{item.title}</h4>
                       <p className="text-xs leading-relaxed">{item.desc}</p>
                     </div>

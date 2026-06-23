@@ -306,15 +306,34 @@ function RgpdContent() {
                         )}
 
                     </div>
+                    <div className="flex flex-wrap justify-center gap-2.5 shrink-0">
+                        {tabs.map(tab => (
+                        <button
+                            key={tab.id}
+                            onClick={() => setActiveTab(tab.id)}
+                            className={`px-5 py-2.5 rounded-2xl font-['Fredoka',sans-serif] font-bold text-sm transition-all duration-200 active:scale-95 shadow-sm
+                            ${activeTab === tab.id
+                                ? 'text-white scale-105 shadow-md'
+                                : isNightMode
+                                ? 'bg-white/10 text-white/80 hover:bg-white/20'
+                                : 'bg-white/70 text-[#1a3a6a] hover:bg-white'
+                            }`}
+                            style={{ backgroundColor: activeTab === tab.id ? tab.color : undefined }}
+                        >
+                            {tab.label}
+                        </button>
+                        ))}
+                    </div>
 
                     <p className="text-center text-xs mt-2" style={{ color: isNightMode ? '#64748b' : 'rgba(255,255,255,0.6)' }}>
                         Última atualização: Junho de 2026 • Projeto iNTEGRA-TE Loulé
                     </p>
-
                 </section>
+
             </div>
             <Footer />
             <div className="mb-50"></div>
+
         </main>
     );
 }

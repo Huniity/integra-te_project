@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, type FormEvent } from 'react';
+import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 import { useNightMode } from './NightMode';
 import { fetchWithConfig } from '../../services/api';
@@ -219,7 +220,7 @@ export function SearchBar({ className }: { className?: string }) {
         )}
       </form>
 
-      {showConsent && (
+      {showConsent && createPortal(
         <div role="dialog" aria-modal="true" aria-label="Consentimento de gravação de voz" className="fixed inset-0 z-[70] flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/60 backdrop-blur-sm " onClick={handleConsentDecline} aria-hidden="true" />
           <div className="relative z-10 w-full max-w-xl rounded-3xl bg-blue-900/90 border border-white/20 shadow-2xl p-6 text-center ">
@@ -250,7 +251,8 @@ export function SearchBar({ className }: { className?: string }) {
               </button>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </>
   );
