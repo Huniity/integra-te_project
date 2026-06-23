@@ -69,7 +69,7 @@ function LoginContent() {
       <img src="/src/assets/bush2_night.webp" alt="" aria-hidden="true"
         className={`pointer-events-none fixed bottom-[-1%] right-[-2%] z-2 w-28 sm:w-36 md:w-44 lg:w-48 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-100' : 'opacity-0'}`} />
 
-      <NightModeBackground dayImage="/src/assets/day_bg.webp" nightImage="/src/assets/night_bg.webp" />
+      <NightModeBackground dayImage="/src/assets/bg_day.webp" nightImage="/src/assets/bg_night.webp" />
 
       {/* Centred cloud card */}
       <div className="flex flex-1 items-center justify-center relative z-10 py-8">

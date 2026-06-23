@@ -59,7 +59,7 @@ function GamesContent() {
         className={`pointer-events-none fixed bottom-[2%] left-[3%] z-1 w-28 sm:w-36 md:w-44 lg:w-46 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-100' : 'opacity-0'}`} />
       <img src="./src/assets/rainbow.webp" alt="" aria-hidden="true"
         className={`pointer-events-none fixed top-[14%] left-[-5%] z-1 w-28 sm:w-36 md:w-44 lg:w-100 object-contain rotate-24 transition-opacity duration-700 ${isNightMode ? 'opacity-0' : 'opacity-100'}`} />
-      <NightModeBackground dayImage="./src/assets/day_bg.webp" nightImage="./src/assets/night_bg.webp" />
+      <NightModeBackground dayImage="./src/assets/bg_day.webp" nightImage="./src/assets/bg_night.webp" />
 
       <div className="max-w-[95%] w-full mx-auto flex flex-col lg:flex-row gap-3 lg:gap-20 relative z-10 mt-16 sm:mt-20 lg:mt-24 xl:mt-30 pb-2 flex-1 min-h-0">
         <Aside subjects={ageSubjects} activeSubject={activeSubject} onSelectSubject={setActiveSubject} title="Idades" />

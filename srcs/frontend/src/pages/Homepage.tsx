@@ -100,7 +100,7 @@ function HomeContent() {
       className="relative h-screen w-full px-3 md:px-6 pt-3 md:pt-14 pb-2 font-['Nunito',sans-serif] overflow-hidden flex flex-col"
     >
 
-      <NightModeBackground dayImage='./src/assets/day_bg.webp' nightImage='./src/assets/night_bg.webp' />
+      <NightModeBackground dayImage='./src/assets/bg_day.webp' nightImage='./src/assets/bg_night.webp' />
 
       <img src="/src/assets/bottom_cloud.webp" alt="" aria-hidden="true"
         className={`pointer-events-none fixed bottom-[-49%] z-30 w-full object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-0' : 'opacity-100'}`} />

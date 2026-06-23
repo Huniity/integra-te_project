@@ -82,7 +82,7 @@ function FaqContent() {
         className={`pointer-events-none fixed bottom-[-29%] z-30 w-full object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-0' : 'opacity-100'}`} />
       <img src="/src/assets/bottom_cloud2.webp" alt="" aria-hidden="true"
         className={`pointer-events-none fixed bottom-[-29%] z-30 w-full object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-100' : 'opacity-0'}`} />
-      <NightModeBackground dayImage='/src/assets/day_bg.webp' nightImage='/src/assets/night_bg.webp' />
+      <NightModeBackground dayImage='/src/assets/bg_day.webp' nightImage='/src/assets/bg_night.webp' />
 
       <div className="max-w-3xl w-full mx-auto flex flex-col mt-40 pb-10 relative z-10 px-1">
 

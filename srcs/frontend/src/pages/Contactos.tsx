@@ -191,8 +191,8 @@ function ContactContent() {
         }`}
       />
       <NightModeBackground
-        dayImage="/src/assets/day_bg.webp"
-        nightImage="/src/assets/night_bg.webp"
+        dayImage="/src/assets/bg_day.webp"
+        nightImage="/src/assets/bg_night.webp"
       />
 
       {/* ── Content panel (no sidebar) ── */}
