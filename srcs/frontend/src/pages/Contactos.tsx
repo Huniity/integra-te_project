@@ -163,6 +163,14 @@ function ContactContent() {
 
   const isSubmitting = submission.status === 'submitting'
 
+  const sectionBg = isNightMode
+    ? 'bg-slate-900/50 backdrop-blur-xs rounded-3xl shadow-[0_18px_45px_rgba(0,0,0,0.3)] border border-white/10'
+    : 'bg-blue-600/30 backdrop-blur-xs rounded-3xl shadow-[0_18px_45px_rgba(31,38,135,0.28)] border border-white/30'
+
+  const cardBg = isNightMode
+    ? 'bg-slate-800/70 border border-white/10'
+    : 'bg-white/95'
+
   return (
     <main
       id="main-content"
@@ -170,7 +178,7 @@ function ContactContent() {
       style={{ scrollbarWidth: 'none' }}
     >
 
-      {/* ── Decorative elements (identical to Resolver) ── */}
+      {/* ── Decorative elements ── */}
       <img src="/src/assets/bush.webp" alt="" aria-hidden="true"
         className={`pointer-events-none fixed bottom-[-1%] left-[-2%] z-2 w-28 sm:w-36 md:w-44 lg:w-48 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-0' : 'opacity-100'}`} />
       <img src="/src/assets/bush_night.webp" alt="" aria-hidden="true"
@@ -183,9 +191,7 @@ function ContactContent() {
         className={`pointer-events-none fixed bottom-[2%] left-[3%] z-1 w-28 sm:w-36 md:w-44 lg:w-48 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-0' : 'opacity-100'}`} />
       <img src="/src/assets/books_night.webp" alt="" aria-hidden="true"
         className={`pointer-events-none fixed bottom-[2%] left-[3%] z-1 w-28 sm:w-36 md:w-44 lg:w-48 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-100' : 'opacity-0'}`} />
-      <img
-        src="/src/assets/rainbow.webp"
-        alt="" aria-hidden="true"
+      <img src="/src/assets/rainbow.webp" alt="" aria-hidden="true"
         className={`pointer-events-none fixed top-[14%] left-[-5%] z-1 w-28 sm:w-36 md:w-44 lg:w-100 object-contain rotate-24 transition-opacity duration-700 ${
           isNightMode ? 'opacity-0' : 'opacity-100'
         }`}
@@ -201,13 +207,11 @@ function ContactContent() {
         nightImage="/src/assets/bg_night.webp"
       />
 
-      {/* ── Content panel (no sidebar) ── */}
+      {/* ── Content panel ── */}
       <div className="max-w-[95%] w-full mx-auto relative z-10 mt-40 pb-10">
+        <div className={`max-w-2xl mx-auto overflow-hidden ${sectionBg}`}>
 
-        {/* Glass panel — constrained width, natural height */}
-        <div className="max-w-2xl mx-auto bg-blue-600/30 backdrop-blur-xs rounded-3xl shadow-[0_18px_45px_rgba(31,38,135,0.28)] border border-white/30 ring-1 ring-white/20 overflow-hidden">
-
-          {/* Panel header — title only, no filter */}
+          {/* Panel header */}
           <div className="relative px-5 pt-3 pb-2 flex items-center overflow-visible">
             <img
               src="/src/assets/stars.webp"
@@ -217,7 +221,7 @@ function ContactContent() {
             <h1
               className="relative z-10 font-['Fredoka',sans-serif] text-3xl font-black text-white"
               style={{
-                textShadow:
+                textShadow: isNightMode ? 'none' :
                   '-1px 0 #2563eb, 0 1px #2563eb, 1px 0 #2563eb, 0 -1px #2563eb, ' +
                   '1px 1px #2563eb, -1px -1px #2563eb, 1px -1px #2563eb, -1px 1px #2563eb',
               }}
@@ -226,16 +230,16 @@ function ContactContent() {
             </h1>
           </div>
 
-          {/* Panel body — form inside a white card */}
+          {/* Panel body */}
           <div className="px-4 pb-4 pt-2">
-            <div className="bg-white/95 rounded-2xl shadow-sm p-5 sm:p-7 font-['Fredoka',sans-serif]">
+            <div className={`rounded-2xl shadow-sm p-5 sm:p-7 font-['Fredoka',sans-serif] ${cardBg}`}>
 
               {submission.status === 'success' ? (
-                <SuccessFrame onReset={resetForm} />
+                <SuccessFrame onReset={resetForm} isNightMode={isNightMode} />
               ) : (
                 <>
                   {submission.status === 'error' && (
-                    <SubmissionErrorBanner message={submission.message} />
+                    <SubmissionErrorBanner message={submission.message} isNightMode={isNightMode} />
                   )}
 
                   <form
@@ -244,7 +248,7 @@ function ContactContent() {
                     aria-label="Formulário de contacto"
                     className="flex flex-col gap-5"
                   >
-                    <Field id={`${formId}-name`} label="Nome" required error={fieldErrors.name}>
+                    <Field id={`${formId}-name`} label="Nome" required error={fieldErrors.name} isNightMode={isNightMode}>
                       <input
                         id={`${formId}-name`}
                         type="text"
@@ -257,11 +261,11 @@ function ContactContent() {
                         aria-describedby={fieldErrors.name ? `${formId}-name-error` : undefined}
                         onChange={(e) => setField('name', e.target.value)}
                         onBlur={() => handleBlur('name')}
-                        className={inputClass(!!fieldErrors.name)}
+                        className={inputClass(!!fieldErrors.name, isNightMode)}
                       />
                     </Field>
 
-                    <Field id={`${formId}-email`} label="Email" required error={fieldErrors.email}>
+                    <Field id={`${formId}-email`} label="Email" required error={fieldErrors.email} isNightMode={isNightMode}>
                       <input
                         id={`${formId}-email`}
                         type="email"
@@ -274,7 +278,7 @@ function ContactContent() {
                         aria-describedby={fieldErrors.email ? `${formId}-email-error` : undefined}
                         onChange={(e) => setField('email', e.target.value)}
                         onBlur={() => handleBlur('email')}
-                        className={inputClass(!!fieldErrors.email)}
+                        className={inputClass(!!fieldErrors.email, isNightMode)}
                       />
                     </Field>
 
@@ -284,6 +288,7 @@ function ContactContent() {
                       required
                       error={fieldErrors.message}
                       hint={`${form.message.length}/${MAX.message}`}
+                      isNightMode={isNightMode}
                     >
                       <textarea
                         id={`${formId}-message`}
@@ -296,7 +301,7 @@ function ContactContent() {
                         aria-describedby={fieldErrors.message ? `${formId}-message-error` : undefined}
                         onChange={(e) => setField('message', e.target.value)}
                         onBlur={() => handleBlur('message')}
-                        className={`${inputClass(!!fieldErrors.message)} resize-y`}
+                        className={`${inputClass(!!fieldErrors.message, isNightMode)} resize-y`}
                       />
                     </Field>
 
@@ -317,20 +322,23 @@ function ContactContent() {
                           onBlur={() => handleBlur('consentimento')}
                           className="mt-1 h-5 w-5 shrink-0 rounded border-neutral-300 text-brand-blue-500 focus:ring-brand-blue-400"
                         />
-                        <span className="text-sm text-neutral-600">
+                        <span className={`text-sm ${isNightMode ? 'text-slate-300' : 'text-neutral-600'}`}>
                           Aceito o tratamento dos meus dados conforme a{' '}
-                          <a href="/privacidade" className="underline text-brand-blue-500">
+                          <a
+                            href="/privacidade"
+                            className={`underline ${isNightMode ? 'text-blue-400 hover:text-blue-300' : 'text-brand-blue-500'}`}
+                          >
                             política de privacidade
                           </a>
                           .{' '}
-                          <span className="text-brand-red-500" aria-hidden="true">*</span>
+                          <span className="text-red-400" aria-hidden="true">*</span>
                         </span>
                       </label>
                       {fieldErrors.consentimento && (
                         <p
                           id={`${formId}-consentimento-error`}
                           role="alert"
-                          className="mt-1.5 flex items-center gap-1.5 text-sm text-brand-red-500"
+                          className="mt-1.5 flex items-center gap-1.5 text-sm text-red-400"
                         >
                           <AlertCircle size={14} aria-hidden="true" />
                           {fieldErrors.consentimento}
@@ -342,16 +350,17 @@ function ContactContent() {
                       type="submit"
                       disabled={isSubmitting}
                       aria-busy={isSubmitting}
-                      className="
+                      className={`
                         inline-flex items-center justify-center gap-2
-                        rounded-pill px-6 py-3
+                        rounded-xl px-6 py-3
                         font-['Fredoka',sans-serif] font-bold text-sm text-white
-                        bg-brand-blue-500 hover:bg-brand-blue-400 active:bg-brand-blue-600
-                        disabled:bg-neutral-300 disabled:cursor-not-allowed
-                        shadow-sm transition-colors duration-150
-                        focus-visible:outline-2 focus-visible:outline-offset-2
-                        focus-visible:outline-brand-blue-400
-                      "
+                        transition-colors duration-150 shadow-sm
+                        disabled:opacity-50 disabled:cursor-not-allowed
+                        ${isNightMode
+                          ? 'bg-blue-500 hover:bg-blue-400 active:bg-blue-600'
+                          : 'bg-[#2563eb] hover:bg-[#1d4ed8] active:bg-[#1e40af]'
+                        }
+                      `}
                     >
                       {isSubmitting ? (
                         <>
@@ -369,7 +378,7 @@ function ContactContent() {
                 </>
               )}
 
-              <ContactInfo />
+              <ContactInfo isNightMode={isNightMode} />
             </div>
           </div>
         </div>
@@ -382,48 +391,60 @@ function ContactContent() {
   )
 }
 
-/* ─── Sub-components (form-level, unchanged) ─────────────────────────────── */
+/* ─── Sub-components ─────────────────────────────────────────────────────── */
 
-function inputClass(hasError: boolean): string {
+function inputClass(hasError: boolean, isNightMode: boolean): string {
   return `
     w-full rounded-xl border px-3.5 py-2.5
-    font-body text-sm text-neutral-800 bg-white
-    placeholder:text-neutral-400
-    transition-colors duration-150
+    text-sm transition-colors duration-150
     focus:outline-none focus:ring-2 focus:ring-offset-1
-    disabled:bg-neutral-50 disabled:cursor-not-allowed
+    disabled:cursor-not-allowed
+    ${isNightMode
+      ? 'bg-slate-700/60 text-white placeholder:text-slate-400 disabled:bg-slate-800/50'
+      : 'bg-white text-neutral-800 placeholder:text-neutral-400 disabled:bg-neutral-50'
+    }
     ${hasError
-      ? 'border-brand-red-500 focus:border-brand-red-500 focus:ring-brand-red-300'
-      : 'border-neutral-300 focus:border-brand-blue-400 focus:ring-brand-blue-300'
+      ? 'border-red-400 focus:border-red-400 focus:ring-red-300/40'
+      : isNightMode
+        ? 'border-white/20 focus:border-blue-400 focus:ring-blue-400/30'
+        : 'border-neutral-300 focus:border-blue-400 focus:ring-blue-300'
     }
   `
 }
 
 interface FieldProps {
-  id        : string
-  label     : string
-  required? : boolean
-  error?    : string
-  hint?     : string
-  children  : React.ReactNode
+  id          : string
+  label       : string
+  required?   : boolean
+  error?      : string
+  hint?       : string
+  isNightMode : boolean
+  children    : React.ReactNode
 }
 
-function Field({ id, label, required, error, hint, children }: FieldProps) {
+function Field({ id, label, required, error, hint, isNightMode, children }: FieldProps) {
   return (
     <div>
       <div className="mb-1.5 flex items-baseline justify-between gap-2">
-        <label htmlFor={id} className="font-['Fredoka',sans-serif] font-bold text-sm text-neutral-700">
+        <label
+          htmlFor={id}
+          className={`font-['Fredoka',sans-serif] font-bold text-sm ${isNightMode ? 'text-slate-200' : 'text-neutral-700'}`}
+        >
           {label}{' '}
-          {required && <span className="text-brand-red-500" aria-hidden="true">*</span>}
+          {required && <span className="text-red-400" aria-hidden="true">*</span>}
         </label>
-        {hint && <span className="text-xs text-neutral-400">{hint}</span>}
+        {hint && (
+          <span className={`text-xs ${isNightMode ? 'text-slate-400' : 'text-neutral-400'}`}>
+            {hint}
+          </span>
+        )}
       </div>
       {children}
       {error && (
         <p
           id={`${id}-error`}
           role="alert"
-          className="mt-1.5 flex items-center gap-1.5 text-sm text-brand-red-500"
+          className="mt-1.5 flex items-center gap-1.5 text-sm text-red-400"
         >
           <AlertCircle size={14} aria-hidden="true" />
           {error}
@@ -433,40 +454,50 @@ function Field({ id, label, required, error, hint, children }: FieldProps) {
   )
 }
 
-function SubmissionErrorBanner({ message }: { message: string }) {
+function SubmissionErrorBanner({ message, isNightMode }: { message: string; isNightMode: boolean }) {
   return (
     <div
       role="alert"
-      className="mb-5 flex items-start gap-3 rounded-xl border border-brand-red-200 bg-brand-red-100 px-4 py-3"
+      className={`mb-5 flex items-start gap-3 rounded-xl border px-4 py-3 ${
+        isNightMode
+          ? 'border-red-700/50 bg-red-900/30 text-red-300'
+          : 'border-red-200 bg-red-50 text-red-600'
+      }`}
     >
-      <AlertCircle size={20} className="shrink-0 text-brand-red-500 mt-0.5" aria-hidden="true" />
-      <p className="text-sm text-brand-red-600">{message}</p>
+      <AlertCircle size={20} className="shrink-0 mt-0.5 text-red-400" aria-hidden="true" />
+      <p className="text-sm">{message}</p>
     </div>
   )
 }
 
-function SuccessFrame({ onReset }: { onReset: () => void }) {
+function SuccessFrame({ onReset, isNightMode }: { onReset: () => void; isNightMode: boolean }) {
   return (
     <div
       role="status"
       aria-live="polite"
-      className="flex flex-col items-center gap-4 text-center rounded-2xl border border-brand-green-200 bg-brand-green-100 px-6 py-10"
+      className={`flex flex-col items-center gap-4 text-center rounded-2xl border px-6 py-10 ${
+        isNightMode
+          ? 'border-green-700/50 bg-green-900/20'
+          : 'border-green-200 bg-green-50'
+      }`}
     >
-      <span className="flex h-16 w-16 items-center justify-center rounded-full bg-brand-green-500 text-white">
+      <span className="flex h-16 w-16 items-center justify-center rounded-full bg-green-500 text-white">
         <CheckCircle2 size={32} aria-hidden="true" />
       </span>
       <div>
-        <h2 className="font-['Fredoka',sans-serif] font-black text-xl text-brand-green-600 mb-1">
+        <h2 className={`font-['Fredoka',sans-serif] font-black text-xl mb-1 ${isNightMode ? 'text-green-400' : 'text-green-600'}`}>
           Mensagem enviada!
         </h2>
-        <p className="text-sm text-neutral-600">
+        <p className={`text-sm ${isNightMode ? 'text-slate-300' : 'text-neutral-600'}`}>
           Obrigado pelo seu contacto. Responderemos o mais breve possível.
         </p>
       </div>
       <button
         type="button"
         onClick={onReset}
-        className="font-['Fredoka',sans-serif] font-bold text-sm text-brand-blue-500 hover:text-brand-blue-400 underline underline-offset-2"
+        className={`font-['Fredoka',sans-serif] font-bold text-sm underline underline-offset-2 ${
+          isNightMode ? 'text-blue-400 hover:text-blue-300' : 'text-blue-600 hover:text-blue-500'
+        }`}
       >
         Enviar outra mensagem
       </button>
@@ -474,31 +505,31 @@ function SuccessFrame({ onReset }: { onReset: () => void }) {
   )
 }
 
-function ContactInfo() {
+function ContactInfo({ isNightMode }: { isNightMode: boolean }) {
   return (
     <section
       aria-labelledby="contact-info-heading"
-      className="mt-8 pt-6 border-t border-neutral-200"
+      className={`mt-8 pt-6 border-t ${isNightMode ? 'border-white/10' : 'border-neutral-200'}`}
     >
       <h2
         id="contact-info-heading"
-        className="font-['Fredoka',sans-serif] font-black text-lg text-neutral-700 mb-4"
+        className={`font-['Fredoka',sans-serif] font-black text-lg mb-4 ${isNightMode ? 'text-slate-200' : 'text-neutral-700'}`}
       >
         Outras formas de contacto
       </h2>
-      <ul className="flex flex-col gap-3 text-sm text-neutral-600">
+      <ul className={`flex flex-col gap-3 text-sm ${isNightMode ? 'text-slate-300' : 'text-neutral-600'}`}>
         <li className="flex items-start gap-3">
-          <Mail size={18} className="text-brand-blue-500 mt-0.5 shrink-0" aria-hidden="true" />
+          <Mail size={18} className={`mt-0.5 shrink-0 ${isNightMode ? 'text-blue-400' : 'text-blue-600'}`} aria-hidden="true" />
           <span>
-            <span className="block font-bold text-neutral-700">Email</span>
-            <span className="text-neutral-400">a confirmar</span>
+            <span className={`block font-bold ${isNightMode ? 'text-slate-100' : 'text-neutral-700'}`}>Email</span>
+            <span className={isNightMode ? 'text-slate-500' : 'text-neutral-400'}>a confirmar</span>
           </span>
         </li>
         <li className="flex items-start gap-3">
-          <MapPin size={18} className="text-brand-blue-500 mt-0.5 shrink-0" aria-hidden="true" />
+          <MapPin size={18} className={`mt-0.5 shrink-0 ${isNightMode ? 'text-blue-400' : 'text-blue-600'}`} aria-hidden="true" />
           <span>
-            <span className="block font-bold text-neutral-700">Morada</span>
-            <span className="text-neutral-400">a confirmar</span>
+            <span className={`block font-bold ${isNightMode ? 'text-slate-100' : 'text-neutral-700'}`}>Morada</span>
+            <span className={isNightMode ? 'text-slate-500' : 'text-neutral-400'}>a confirmar</span>
           </span>
         </li>
       </ul>
