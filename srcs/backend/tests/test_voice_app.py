@@ -3,7 +3,7 @@ import uuid
 from io import BytesIO
 from unittest.mock import patch, MagicMock
 
-from django.test import TestCase
+from django.test import TestCase, SimpleTestCase
 from rest_framework.test import APIClient
 
 from voice_search.models import ObjectVector
@@ -242,3 +242,51 @@ class RerouteTests(TestCase):
 
         data = response.json()
         self.assertEqual(data["route"], data["results"][0]["route"])
+
+
+# Keyword routing
+
+
+class KeywordRerouteTests(SimpleTestCase):
+    """
+    Tests for the deterministic keyword routing layer in POST /api/v1/voice/reroute/.
+
+    These run without a database because keyword matching is pure Python logic
+    checked before any pgvector call.
+    """
+
+    def _post(self, transcript):
+        """POST a transcript and return the parsed JSON response."""
+        return self.client.post(
+            REROUTE_URL,
+            {"transcript": transcript},
+            format="json",
+        )
+
+    def test_exercicio_routes_to_resolver(self):
+        """Transcript containing 'exercício' routes to /resolver."""
+        self.assertEqual(
+            self._post("quero fazer um exercício").json()["route"], "/resolver"
+        )
+
+    def test_aprender_routes_to_aprender(self):
+        """Transcript containing 'aprender' routes to /aprender."""
+        self.assertEqual(self._post("quero aprender").json()["route"], "/aprender")
+
+    def test_aprender_portugues_includes_subject(self):
+        """Transcript 'aprender português' routes to /aprender?subject=portugues."""
+        self.assertEqual(
+            self._post("quero aprender português").json()["route"],
+            "/aprender?subject=portugues",
+        )
+
+    def test_exercicio_matematica_includes_subject(self):
+        """Transcript 'exercício de matemática' routes to /resolver?subject=matematica."""
+        self.assertEqual(
+            self._post("quero fazer exercício de matemática").json()["route"],
+            "/resolver?subject=matematica",
+        )
+
+    def test_faq_routes_to_faq(self):
+        """Transcript containing 'faq' routes to /faq."""
+        self.assertEqual(self._post("tenho dúvidas, ver faq").json()["route"], "/faq")
