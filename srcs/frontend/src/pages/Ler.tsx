@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
 import { NightModeBackground, useNightMode } from '../components/core/NightMode';
 import Aside from '../components/core/Aside';
 import type { SubjectId } from '../components/core/Aside';
@@ -17,8 +16,6 @@ export default function Read() {
 
 function ReadContent() {
   const { isNightMode } = useNightMode();
-  const { id } = useParams<{ id?: string }>();
-  const navigate = useNavigate();
   const [activeSubject, setActiveSubject] = useState<SubjectId | string>('todos');
   const [selectedBook, setSelectedBook] = useState<Livro | null>(null);
   const [livros, setLivros] = useState<Livro[]>([]);
@@ -39,16 +36,6 @@ function ReadContent() {
     load();
   }, []);
 
-  useEffect(() => {
-    if (!id || livros.length === 0) return;
-    setSelectedBook(livros.find((livro) => livro.id === id) ?? null);
-  }, [id, livros]);
-
-  const closeBook = () => {
-    setSelectedBook(null);
-    if (id) navigate('/ler', { replace: true });
-  };
-
   const filteredBooks = livros.filter(
     (livro) => activeSubject === 'todos' || livro.faixa_etaria === activeSubject,
   );
@@ -59,21 +46,21 @@ function ReadContent() {
     <main className="relative min-h-screen lg:h-screen w-full px-3 md:px-5 py-2 font-['Nunito',sans-serif] overflow-x-hidden overflow-y-auto lg:overflow-y-hidden flex flex-col">
 
       {/* Decorative elements */}
-      <img src="/src/assets/bush.webp" alt="" aria-hidden="true"
+      <img src="./src/assets/bush.webp" alt="" aria-hidden="true"
         className={`pointer-events-none fixed bottom-[-1%] left-[-2%] z-2 w-28 sm:w-36 md:w-44 lg:w-62 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-0' : 'opacity-100'}`} />
-      <img src="/src/assets/bush_night.webp" alt="" aria-hidden="true"
+      <img src="./src/assets/bush_night.webp" alt="" aria-hidden="true"
         className={`pointer-events-none fixed bottom-[-1%] left-[-3%] z-2 w-28 sm:w-36 md:w-44 lg:w-70 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-100' : 'opacity-0'}`} />
-      <img src="/src/assets/bush2.webp" alt="" aria-hidden="true"
+      <img src="./src/assets/bush2.webp" alt="" aria-hidden="true"
         className={`pointer-events-none fixed bottom-[-1%] right-[-2%] z-2 w-28 sm:w-36 md:w-44 lg:w-62 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-0' : 'opacity-100'}`} />
-      <img src="/src/assets/bush2_night.webp" alt="" aria-hidden="true"
+      <img src="./src/assets/bush2_night.webp" alt="" aria-hidden="true"
         className={`pointer-events-none fixed bottom-[-1%] right-[-2%] z-2 w-28 sm:w-36 md:w-44 lg:w-62 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-100' : 'opacity-0'}`} />
-      <img src="/src/assets/books.webp" alt="" aria-hidden="true"
+      <img src="./src/assets/books.webp" alt="" aria-hidden="true"
         className={`pointer-events-none fixed bottom-[2%] left-[3%] z-1 w-28 sm:w-36 md:w-44 lg:w-46 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-0' : 'opacity-100'}`} />
-      <img src="/src/assets/books_night.webp" alt="" aria-hidden="true"
+      <img src="./src/assets/books_night.webp" alt="" aria-hidden="true"
         className={`pointer-events-none fixed bottom-[2%] left-[3%] z-1 w-28 sm:w-36 md:w-44 lg:w-46 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-100' : 'opacity-0'}`} />
-      <img src="/src/assets/rainbow.webp" alt="" aria-hidden="true"
+      <img src="./src/assets/rainbow.webp" alt="" aria-hidden="true"
         className={`pointer-events-none fixed top-[14%] left-[-5%] z-1 w-28 sm:w-36 md:w-44 lg:w-100 object-contain rotate-24 transition-opacity duration-700 ${isNightMode ? 'opacity-0' : 'opacity-100'}`} />
-      <NightModeBackground dayImage="/src/assets/content2.webp" nightImage="/src/assets/noite.webp" />
+      <NightModeBackground dayImage="./src/assets/day_bg.webp" nightImage="./src/assets/night_bg.webp" />
 
       <div className="max-w-[95%] w-full mx-auto flex flex-col lg:flex-row gap-3 lg:gap-20 relative z-10 mt-16 sm:mt-20 lg:mt-24 xl:mt-30 pb-2 flex-1 min-h-0">
         <Aside subjects={ageSubjects} activeSubject={activeSubject} onSelectSubject={setActiveSubject} title="Idades" />
@@ -114,7 +101,7 @@ function ReadContent() {
         </div>
       </div>
 
-      {selectedBook && <BookModal book={selectedBook} onClose={closeBook} />}
+      {selectedBook && <BookModal book={selectedBook} onClose={() => setSelectedBook(null)} />}
       <Footer />
     </main>
   );
@@ -147,7 +134,7 @@ function BookModal({ book, onClose }: BookModalProps) {
 
         <div className="w-28 h-36 flex items-center justify-center my-2">
           <img
-            src={book.capa_url ?? '/src/assets/blue_book.webp'}
+            src={book.capa_url ?? './src/assets/blue_book.webp'}
             alt={book.titulo}
             className="w-full h-full object-contain drop-shadow-md"
           />

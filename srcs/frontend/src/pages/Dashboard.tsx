@@ -1,6 +1,6 @@
 import { useState, useEffect, type ComponentType, createElement } from 'react'
-import bg from '../assets/content2.webp'
-import bgNight from '../assets/noite.webp'
+import bg from '../assets/day_bg.webp'
+import bgNight from '../assets/night_bg.webp'
 import cloudMenu from '../assets/cloud_menu2.webp'
 
 import Aside from '../components/core/Aside'

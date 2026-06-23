@@ -24,9 +24,9 @@ const SUBJECT_LABEL: Record<string, string> = {
 };
 
 const SUBJECT_IMG: Record<string, string> = {
-  matematica:       '/src/assets/math.webp',
-  portugues:        '/src/assets/book3.webp',
-  'estudo-do-meio': '/src/assets/science.webp',
+  matematica:       './src/assets/math.webp',
+  portugues:        './src/assets/book3.png',
+  'estudo-do-meio': './src/assets/science.png',
 };
 
 function aulaToDescarregavel(a: Aula): Descarregavel {
@@ -139,22 +139,22 @@ function DescarregarContent() {
     <main className="relative min-h-screen lg:h-screen w-full px-3 md:px-5 py-2 font-['Nunito',sans-serif] overflow-x-hidden overflow-y-auto lg:overflow-y-hidden flex flex-col">
 
       {/* Decorative elements */}
-      <img src="/src/assets/bush.webp" alt="" aria-hidden="true"
+      <img src="./src/assets/bush.webp" alt="" aria-hidden="true"
         className={`pointer-events-none fixed bottom-[-1%] left-[-2%] z-2 w-28 sm:w-36 md:w-44 lg:w-62 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-0' : 'opacity-100'}`} />
-      <img src="/src/assets/bush_night.webp" alt="" aria-hidden="true"
+      <img src="./src/assets/bush_night.webp" alt="" aria-hidden="true"
         className={`pointer-events-none fixed bottom-[-1%] left-[-3%] z-2 w-28 sm:w-36 md:w-44 lg:w-70 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-100' : 'opacity-0'}`} />
-      <img src="/src/assets/bush2.webp" alt="" aria-hidden="true"
+      <img src="./src/assets/bush2.webp" alt="" aria-hidden="true"
         className={`pointer-events-none fixed bottom-[-1%] right-[-2%] z-2 w-28 sm:w-36 md:w-44 lg:w-62 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-0' : 'opacity-100'}`} />
-      <img src="/src/assets/bush2_night.webp" alt="" aria-hidden="true"
+      <img src="./src/assets/bush2_night.webp" alt="" aria-hidden="true"
         className={`pointer-events-none fixed bottom-[-1%] right-[-2%] z-2 w-28 sm:w-36 md:w-44 lg:w-62 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-100' : 'opacity-0'}`} />
-      <img src="/src/assets/books.webp" alt="" aria-hidden="true"
+      <img src="./src/assets/books.webp" alt="" aria-hidden="true"
         className={`pointer-events-none fixed bottom-[2%] left-[3%] z-1 w-28 sm:w-36 md:w-44 lg:w-46 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-0' : 'opacity-100'}`} />
-      <img src="/src/assets/books_night.webp" alt="" aria-hidden="true"
+      <img src="./src/assets/books_night.webp" alt="" aria-hidden="true"
         className={`pointer-events-none fixed bottom-[2%] left-[3%] z-1 w-28 sm:w-36 md:w-44 lg:w-46 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-100' : 'opacity-0'}`} />
-      <img src="/src/assets/rainbow.webp" alt="" aria-hidden="true"
+      <img src="./src/assets/rainbow.webp" alt="" aria-hidden="true"
 
         className={`pointer-events-none fixed top-[14%] left-[-5%] z-1 w-28 sm:w-36 md:w-44 lg:w-100 object-contain rotate-24 transition-opacity duration-700 ${isNightMode ? 'opacity-0' : 'opacity-100'}`} />
-      <NightModeBackground dayImage="/src/assets/content2.webp" nightImage="/src/assets/noite.webp" />
+      <NightModeBackground dayImage="./src/assets/day_bg.webp" nightImage="./src/assets/night_bg.webp" />
 
       <div className="max-w-[95%] w-full mx-auto flex flex-col lg:flex-row gap-3 lg:gap-20 relative z-10 mt-16 sm:mt-20 lg:mt-24 xl:mt-30 pb-2 flex-1 min-h-0">
         <Aside subjects={subjects} activeSubject={activeSubject} onSelectSubject={setActiveSubject} />

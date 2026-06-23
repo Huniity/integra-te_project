@@ -3,6 +3,8 @@ import { Pencil, Trash2, Plus, X, FileText, Eye } from 'lucide-react'
 import { jogosApi } from '../../services/api/jogos.api'
 import type { Jogo, JogoPayload } from '../../api/contracts/jogos'
 import Pagination from '../../components/core/Pagination'
+import { useNightMode } from '../../components/core/NightMode'
+import { dashboardTheme } from '../../utils/dashboardTheme'
 
 const SUBJECTS = [
     { id: 'matematica', label: 'Matemática' },
@@ -14,12 +16,6 @@ const SUBJECT_IMG: Record<string, string> = {
     matematica:       '/src/assets/math.webp',
     portugues:        '/src/assets/book3.webp',
     'estudo-do-meio': '/src/assets/science.webp',
-}
-
-const LEVEL_COLORS: Record<number, string> = {
-    1: 'bg-emerald-100 text-emerald-700',
-    2: 'bg-orange-100 text-orange-700',
-    3: 'bg-purple-100 text-purple-700',
 }
 
 const PAGE_SIZE = 8
@@ -36,6 +32,8 @@ function JogoModal({ initial, currentFicheiroUrl, onSave, onClose }: {
     onSave: (p: JogoPayload) => Promise<void>
     onClose: () => void
 }) {
+    const { isNightMode } = useNightMode()
+    const th = dashboardTheme(isNightMode)
     const [form, setForm] = useState<JogoPayload>({ ...initial, thumbnail: null })
     const [saving, setSaving] = useState(false)
     const [error, setError] = useState<string | null>(null)
@@ -55,30 +53,30 @@ function JogoModal({ initial, currentFicheiroUrl, onSave, onClose }: {
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-            <div className="w-full max-w-lg rounded-2xl bg-white shadow-2xl max-h-[90vh] overflow-y-auto">
-                <div className="flex items-center justify-between border-b border-gray-100 px-6 py-4 sticky top-0 bg-white">
-                    <h2 className="text-lg font-bold text-gray-800">{initial.titulo ? 'Editar Jogo' : 'Novo Jogo'}</h2>
-                    <button onClick={onClose} className="rounded-full p-1 hover:bg-gray-100 cursor-pointer"><X size={18} /></button>
+            <div className={th.modalCard}>
+                <div className={th.modalHeader}>
+                    <h2 className={th.modalTitle}>{initial.titulo ? 'Editar Jogo' : 'Novo Jogo'}</h2>
+                    <button onClick={onClose} className={th.modalCloseBtn}><X size={18} /></button>
                 </div>
                 <form onSubmit={handleSubmit} className="flex flex-col gap-4 p-6">
                     <div>
-                        <label className="mb-1 block text-xs font-semibold text-gray-500 uppercase tracking-wide">Título *</label>
+                        <label className={th.label}>Título *</label>
                         <input required value={form.titulo} onChange={e => set('titulo', e.target.value)}
-                            className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400" />
+                            className={th.input} />
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
                         <div>
-                            <label className="mb-1 block text-xs font-semibold text-gray-500 uppercase tracking-wide">Matéria *</label>
+                            <label className={th.label}>Matéria *</label>
                             <select value={form.subjectId ?? 'matematica'} onChange={e => set('subjectId', e.target.value)}
-                                className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400">
+                                className={th.select}>
                                 {SUBJECTS.map(s => <option key={s.id} value={s.id}>{s.label}</option>)}
                             </select>
                         </div>
                         <div>
-                            <label className="mb-1 block text-xs font-semibold text-gray-500 uppercase tracking-wide">Nível *</label>
+                            <label className={th.label}>Nível *</label>
                             <select value={form.level ?? 1} onChange={e => set('level', Number(e.target.value))}
-                                className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400">
+                                className={th.select}>
                                 <option value={1}>Nível 1</option>
                                 <option value={2}>Nível 2</option>
                                 <option value={3}>Nível 3</option>
@@ -87,7 +85,7 @@ function JogoModal({ initial, currentFicheiroUrl, onSave, onClose }: {
                     </div>
 
                     <div>
-                        <label className="mb-1 block text-xs font-semibold text-gray-500 uppercase tracking-wide">Imagem do card</label>
+                        <label className={th.label}>Imagem do card</label>
                         <div className="flex items-start gap-3">
                             <div className="flex-1 flex flex-col gap-2">
                                 <input type="url" value={form.thumbnailUrl ?? ''}
@@ -97,7 +95,7 @@ function JogoModal({ initial, currentFicheiroUrl, onSave, onClose }: {
                                         if (e.target.value) set('thumbnail', null)
                                     }}
                                     placeholder="https://exemplo.com/imagem.png"
-                                    className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400" />
+                                    className={th.input} />
                                 <input
                                     ref={thumbnailRef}
                                     type="file"
@@ -110,10 +108,10 @@ function JogoModal({ initial, currentFicheiroUrl, onSave, onClose }: {
                                             set('thumbnailUrl', undefined)
                                         }
                                     }}
-                                    className="w-full text-sm text-gray-500 file:mr-3 file:rounded-lg file:border-0 file:bg-blue-50 file:px-3 file:py-1.5 file:text-xs file:font-semibold file:text-blue-700 hover:file:bg-blue-100 cursor-pointer" />
-                                <p className="text-xs text-gray-400">URL ou ficheiro. Se vazio, usa a imagem padrão da matéria</p>
+                                    className={th.fileInput} />
+                                <p className={th.inputHint}>URL ou ficheiro. Se vazio, usa a imagem padrão da matéria</p>
                             </div>
-                            <div className="w-14 h-14 rounded-xl overflow-hidden border border-gray-200 bg-gray-50 shrink-0">
+                            <div className={th.thumbBox}>
                                 <img
                                     src={thumbPreview || SUBJECT_IMG[form.subjectId ?? 'matematica'] || '/src/assets/math.webp'}
                                     alt=""
@@ -125,22 +123,22 @@ function JogoModal({ initial, currentFicheiroUrl, onSave, onClose }: {
                     </div>
 
                     <div>
-                        <label className="mb-1 block text-xs font-semibold text-gray-500 uppercase tracking-wide">Descrição</label>
+                        <label className={th.label}>Descrição</label>
                         <textarea rows={3} value={form.descricao ?? ''} onChange={e => set('descricao', e.target.value)}
-                            className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 resize-none" />
+                            className={th.textarea} />
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
                         <div>
-                            <label className="mb-1 block text-xs font-semibold text-gray-500 uppercase tracking-wide">URL do Vídeo</label>
+                            <label className={th.label}>URL do Vídeo</label>
                             <input type="url" value={form.videoUrl ?? ''} onChange={e => set('videoUrl', e.target.value || undefined)}
                                 placeholder="https://youtube.com/..."
-                                className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400" />
+                                className={th.input} />
                         </div>
                     </div>
 
                     <div>
-                        <label className="mb-1 block text-xs font-semibold text-gray-500 uppercase tracking-wide">Ficheiro do Jogo</label>
+                        <label className={th.label}>Ficheiro do Jogo</label>
                         {currentFicheiroUrl && !form.ficheiro && (
                             <a href={(() => { try { return new URL(currentFicheiroUrl).pathname } catch { return currentFicheiroUrl } })()}
                                 target="_blank" rel="noopener noreferrer"
@@ -150,19 +148,19 @@ function JogoModal({ initial, currentFicheiroUrl, onSave, onClose }: {
                         )}
                         <input ref={fileRef} type="file"
                             onChange={e => set('ficheiro', e.target.files?.[0] ?? null)}
-                            className="w-full text-sm text-gray-500 file:mr-3 file:rounded-lg file:border-0 file:bg-blue-50 file:px-3 file:py-1.5 file:text-xs file:font-semibold file:text-blue-700 hover:file:bg-blue-100 cursor-pointer" />
-                        {form.ficheiro && <p className="mt-1 text-xs text-gray-400">{(form.ficheiro as File).name}</p>}
+                            className={th.fileInput} />
+                        {form.ficheiro && <p className={`mt-1 ${th.inputHint}`}>{(form.ficheiro as File).name}</p>}
                     </div>
 
                     <label className="flex items-center gap-2 cursor-pointer select-none">
                         <input type="checkbox" checked={form.publicado} onChange={e => set('publicado', e.target.checked)}
                             className="h-4 w-4 rounded border-gray-300 accent-blue-600" />
-                        <span className="text-sm font-semibold text-gray-700">Publicado</span>
+                        <span className={th.checkboxLabel}>Publicado</span>
                     </label>
 
                     {error && <p className="text-sm text-red-500">{error}</p>}
                     <div className="flex justify-end gap-2 pt-1">
-                        <button type="button" onClick={onClose} className="rounded-lg border border-gray-200 px-4 py-2 text-sm font-semibold hover:bg-gray-50 cursor-pointer">Cancelar</button>
+                        <button type="button" onClick={onClose} className={th.cancelBtn}>Cancelar</button>
                         <button type="submit" disabled={saving} className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700 disabled:opacity-50 cursor-pointer">
                             {saving ? 'A guardar…' : 'Guardar'}
                         </button>
@@ -174,6 +172,8 @@ function JogoModal({ initial, currentFicheiroUrl, onSave, onClose }: {
 }
 
 const JogosPanel = ({ autoCreate }: { autoCreate?: boolean }) => {
+    const { isNightMode } = useNightMode()
+    const th = dashboardTheme(isNightMode)
     const [jogos, setJogos] = useState<Jogo[]>([])
     const [isLoading, setIsLoading] = useState(true)
     const [page, setPage] = useState(1)
@@ -220,17 +220,17 @@ const JogosPanel = ({ autoCreate }: { autoCreate?: boolean }) => {
                 </button>
             </div>
 
-            <div className="flex-1 min-h-0 overflow-y-auto rounded-2xl border border-gray-200 bg-white shadow-sm">
+            <div className={`flex-1 min-h-0 overflow-y-auto ${th.tableWrap}`}>
                 {isLoading ? (
                     <div className="flex h-40 items-center justify-center">
                         <div className="h-8 w-8 animate-spin rounded-full border-4 border-blue-200 border-t-blue-600" />
                     </div>
                 ) : jogos.length === 0 ? (
-                    <div className="flex h-40 items-center justify-center text-gray-400 font-semibold">Nenhum jogo encontrado</div>
+                    <div className={`flex h-40 items-center justify-center ${th.emptyState}`}>Nenhum jogo encontrado</div>
                 ) : (
                     <table className="w-full text-sm">
                         <thead className="sticky top-0 z-10">
-                            <tr className="border-b border-gray-100 bg-gray-50 text-left text-xs font-bold uppercase tracking-wide text-gray-500">
+                            <tr className={th.theadRow}>
                                 <th className="px-4 py-3">Título</th>
                                 <th className="px-4 py-3">Matéria</th>
                                 <th className="px-4 py-3">Nível</th>
@@ -238,21 +238,21 @@ const JogosPanel = ({ autoCreate }: { autoCreate?: boolean }) => {
                                 <th className="px-4 py-3 text-right">Ações</th>
                             </tr>
                         </thead>
-                        <tbody className="divide-y divide-gray-100">
+                        <tbody className={th.tbody}>
                             {pageItems.map(jogo => (
-                                <tr key={jogo.id} className="hover:bg-gray-50 transition-colors">
-                                    <td className="px-4 py-3 font-semibold text-gray-800">
+                                <tr key={jogo.id} className={th.row}>
+                                    <td className={`px-4 py-3 ${th.cellPrimary}`}>
                                         {jogo.titulo}
-                                        {jogo.descricao && <p className="text-xs font-normal text-gray-400 mt-0.5 line-clamp-1">{jogo.descricao}</p>}
+                                        {jogo.descricao && <p className={th.cellMuted}>{jogo.descricao}</p>}
                                     </td>
-                                    <td className="px-4 py-3 text-gray-600">{SUBJECTS.find(s => s.id === jogo.subjectId)?.label ?? jogo.subjectId ?? '—'}</td>
+                                    <td className={`px-4 py-3 ${th.cellSecondary}`}>{SUBJECTS.find(s => s.id === jogo.subjectId)?.label ?? jogo.subjectId ?? '—'}</td>
                                     <td className="px-4 py-3">
                                         {jogo.level ? (
-                                            <span className={`inline-block rounded-full px-2.5 py-0.5 text-xs font-bold ${LEVEL_COLORS[jogo.level] ?? 'bg-gray-100 text-gray-600'}`}>Nível {jogo.level}</span>
-                                        ) : <span className="text-gray-400">—</span>}
+                                            <span className={th.levelBadge(jogo.level)}>Nível {jogo.level}</span>
+                                        ) : <span className={th.cellSecondary}>—</span>}
                                     </td>
                                     <td className="px-4 py-3">
-                                        <span className={`inline-block rounded-full px-2.5 py-0.5 text-xs font-bold ${jogo.publicado ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-400'}`}>
+                                        <span className={jogo.publicado ? th.badgePublished : th.badgeDraft}>
                                             {jogo.publicado ? 'Publicado' : 'Rascunho'}
                                         </span>
                                     </td>
@@ -266,9 +266,9 @@ const JogosPanel = ({ autoCreate }: { autoCreate?: boolean }) => {
                                                 </>
                                             ) : (
                                                 <>
-                                                    <button onClick={() => openJogo(jogo)} disabled={!jogo.videoUrl && !jogo.url_externa && !jogo.ficheiro_url} className="rounded p-1.5 text-gray-400 hover:bg-purple-50 hover:text-purple-600 disabled:opacity-30 cursor-pointer" title="Abrir Jogo"><Eye size={15} /></button>
-                                                    <button onClick={() => setModal({ open: true, jogo })} className="rounded p-1.5 text-gray-400 hover:bg-blue-50 hover:text-blue-600 cursor-pointer" title="Editar"><Pencil size={15} /></button>
-                                                    <button onClick={() => setDeleteId(jogo.id)} className="rounded p-1.5 text-gray-400 hover:bg-red-50 hover:text-red-500 cursor-pointer" title="Eliminar"><Trash2 size={15} /></button>
+                                                    <button onClick={() => openJogo(jogo)} disabled={!jogo.videoUrl && !jogo.url_externa && !jogo.ficheiro_url} className={`${th.actionBase} ${th.actionPreview} disabled:opacity-30`} title="Abrir Jogo"><Eye size={15} /></button>
+                                                    <button onClick={() => setModal({ open: true, jogo })} className={`${th.actionBase} ${th.actionEdit}`} title="Editar"><Pencil size={15} /></button>
+                                                    <button onClick={() => setDeleteId(jogo.id)} className={`${th.actionBase} ${th.actionDelete}`} title="Eliminar"><Trash2 size={15} /></button>
                                                 </>
                                             )}
                                         </div>
