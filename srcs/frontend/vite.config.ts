@@ -6,12 +6,13 @@ export default defineConfig({
   plugins : [react(), tailwindcss()],
 
   server : {
+    port : 5178,
     host : '0.0.0.0',
     watch: { usePolling: true },
-    hmr  : { host: 'localhost', port: 5173, protocol: 'ws' },
+    hmr  : { host: 'localhost', port: 5178, protocol: 'ws' },
     proxy: {
-      '/api'  : 'http://backend:8000',
-      '/media': 'http://backend:8000',   // serves Django MEDIA_ROOT files
+      '/api'  : 'http://backend:8050',
+      '/media': 'http://backend:8050',   // serves Django MEDIA_ROOT files
     },
   },
 

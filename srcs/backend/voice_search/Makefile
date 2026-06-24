@@ -1,9 +1,9 @@
 test-audio:
-	curl -X POST "http://localhost:8000/api/v1/voice/transcribe/" -F "audio=@../tests/audio_test.webm"
+	curl -X POST "http://localhost:8050/api/v1/voice/transcribe/" -F "audio=@../tests/audio_test.webm"
 
 test-audio2:
-	curl -X POST "http://localhost:8000/api/v1/voice/transcribe/" -F "audio=@../tests/audio_test2.webm"
+	curl -X POST "http://localhost:8050/api/v1/voice/transcribe/" -F "audio=@../tests/audio_test2.webm"
 
 
 test-reroute:
-	curl -X POST "http://localhost:8000/api/v1/voice/reroute/" -H "Content-Type: application/json" -d '{"transcript": "eu quero aprender matemática"}'
+	curl -X POST "http://localhost:8050/api/v1/voice/reroute/" -H "Content-Type: application/json" -d '{"transcript": "eu quero aprender matemática"}'

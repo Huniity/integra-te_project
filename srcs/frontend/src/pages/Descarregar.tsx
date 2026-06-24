@@ -98,7 +98,7 @@ function DescarregarContent() {
     (item) => activeSubject === 'todos' || item.disciplina_slug === activeSubject,
   );
 
-  const carousel = useCarousel(filtered, { mobile: 4, tablet: 6, desktop: 6 });
+  const carousel = useCarousel(filtered, { mobile: 2, tablet: 4, desktop: 6 });
 
   useEffect(() => {
     const load = async () => {
@@ -174,7 +174,7 @@ function DescarregarContent() {
               </div>
             ) : (
               <div
-                className="grid grid-cols-1 sm:grid-cols-3 gap-2"
+                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 items-stretch"
                 onTouchStart={carousel.onTouchStart}
                 onTouchEnd={carousel.onTouchEnd}
               >

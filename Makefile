@@ -67,7 +67,7 @@ env-prod: ## Create .env file for production if it doesn't exist
 		printf "# Production settings\n" >> .env; \
 		printf "\n" >> .env; \
 		printf "ALLOWED_HOSTS=localhost,127.0.0.1\n" >> .env; \
-		printf "CORS_ALLOWED_ORIGINS=http://localhost:5173\n" >> .env; \
+		printf "CORS_ALLOWED_ORIGINS=http://localhost:5178\n" >> .env; \
 		printf "CSRF_TRUSTED_ORIGINS=\n" >> .env; \
 		printf "DEBUG=False\n" >> .env; \
 		printf "\n" >> .env; \
@@ -82,6 +82,7 @@ env-prod: ## Create .env file for production if it doesn't exist
 start-dev: ## Start dev workflow with strict database readiness check
 	@read -p "⚠️  Are you starting development environment? Type 'yes' to confirm: " ans && [ "$$ans" = "yes" ] || (echo "Aborted."; exit 1)
 	@read -p "⚠️  Keep in mind that development environment CLEARS database and injects sample data. Type 'yes' to confirm: " ans && [ "$$ans" = "yes" ] || (echo "Aborted."; exit 1)
+	$(MAKE) sync-dev
 	$(MAKE) env
 	@echo "Starting Docker containers in background..."
 	docker compose -f compose.dev.yaml up --build -d
