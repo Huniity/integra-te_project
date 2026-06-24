@@ -1,4 +1,5 @@
 import { useState, useId, type FormEvent } from 'react'
+import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Send, CheckCircle2, AlertCircle, Loader2, Mail, MapPin } from 'lucide-react'
 import {
@@ -330,12 +331,12 @@ function ContactContent() {
                         />
                         <span className={`text-sm ${isNightMode ? 'text-slate-300' : 'text-neutral-600'}`}>
                           Aceito o tratamento dos meus dados conforme a{' '}
-                          <a
-                            href="/privacidade"
+                          <Link
+                            to="/privacidade"
                             className={`underline ${isNightMode ? 'text-blue-400 hover:text-blue-300' : 'text-brand-blue-500'}`}
                           >
                             política de privacidade
-                          </a>
+                          </Link>
                           .{' '}
                           <span className="text-red-400" aria-hidden="true">*</span>
                         </span>

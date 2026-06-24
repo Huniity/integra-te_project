@@ -82,6 +82,7 @@ env-prod: ## Create .env file for production if it doesn't exist
 start-dev: ## Start dev workflow with strict database readiness check
 	@read -p "⚠️  Are you starting development environment? Type 'yes' to confirm: " ans && [ "$$ans" = "yes" ] || (echo "Aborted."; exit 1)
 	@read -p "⚠️  Keep in mind that development environment CLEARS database and injects sample data. Type 'yes' to confirm: " ans && [ "$$ans" = "yes" ] || (echo "Aborted."; exit 1)
+	$(MAKE) env
 	@echo "Starting Docker containers in background..."
 	docker compose -f compose.dev.yaml up --build -d
 	@echo "Waiting for PostgreSQL and Django backend to be fully ready..."
@@ -90,12 +91,12 @@ start-dev: ## Start dev workflow with strict database readiness check
 		sleep 2; \
 	done
 	@echo "Backend is ready! Running migrations and setup..."
-	$(MAKE) env
 	$(MAKE) migration-dev
 	$(MAKE) migrate-dev
 #	$(MAKE) superuser-auto-dev
 	$(MAKE) superuser-dev
 	$(MAKE) populate-dev
+	$(MAKE) embed
 	@echo "Setup complete! Attaching to container logs..."
 	docker compose -f compose.dev.yaml logs -f
 

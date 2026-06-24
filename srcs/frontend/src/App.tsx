@@ -37,7 +37,6 @@ function wrap(el: React.ReactNode) {
 
 export default function App() {
   const location = useLocation()
-  // Key on base path so /aprender → /aprender/:id (modal) doesn't retrigger transition
   const baseKey = location.pathname.split('/')[1] || 'home'
 
   return (
