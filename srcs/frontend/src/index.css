@@ -277,4 +277,21 @@
 
 html, body, #root {
   background: #0e1f3f;
+  overflow: hidden;
+}
+
+* {
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-user-drag: none;
+}
+
+img {
+  pointer-events: none;
+  -webkit-touch-callout: none;
+}
+
+input, textarea, [contenteditable] {
+  user-select: text;
+  -webkit-user-select: text;
 }

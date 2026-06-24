@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import type { ReactNode } from 'react';
 
 const NIGHT_MODE_STORAGE_KEY = 'resolver-night-mode';
@@ -60,24 +61,49 @@ export function NightModeBackground({ dayImage, nightImage }: NightModeBackgroun
   );
 }
 
+const sunVariants = {
+  animate: { opacity: 1, scale: 1, rotate: [0, 360] as [number, number] },
+  transition: {
+    opacity: { duration: 0.25 },
+    scale:   { type: 'spring' as const, stiffness: 260, damping: 18 },
+    rotate:  { duration: 28, repeat: Infinity, ease: 'linear' as const, repeatType: 'loop' as const },
+  },
+};
+
+const moonVariants = {
+  animate: { opacity: 1, scale: 1, y: [0, -6, 0] as [number, number, number], rotate: [0, 4, -4, 0] as [number, number, number, number] },
+  transition: {
+    opacity: { duration: 0.25 },
+    scale:   { type: 'spring' as const, stiffness: 260, damping: 18 },
+    y:       { duration: 4, repeat: Infinity, ease: 'easeInOut' as const },
+    rotate:  { duration: 4, repeat: Infinity, ease: 'easeInOut' as const },
+  },
+};
+
 export function NightModeToggle() {
   const { isNightMode, toggleNightMode } = useNightMode();
 
   return (
-    <>
-      <img
-        src={isNightMode ? '/src/assets/moon2.webp' : '/src/assets/sun.webp'}
-        alt=""
-        aria-hidden="true"
-        className="pointer-events-none fixed top-[22%] left-[5%] z-0 w-28 sm:w-36 md:w-44 lg:w-20 object-contain rotate-[355deg] transition-all duration-700"
-      />
-      <button
-        type="button"
-        onClick={toggleNightMode}
-        aria-label={isNightMode ? 'Ativar Day Mode' : 'Ativar Night Mode'}
-        className="fixed lg:top-[17%] lg:left-[6%] xl:top-[17%] xl:left-[6%] z-10 h-28 w-28 sm:h-36 sm:w-36 md:h-44 md:w-44 lg:h-20 lg:w-20 rounded-full bg-transparent transition-transform duration-500 hover:scale-110"
-      />
-    </>
+    <button
+      type="button"
+      onClick={toggleNightMode}
+      aria-label={isNightMode ? 'Ativar Day Mode' : 'Ativar Night Mode'}
+      className="fixed xl:top-[5%] lg:top-[5%] lg:left-[35%] xl:left-[27%] z-50 w-28 sm:w-36 md:w-44 lg:w-20 bg-transparent cursor-pointer rounded-full hover:scale-110 active:scale-95 transition-transform duration-200"
+    >
+      <AnimatePresence mode="wait">
+        <motion.img
+          key={isNightMode ? 'moon-large' : 'sun-large'}
+          src={isNightMode ? '/src/assets/moon2.webp' : '/src/assets/sun.webp'}
+          alt=""
+          aria-hidden="true"
+          className="w-full object-contain opacity-80"
+          initial={{ opacity: 0, scale: 0.4 }}
+          animate={isNightMode ? moonVariants.animate : sunVariants.animate}
+          exit={{ opacity: 0, scale: 0.4, transition: { duration: 0.18 } }}
+          transition={isNightMode ? moonVariants.transition : sunVariants.transition}
+        />
+      </AnimatePresence>
+    </button>
   );
 }
 
@@ -92,6 +118,7 @@ export function NightModeNavButton() {
       className="flex h-10 w-10 items-center justify-center rounded-full bg-white/15 border border-white/40 backdrop-blur-xs shadow-[0_14px_36px_rgba(31,38,135,0.22)] ring-1 ring-white/20 hover:scale-110 active:scale-95 transition-transform cursor-pointer"
     >
       <img
+        key={isNightMode ? 'moon-nav' : 'sun-nav'}
         src={isNightMode ? '/src/assets/moon2.webp' : '/src/assets/sun.webp'}
         alt=""
         aria-hidden="true"

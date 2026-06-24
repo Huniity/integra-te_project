@@ -114,7 +114,7 @@ function HomeContent() {
       <RocketFlyby />
       <section className="max-w-6xl w-full mx-auto flex-1 min-h-0 relative z-10 flex items-center py-1">
         <motion.div
-          className="w-full relative z-10 grid grid-cols-2 gap-x-3 gap-y-10 sm:gap-x-4 sm:gap-y-12 justify-items-center content-center items-start md:flex md:flex-wrap md:justify-center md:gap-x-14 md:gap-y-12 lg:grid lg:grid-cols-4 lg:gap-x-20 lg:gap-y-24 lg:items-end"
+          className="mt-10 sm:mt-15 md:mt-30 w-full relative z-10 grid grid-cols-2 gap-x-3 gap-y-10 sm:gap-x-4 sm:gap-y-12 justify-items-center content-center items-start md:flex md:flex-wrap md:justify-center md:gap-x-14 md:gap-y-12 lg:grid lg:grid-cols-4 lg:gap-x-20 lg:gap-y-24 lg:items-end"
           initial="hidden"
           animate="visible"
           variants={{ visible: { transition: { staggerChildren: 0.07, delayChildren: 0.1 } } }}
