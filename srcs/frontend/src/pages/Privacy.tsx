@@ -102,7 +102,7 @@ function PrivacyContent() {
                   Esta Política de Privacidade explica, de forma simples, como o projeto iNTEGRA-TE trata as informações de todos os utilizadores que interagem com a nossa caravana itinerante e com a nossa plataforma digital no concelho de Loulé.
                 </p>
                 <p>
-                  Garantimos que qualquer dado pessoal partilhado por encarregados de educação, escolas ou técnicos parceiros é tratado no estrito cumprimento do <a href="/rgpd" className="font-bold hover:underline" style={{ color: linkColor }}>RGPD (Regulamento Geral sobre a Proteção de Dados)</a>, onde encontras toda a informação legal detalhada.
+                  Garantimos que qualquer dado pessoal partilhado por encarregados de educação, escolas ou técnicos parceiros é tratado no estrito cumprimento do <Link to="/rgpd" className="font-bold hover:underline" style={{ color: linkColor }}>RGPD (Regulamento Geral sobre a Proteção de Dados)</Link>, onde encontras toda a informação legal detalhada.
                 </p>
                 <div className={`border-l-4 border-[#3a6bc8] p-4 rounded-r-xl text-sm ${isNightMode ? 'bg-blue-900/30 text-blue-200' : 'bg-[#E6F1FB] text-[#1a3a6a]'}`}>
                   <strong>Nota Importante:</strong> O iNTEGRA-TE nunca vende, aluga ou partilha quaisquer dados pessoais com terceiros para fins comerciais.
@@ -157,7 +157,7 @@ function PrivacyContent() {
                   ))}
                 </div>
                 <p className="text-sm pt-4 border-t border-dashed" style={{ borderColor: isNightMode ? 'rgba(255,255,255,0.15)' : '#e5e7eb' }}>
-                  Para qualquer questão, pedido de remoção ou esclarecimento sobre a segurança dos teus dados, contacta a nossa equipa através do <a href="/contactar" className="font-bold hover:underline" style={{ color: linkColor }}>formulário de contacto</a>. Para mais detalhes sobre o RGPD consulta a nossa <a href="/rgpd" className="font-bold hover:underline" style={{ color: linkColor }}>página RGPD</a>.
+                  Para qualquer questão, pedido de remoção ou esclarecimento sobre a segurança dos teus dados, contacta a nossa equipa através do <Link to="/contactar" className="font-bold hover:underline" style={{ color: linkColor }}>formulário de contacto</Link>. Para mais detalhes sobre o RGPD consulta a nossa <Link to="/rgpd" className="font-bold hover:underline" style={{ color: linkColor }}>página RGPD</Link>.
                 </p>
               </div>
             )}

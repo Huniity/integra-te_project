@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { NightModeBackground, useNightMode } from '../components/core/NightMode';
 import Footer from '../components/core/Footer';
@@ -110,7 +111,7 @@ function RgpdContent() {
                                     2. Responsável pelo tratamento
                                 </h2>
                                 <p>
-                                    O responsável pelo tratamento dos dados pessoais é a <strong>Fundação António Aleixo</strong>. Para qualquer questão relativa à proteção de dados — incluindo o exercício dos teus direitos ou eventuais reclamações — podes contactar-nos através do <a href="/contactar" className="font-bold hover:underline" style={{ color: linkColor }}>formulário de contacto</a>.
+                                    O responsável pelo tratamento dos dados pessoais é a <strong>Fundação António Aleixo</strong>. Para qualquer questão relativa à proteção de dados — incluindo o exercício dos teus direitos ou eventuais reclamações — podes contactar-nos através do <Link to="/contactar" className="font-bold hover:underline" style={{ color: linkColor }}>formulário de contacto</Link>.
                                 </p>
 
                                 <h2 className="font-['Fredoka',sans-serif] font-black text-xl pt-4" style={{ color: headingColor }}>
@@ -148,7 +149,7 @@ function RgpdContent() {
                                             4.1 Formulário de contacto
                                         </h4>
                                         <p className="text-sm">
-                                            Quando preenches o formulário em <a href="/contactar" className="font-bold hover:underline" style={{ color: linkColor }}>/contactar</a>, recolhemos o teu <strong>nome</strong>, <strong>endereço de email</strong> e <strong>mensagem</strong>.
+                                            Quando preenches o formulário em <Link to="/contactar" className="font-bold hover:underline" style={{ color: linkColor }}>/contactar</Link>, recolhemos o teu <strong>nome</strong>, <strong>endereço de email</strong> e <strong>mensagem</strong>.
                                         </p>
                                         <p className="text-sm mt-2">
                                             <strong>Finalidade:</strong> responder à tua mensagem.<br />
@@ -294,7 +295,7 @@ function RgpdContent() {
                                     8. Como exercer os teus direitos
                                 </h2>
                                 <p className="text-sm">
-                                    Para exercer qualquer destes direitos, envia-nos um pedido através do <a href="/contactar" className="font-bold hover:underline" style={{ color: linkColor }}>formulário de contacto</a>, identificando claramente qual o direito que pretendes exercer. Responderemos no prazo máximo de 30 dias, nos termos do artigo 12.º n.º 3 do RGPD.
+                                    Para exercer qualquer destes direitos, envia-nos um pedido através do <Link to="/contactar" className="font-bold hover:underline" style={{ color: linkColor }}>formulário de contacto</Link>, identificando claramente qual o direito que pretendes exercer. Responderemos no prazo máximo de 30 dias, nos termos do artigo 12.º n.º 3 do RGPD.
                                 </p>
 
                                 <h2 className="font-['Fredoka',sans-serif] font-black text-xl pt-4" style={{ color: headingColor }}>
