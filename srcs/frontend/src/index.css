@@ -204,10 +204,10 @@
 
 @keyframes float {
   0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
+  50% { transform: translateY(-5px); }
 }
 .animate-float {
-  animation: float 4s ease-in-out infinite;
+  animation: float 3.5s ease-in-out infinite;
 }
 
 @keyframes floatKid {
@@ -294,4 +294,84 @@ img {
 input, textarea, [contenteditable] {
   user-select: text;
   -webkit-user-select: text;
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   ACCESSIBILITY TOOLKIT — toggled via AccessibilityWidget, classes on <html>
+   ════════════════════════════════════════════════════════════════════ */
+
+html.a11y-text-lg {
+  font-size: 115%;
+}
+
+html.a11y-text-xl {
+  font-size: 130%;
+}
+
+html.a11y-readable-font,
+html.a11y-readable-font body {
+  font-family: Arial, Verdana, 'Segoe UI', sans-serif !important;
+  letter-spacing: 0.02em;
+  line-height: 1.7 !important;
+}
+
+html.a11y-readable-font h1,
+html.a11y-readable-font h2,
+html.a11y-readable-font h3,
+html.a11y-readable-font h4,
+html.a11y-readable-font button,
+html.a11y-readable-font span,
+html.a11y-readable-font p {
+  font-family: Arial, Verdana, 'Segoe UI', sans-serif !important;
+}
+
+html.a11y-highlight-links a {
+  background-color: #ffe600 !important;
+  color: #000000 !important;
+  text-decoration: underline !important;
+  font-weight: 700 !important;
+  border-radius: 2px;
+  box-shadow: 0 0 0 2px #ffe600;
+}
+
+html.a11y-contrast body,
+html.a11y-contrast #root {
+  background: #000000 !important;
+}
+
+html.a11y-contrast * {
+  background-image: none !important;
+  text-shadow: none !important;
+}
+
+html.a11y-contrast body,
+html.a11y-contrast p,
+html.a11y-contrast span,
+html.a11y-contrast h1,
+html.a11y-contrast h2,
+html.a11y-contrast h3,
+html.a11y-contrast h4,
+html.a11y-contrast li,
+html.a11y-contrast label {
+  color: #ffffff !important;
+}
+
+html.a11y-contrast a {
+  color: #ffe600 !important;
+  text-decoration: underline !important;
+}
+
+html.a11y-contrast button {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  border: 2px solid #ffe600 !important;
+}
+
+html.a11y-contrast img {
+  filter: contrast(1.15);
+}
+
+html.a11y-contrast :focus-visible {
+  outline: 3px solid #ffe600 !important;
+  outline-offset: 2px !important;
 }

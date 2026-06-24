@@ -2,6 +2,8 @@ import { Routes, Route, useLocation } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
 import Navbar from './components/core/Navbar'
 import { NightModeProvider } from './components/core/NightMode'
+import { AccessibilityProvider } from './components/core/Accessibility'
+import { QuickLinkButtons } from './components/core/QuickLinkButtons'
 import PageTransition from './components/core/PageTransition'
 import Home from './pages/Homepage'
 import About from './pages/About'
@@ -40,30 +42,33 @@ export default function App() {
 
   return (
     <NightModeProvider>
-      <Navbar />
-      <AnimatePresence mode="wait">
-        <Routes location={location} key={baseKey}>
-          <Route path="/"            element={wrap(<Home />)} />
-          <Route path="/login"       element={wrap(<Login />)} />
-          <Route path="/aprender"    element={wrap(<Aprender />)} />
-          <Route path="/aprender/:id" element={wrap(<Aprender />)} />
-          <Route path="/resolver"    element={wrap(<Resolver />)} />
-          <Route path="/resolver/:id" element={wrap(<Resolver />)} />
-          <Route path="/jogos"       element={wrap(<Jogos />)} />
-          <Route path="/jogar/:id"   element={wrap(<Jogos />)} />
-          <Route path="/ler"         element={wrap(<Ler />)} />
-          <Route path="/ler/:id"     element={wrap(<Ler />)} />
-          <Route path="/descarregar" element={wrap(<Descarregar />)} />
-          <Route path="/videos"      element={wrap(<Videos />)} />
-          <Route path="/sobre"       element={wrap(<About />)} />
-          <Route path="/faq"         element={wrap(<Faq />)} />
-          <Route path="/privacidade" element={wrap(<Privacy />)} />
-          <Route path="/rgpd"        element={wrap(<Rgpd />)} />
-          <Route path="/contactar"   element={wrap(<Contact />)} />
-          <Route path="/dashboard"   element={wrap(<RequireAuth><Dashboard /></RequireAuth>)} />
-          <Route path="*"            element={wrap(<PageStub title="Página não encontrada" />)} />
-        </Routes>
-      </AnimatePresence>
+      <AccessibilityProvider>
+        <QuickLinkButtons />
+        <Navbar />
+        <AnimatePresence mode="wait">
+          <Routes location={location} key={baseKey}>
+            <Route path="/"            element={wrap(<Home />)} />
+            <Route path="/login"       element={wrap(<Login />)} />
+            <Route path="/aprender"    element={wrap(<Aprender />)} />
+            <Route path="/aprender/:id" element={wrap(<Aprender />)} />
+            <Route path="/resolver"    element={wrap(<Resolver />)} />
+            <Route path="/resolver/:id" element={wrap(<Resolver />)} />
+            <Route path="/jogos"       element={wrap(<Jogos />)} />
+            <Route path="/jogar/:id"   element={wrap(<Jogos />)} />
+            <Route path="/ler"         element={wrap(<Ler />)} />
+            <Route path="/ler/:id"     element={wrap(<Ler />)} />
+            <Route path="/descarregar" element={wrap(<Descarregar />)} />
+            <Route path="/videos"      element={wrap(<Videos />)} />
+            <Route path="/sobre"       element={wrap(<About />)} />
+            <Route path="/faq"         element={wrap(<Faq />)} />
+            <Route path="/privacidade" element={wrap(<Privacy />)} />
+            <Route path="/rgpd"        element={wrap(<Rgpd />)} />
+            <Route path="/contactar"   element={wrap(<Contact />)} />
+            <Route path="/dashboard"   element={wrap(<RequireAuth><Dashboard /></RequireAuth>)} />
+            <Route path="*"            element={wrap(<PageStub title="Página não encontrada" />)} />
+          </Routes>
+        </AnimatePresence>
+      </AccessibilityProvider>
     </NightModeProvider>
   )
 }
