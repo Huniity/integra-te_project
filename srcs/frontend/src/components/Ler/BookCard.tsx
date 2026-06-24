@@ -1,4 +1,6 @@
-import { motion } from 'framer-motion'
+import { motion } from 'framer-motion';
+import { ArrowRight } from 'lucide-react';
+import { useNightMode } from '../core/NightMode';
 import type { Livro } from '../../api/contracts/livros';
 
 interface BookCardProps {
@@ -8,45 +10,53 @@ interface BookCardProps {
 }
 
 export default function BookCard({ livro, onSelect, index = 0 }: BookCardProps) {
+  const { isNightMode } = useNightMode();
+
   return (
     <motion.div
-      className="rounded-2xl min-h-[220px] bg-white border border-gray-100 flex flex-col items-center justify-between p-3 group shadow-sm"
+      onClick={() => onSelect(livro)}
+      className={`group relative cursor-pointer flex flex-col justify-between items-center rounded-[24px] sm:rounded-[32px] border p-3 sm:p-4 w-full h-auto lg:h-full lg:min-h-0 ${
+        isNightMode
+          ? 'bg-slate-900 border-slate-800 shadow-xl'
+          : 'bg-white border-slate-100 shadow-[0_12px_24px_rgba(0,0,0,0.02)]'
+      }`}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3, delay: index * 0.06, ease: 'easeOut' }}
-      whileHover={{ y: -4, transition: { duration: 0.2, ease: 'easeOut' } }}
-      whileTap={{ scale: 0.97 }}
+      whileHover={{ y: -6, boxShadow: '0 20px 40px rgba(0,0,0,0.08)', transition: { duration: 0.2, ease: 'easeOut' } }}
+      whileTap={{ scale: 0.98 }}
     >
-      <p className="font-['Fredoka',sans-serif] text-base md:text-lg font-semibold text-center mb-1 leading-tight text-blue-600">
-        {livro.titulo}
-      </p>
+      <div className={`w-full flex-shrink-0 lg:flex-1 h-40 sm:h-44 lg:h-auto lg:min-h-[110px] lg:max-h-[150px] xl:max-h-[170px] rounded-2xl mb-2 flex items-center justify-center p-3 transition-transform duration-300 group-hover:scale-[1.05] ${isNightMode ? 'bg-slate-800' : 'bg-slate-50'}`}>
+        <img
+          src={livro.capa_url ?? './src/assets/blue_book.webp'}
+          alt={livro.titulo}
+          className="w-full h-full object-contain"
+        />
+      </div>
 
-      <div className="w-24 h-24 flex items-center justify-center my-1 transform group-hover:scale-105 transition-transform duration-200">
-        {livro.capa_url ? (
-          <img
-            src={livro.capa_url}
-            alt={livro.titulo}
-            className="w-full h-full object-contain drop-shadow-md"
-          />
-        ) : (
-          <img
-            src="/src/assets/blue_book.webp"
-            alt=""
-            aria-hidden="true"
-            className="w-full h-full object-contain drop-shadow-md opacity-80"
-          />
+      <div className="w-full text-center py-2 px-1">
+        <h3
+          style={{ color: isNightMode ? '#ffffff' : '#1e293b' }}
+          className="font-['Fredoka'] font-bold text-sm sm:text-base leading-tight line-clamp-2"
+        >
+          {livro.titulo}
+        </h3>
+        {livro.autor && (
+          <p className="text-[11px] sm:text-xs text-slate-400 font-medium line-clamp-1 mt-0.5">
+            {livro.autor}
+          </p>
         )}
       </div>
 
-      <button
-        onClick={() => onSelect(livro)}
-        className="w-full sm:w-5/6 text-white font-extrabold text-xs py-1.5 rounded-full flex items-center justify-center gap-1.5 cursor-pointer bg-gradient-to-br from-blue-600 to-blue-700 shadow-[0_4px_12px_rgba(37,99,235,0.3)] transition-all duration-200 hover:-translate-y-px hover:shadow-[0_6px_16px_rgba(37,99,235,0.4)] active:translate-y-0"
-      >
-        Ver Livro
-        <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M8 5v14l11-7z" />
-        </svg>
-      </button>
+      <div className={`flex flex-col items-center w-full pt-1.5 border-t border-dashed flex-shrink-0 ${isNightMode ? 'border-slate-800/60' : 'border-slate-100'}`}>
+        <button
+          type="button"
+          className="w-full flex items-center justify-center gap-2 px-4 py-1.5 rounded-full bg-blue-600 hover:bg-blue-700 text-white font-['Fredoka'] font-bold text-xs shadow-md transition-all duration-200 active:scale-95"
+        >
+          <span>Ver Livro</span>
+          <ArrowRight size={13} strokeWidth={2.5} className="transition-transform group-hover:translate-x-1" />
+        </button>
+      </div>
     </motion.div>
   );
 }

@@ -166,7 +166,7 @@ function AprenderContent() {
       {selectedAula && (
         <AprenderModal aula={selectedAula} onClose={closeAula} />
       )}
-      <Footer />
+      {/* <Footer /> */}
     </main>
   );
 }

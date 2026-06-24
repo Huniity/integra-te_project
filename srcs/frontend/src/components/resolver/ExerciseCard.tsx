@@ -1,10 +1,12 @@
-import { motion } from 'framer-motion'
-import { getLevelBadgeClassName } from '../../utils/resolver';
+import { motion } from 'framer-motion';
+import { ArrowRight } from 'lucide-react';
+import { useNightMode } from '../core/NightMode';
 import type { Exercise } from '../resolver/ExerciseModal';
+import { getLevelBadgeClassName } from '../../utils/resolver';
 
 const SUBJECT_IMG: Record<string, string> = {
-  matematica:       '/src/assets/math.webp',
-  portugues:        '/src/assets/book3.webp',
+  matematica: '/src/assets/math.webp',
+  portugues: '/src/assets/book3.webp',
   'estudo-do-meio': '/src/assets/science.webp',
 };
 
@@ -15,46 +17,52 @@ interface ExerciseCardProps {
 }
 
 export default function ExerciseCard({ exercise, onSelect, index = 0 }: ExerciseCardProps) {
+  const { isNightMode } = useNightMode();
+
   return (
     <motion.div
-      className="rounded-2xl min-h-[210px] bg-white border border-gray-100 flex flex-col items-center p-3 group"
+      onClick={() => onSelect(exercise)}
+      className={`group relative cursor-pointer flex flex-col justify-between items-center rounded-[24px] sm:rounded-[32px] border p-3 sm:p-4 w-full h-auto lg:h-full lg:min-h-0 ${
+        isNightMode
+          ? 'bg-slate-900 border-slate-800 shadow-xl'
+          : 'bg-white border-slate-100 shadow-[0_12px_24px_rgba(0,0,0,0.02)]'
+      }`}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3, delay: index * 0.06, ease: 'easeOut' }}
-      whileHover={{ y: -4, transition: { duration: 0.2, ease: 'easeOut' } }}
-      whileTap={{ scale: 0.97 }}
+      whileHover={{ y: -6, boxShadow: '0 20px 40px rgba(0,0,0,0.08)', transition: { duration: 0.2, ease: 'easeOut' } }}
+      whileTap={{ scale: 0.98 }}
     >
-      <p className={`font-['Fredoka',sans-serif] text-lg font-semibold text-center mb-1.5 leading-tight ${exercise.titleColor}`}>
-        {exercise.title}
-      </p>
-
-      <div className="w-24 h-24 flex items-center justify-center my-1">
+      <div className={`w-full flex-shrink-0 lg:flex-1 h-40 sm:h-44 lg:h-auto lg:min-h-[110px] lg:max-h-[150px] xl:max-h-[170px] rounded-2xl overflow-hidden mb-2 flex items-center justify-center p-3 transition-transform duration-300 group-hover:scale-[1.02] ${isNightMode ? 'bg-slate-800' : 'bg-slate-50'}`}>
         <img
           src={exercise.thumbnailUrl || exercise.iconImg || SUBJECT_IMG[exercise.subjectId] || '/src/assets/math.webp'}
           alt={exercise.title}
-          className="w-full h-full object-contain drop-shadow-md group-hover:scale-110 transition-transform duration-200"
+          className="w-full h-full object-contain"
           onError={(e) => { (e.target as HTMLImageElement).src = SUBJECT_IMG[exercise.subjectId] || '/src/assets/math.webp'; }}
         />
       </div>
 
-      <span className={`-mt-2 mb-2.5 px-3 py-0.5 rounded-full uppercase relative z-10 text-[10px] font-extrabold tracking-[0.05em] ${getLevelBadgeClassName(exercise.level)}`}>
-        Nível {exercise.level}
-      </span>
-
-      <button
-        onClick={() => onSelect(exercise)}
-        className="w-2/3 text-white font-extrabold text-xs py-1.5 rounded-full flex items-center justify-center gap-2 cursor-pointer bg-gradient-to-br from-blue-600 to-blue-700 shadow-[0_4px_12px_rgba(37,99,235,0.4)] transition-all duration-200 hover:-translate-y-px hover:shadow-[0_6px_16px_rgba(37,99,235,0.5)] active:translate-y-0"
-      >
-        Começar
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="w-4 h-4"
-          viewBox="0 0 24 24"
-          fill="currentColor"
+      <div className="w-full text-center py-2 px-1">
+        <h3
+          style={{ color: isNightMode ? '#ffffff' : '#1e293b' }}
+          className="font-['Fredoka'] font-bold text-sm sm:text-base xl:text-lg leading-tight line-clamp-2"
         >
-          <path d="M8 5v14l11-7z" />
-        </svg>
-      </button>
+          {exercise.title}
+        </h3>
+      </div>
+
+      <div className={`flex flex-col items-center gap-1.5 w-full pt-1.5 border-t border-dashed flex-shrink-0 ${isNightMode ? 'border-slate-800/60' : 'border-slate-100'}`}>
+        <span className={`px-3 py-0.5 rounded-full text-[8px] sm:text-[9px] font-black uppercase tracking-wide ${getLevelBadgeClassName(exercise.level)}`}>
+          Nível {exercise.level}
+        </span>
+        <button
+          type="button"
+          className="w-full flex items-center justify-center gap-2 px-4 py-1.5 rounded-full bg-blue-600 hover:bg-blue-700 text-white font-['Fredoka'] font-bold text-xs shadow-md transition-all duration-200 active:scale-95"
+        >
+          <span>Praticar</span>
+          <ArrowRight size={13} strokeWidth={2.5} className="transition-transform group-hover:translate-x-1" />
+        </button>
+      </div>
     </motion.div>
   );
 }
