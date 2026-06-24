@@ -33,7 +33,7 @@ export default function ExerciseCard({ exercise, onSelect, index = 0 }: Exercise
       whileHover={{ y: -6, boxShadow: '0 20px 40px rgba(0,0,0,0.08)', transition: { duration: 0.2, ease: 'easeOut' } }}
       whileTap={{ scale: 0.98 }}
     >
-      <div className={`w-full flex-shrink-0 lg:flex-1 h-40 sm:h-44 lg:h-auto lg:min-h-[110px] lg:max-h-[150px] xl:max-h-[170px] rounded-2xl overflow-hidden mb-2 flex items-center justify-center p-3 transition-transform duration-300 group-hover:scale-[1.02] ${isNightMode ? 'bg-slate-800' : 'bg-slate-50'}`}>
+      <div className={`w-full flex-shrink-0 lg:flex-1 h-40 sm:h-44 lg:h-auto lg:min-h-[110px] lg:max-h-[150px] xl:max-h-[160px] rounded-2xl overflow-hidden mb-2 flex items-center justify-center p-3 transition-transform duration-300 group-hover:scale-[1.02] ${isNightMode ? 'bg-slate-800' : 'bg-slate-50'}`}>
         <img
           src={exercise.thumbnailUrl || exercise.iconImg || SUBJECT_IMG[exercise.subjectId] || '/src/assets/math.webp'}
           alt={exercise.title}
