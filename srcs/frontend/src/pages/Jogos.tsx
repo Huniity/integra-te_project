@@ -100,7 +100,6 @@ function GamesContent() {
         </div>
       </div>
 
-      <Footer />
     </main>
   );
 }

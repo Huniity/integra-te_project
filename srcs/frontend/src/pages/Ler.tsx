@@ -103,7 +103,6 @@ function ReadContent() {
       </div>
 
       {selectedBook && <BookModal book={selectedBook} onClose={() => setSelectedBook(null)} />}
-      <Footer />
     </main>
   );
 }

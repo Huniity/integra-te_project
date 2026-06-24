@@ -143,7 +143,6 @@ function ResolverContent() {
       {selectedExercise && (
         <ExerciseModal exercise={selectedExercise} onClose={closeExercise} />
       )}
-      <Footer />
     </main>
   );
 }
