@@ -25,7 +25,7 @@ export function SearchBar({ className }: { className?: string }) {
   const audioChunksRef = useRef<BlobPart[]>([]);
   const formRef = useRef<HTMLFormElement>(null);
 
-  /* cleanup mic on unmount */
+
   useEffect(() => {
     return () => {
       if (mediaStreamRef.current) {
@@ -189,6 +189,7 @@ export function SearchBar({ className }: { className?: string }) {
           onChange={(event) => setSearchText(event.target.value)}
           onFocus={() => results.length > 0 && setShowDrop(true)}
           placeholder="O que procuras?"
+          aria-label="Pesquisar"
           className={`font-['Fredoka',sans-serif] w-full rounded-full bg-white/30 py-2.5 pl-12 pr-3 text-sm font-semibold tracking-wide outline-none transition-colors duration-500 ${
             isNightMode ? 'text-white/90 placeholder-white/90' : 'text-blue-600/90 placeholder-blue-600/90'
           }`}

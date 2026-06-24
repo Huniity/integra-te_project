@@ -71,6 +71,7 @@ export default function VideoCard({ video, onPlay, index = 0 }: VideoCardProps) 
       <div className={`flex flex-col items-center gap-1.5 w-full pt-1.5 border-t border-dashed flex-shrink-0 ${isNightMode ? 'border-slate-800/60' : 'border-slate-100'}`}>
         <button
           type="button"
+          aria-label={`Assistir: ${video.titulo}`}
           className="w-full flex items-center justify-center gap-2 px-4 py-1.5 rounded-full bg-blue-600 hover:bg-blue-700 text-white font-['Fredoka'] font-bold text-xs shadow-md transition-all duration-200 active:scale-95"
         >
           <span>Assistir</span>

@@ -56,6 +56,7 @@ export default function AprenderCard({ aula, onSelect, index = 0 }: AprenderCard
         </span>
         <button
           type="button"
+          aria-label={`Aprender: ${aula.title}`}
           className="w-full flex items-center justify-center gap-2 px-4 py-1.5 rounded-full bg-blue-600 hover:bg-blue-700 text-white font-['Fredoka'] font-bold text-xs shadow-md transition-all duration-200 active:scale-95"
         >
           <span>Aprender</span>

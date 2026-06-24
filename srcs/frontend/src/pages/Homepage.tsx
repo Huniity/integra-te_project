@@ -119,7 +119,7 @@ function HomeContent() {
           animate="visible"
           variants={{ visible: { transition: { staggerChildren: 0.07, delayChildren: 0.1 } } }}
         >
-          {menuButtons.map((btn) => (
+          {menuButtons.map((btn, index) => (
             <motion.div
               key={btn.id}
               className="flex flex-col items-center relative w-full md:w-[28%] lg:w-full group"
@@ -141,8 +141,10 @@ function HomeContent() {
                 onClick={() => handleNavigation(btn)}
                 className="flex flex-col items-center h-auto w-full relative transform transition-all active:scale-95 duration-200 group-hover:-translate-y-5 md:group-hover:-translate-y-6 cursor-pointer focus:outline-none select-none"
               >
-                {/* Imagem da Esfera */}
-                <div className="w-[clamp(4.2rem,10vw,8.6rem)] h-[clamp(4.2rem,10vw,8.6rem)] flex items-center justify-center relative drop-shadow-[0_10px_15px_rgba(0,0,0,0.2)]">
+                <div
+                  className="animate-float w-[clamp(4.2rem,10vw,8.6rem)] h-[clamp(4.2rem,10vw,8.6rem)] flex items-center justify-center relative drop-shadow-[0_10px_15px_rgba(0,0,0,0.2)]"
+                  style={{ animationDelay: `${index * 0.15}s` }}
+                >
                   <img
                     src={btn.bgImg}
                     alt=""
@@ -155,7 +157,6 @@ function HomeContent() {
                   />
                 </div>
 
-                {/* Imagem da Nuvem */}
                 <div className="mt-[-8%] lg:mt-[-20%] relative w-[clamp(6.6rem,16vw,12.8rem)] h-[clamp(4rem,10vw,7.4rem)] flex items-center justify-center z-10">
                   <img
                     src="./src/assets/under_cloud.webp"
