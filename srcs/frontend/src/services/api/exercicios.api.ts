@@ -12,6 +12,7 @@ function toFormData(p: ExercicioPayload): FormData {
   if (p.thumbnail)    fd.append('thumbnail', p.thumbnail);
   if (p.videoUrl)     fd.append('videoUrl', p.videoUrl);
   if (p.ficheiro)     fd.append('ficheiro', p.ficheiro);
+  if (p.pdfUrl)       fd.append('pdfUrl', p.pdfUrl);
   return fd;
 }
 
@@ -25,6 +26,7 @@ function toJson(p: ExercicioPayload): string {
   if (p.description)  body.description       = p.description;
   if (p.thumbnailUrl) body.thumbnailUrlInput  = p.thumbnailUrl;
   if (p.videoUrl)     body.videoUrl           = p.videoUrl;
+  if (p.pdfUrl)       body.pdfUrl             = p.pdfUrl;
   return JSON.stringify(body);
 }
 

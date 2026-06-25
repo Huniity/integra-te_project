@@ -8,11 +8,11 @@ export interface Exercicio {
   videoUrl?: string;
   ficheiro_url?: string;
   publicado: boolean;
-  // legacy fields (kept for backward compat with ExerciseModal)
+  pdfUrl?: string | null;
+  // legacy fields (kept for backward compat with ExerciseModal, not editable via the dashboard)
   titleColor?: string;
   iconImg?: string;
   path?: string;
-  pdfUrl?: string | null;
 }
 
 export interface ExercicioPayload {
@@ -25,4 +25,5 @@ export interface ExercicioPayload {
   videoUrl?: string;
   ficheiro?: File | null;
   publicado: boolean;
+  pdfUrl?: string;
 }

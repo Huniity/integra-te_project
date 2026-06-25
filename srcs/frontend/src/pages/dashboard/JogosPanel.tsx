@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
 import { Pencil, Trash2, Plus, X, FileText, Eye } from 'lucide-react'
 import { jogosApi } from '../../services/api/jogos.api'
+import { temasApi } from '../../services/api/temas.api'
 import type { Jogo, JogoPayload } from '../../api/contracts/jogos'
+import type { Disciplina } from '../../api/contracts/temas'
 import Pagination from '../../components/core/Pagination'
 import { useNightMode } from '../../components/core/NightMode'
 import { dashboardTheme } from '../../utils/dashboardTheme'
@@ -10,6 +12,12 @@ const SUBJECTS = [
     { id: 'matematica', label: 'Matemática' },
     { id: 'portugues', label: 'Português' },
     { id: 'estudo-do-meio', label: 'Estudo do Meio' },
+]
+
+const FAIXAS_ETARIAS = [
+    { id: '4-6', label: '4 a 6 anos' },
+    { id: '6-9', label: '6 a 9 anos' },
+    { id: '9-12', label: '9 a 12 anos' },
 ]
 
 const SUBJECT_IMG: Record<string, string> = {
@@ -23,12 +31,13 @@ const PAGE_SIZE = 8
 const EMPTY: JogoPayload = {
     titulo: '', subjectId: 'matematica', level: 1,
     descricao: '', thumbnailUrl: '', videoUrl: '', ficheiro: null,
-    publicado: false,
+    publicado: false, faixaEtaria: '', urlExterna: '', disciplina: '',
 }
 
-function JogoModal({ initial, currentFicheiroUrl, onSave, onClose }: {
+function JogoModal({ initial, currentFicheiroUrl, disciplinas, onSave, onClose }: {
     initial: JogoPayload
     currentFicheiroUrl?: string
+    disciplinas: Disciplina[]
     onSave: (p: JogoPayload) => Promise<void>
     onClose: () => void
 }) {
@@ -84,6 +93,26 @@ function JogoModal({ initial, currentFicheiroUrl, onSave, onClose }: {
                         </div>
                     </div>
 
+                    <div className="grid grid-cols-2 gap-4">
+                        <div>
+                            <label className={th.label}>Faixa Etária</label>
+                            <select value={form.faixaEtaria ?? ''} onChange={e => set('faixaEtaria', e.target.value || undefined)}
+                                className={th.select}>
+                                <option value="">Todas as idades</option>
+                                {FAIXAS_ETARIAS.map(f => <option key={f.id} value={f.id}>{f.label}</option>)}
+                            </select>
+                            <p className={th.inputHint}>Controla o filtro de idade na página pública de Jogos.</p>
+                        </div>
+                        <div>
+                            <label className={th.label}>Disciplina</label>
+                            <select value={form.disciplina ?? ''} onChange={e => set('disciplina', e.target.value || undefined)}
+                                className={th.select}>
+                                <option value="">Sem disciplina específica</option>
+                                {disciplinas.map(d => <option key={d.id} value={d.id}>{d.nome}</option>)}
+                            </select>
+                        </div>
+                    </div>
+
                     <div>
                         <label className={th.label}>Imagem do card</label>
                         <div className="flex items-start gap-3">
@@ -135,6 +164,17 @@ function JogoModal({ initial, currentFicheiroUrl, onSave, onClose }: {
                                 placeholder="https://youtube.com/..."
                                 className={th.input} />
                         </div>
+                        <div>
+                            <label className={th.label}>Link Externo do Jogo</label>
+                            <input type="url" value={form.urlExterna ?? ''}
+                                onChange={e => {
+                                    set('urlExterna', e.target.value || undefined)
+                                    if (e.target.value) set('ficheiro', null)
+                                }}
+                                placeholder="https://exemplo.com/jogo"
+                                className={th.input} />
+                            <p className={th.inputHint}>Para um jogo recomendado só por link, sem ficheiro próprio.</p>
+                        </div>
                     </div>
 
                     <div>
@@ -147,7 +187,11 @@ function JogoModal({ initial, currentFicheiroUrl, onSave, onClose }: {
                             </a>
                         )}
                         <input ref={fileRef} type="file"
-                            onChange={e => set('ficheiro', e.target.files?.[0] ?? null)}
+                            onChange={e => {
+                                const file = e.target.files?.[0] ?? null
+                                set('ficheiro', file)
+                                if (file) set('urlExterna', undefined)
+                            }}
                             className={th.fileInput} />
                         {form.ficheiro && <p className={`mt-1 ${th.inputHint}`}>{(form.ficheiro as File).name}</p>}
                     </div>
@@ -175,6 +219,7 @@ const JogosPanel = ({ autoCreate }: { autoCreate?: boolean }) => {
     const { isNightMode } = useNightMode()
     const th = dashboardTheme(isNightMode)
     const [jogos, setJogos] = useState<Jogo[]>([])
+    const [disciplinas, setDisciplinas] = useState<Disciplina[]>([])
     const [isLoading, setIsLoading] = useState(true)
     const [page, setPage] = useState(1)
     const [modal, setModal] = useState<{ open: boolean; jogo: Jogo | null }>({ open: false, jogo: null })
@@ -182,7 +227,9 @@ const JogosPanel = ({ autoCreate }: { autoCreate?: boolean }) => {
 
     async function load() {
         setIsLoading(true)
-        setJogos(await jogosApi.getJogos())
+        const [j, d] = await Promise.all([jogosApi.getJogos(), temasApi.getDisciplinas()])
+        setJogos(j)
+        setDisciplinas(d)
         setIsLoading(false)
     }
 
@@ -233,6 +280,7 @@ const JogosPanel = ({ autoCreate }: { autoCreate?: boolean }) => {
                             <tr className={th.theadRow}>
                                 <th className="px-4 py-3">Título</th>
                                 <th className="px-4 py-3">Matéria</th>
+                                <th className="px-4 py-3">Idade</th>
                                 <th className="px-4 py-3">Nível</th>
                                 <th className="px-4 py-3">Estado</th>
                                 <th className="px-4 py-3 text-right">Ações</th>
@@ -246,6 +294,7 @@ const JogosPanel = ({ autoCreate }: { autoCreate?: boolean }) => {
                                         {jogo.descricao && <p className={th.cellMuted}>{jogo.descricao}</p>}
                                     </td>
                                     <td className={`px-4 py-3 ${th.cellSecondary}`}>{SUBJECTS.find(s => s.id === jogo.subjectId)?.label ?? jogo.subjectId ?? '—'}</td>
+                                    <td className={`px-4 py-3 ${th.cellSecondary}`}>{jogo.faixa_etaria || '—'}</td>
                                     <td className="px-4 py-3">
                                         {jogo.level ? (
                                             <span className={th.levelBadge(jogo.level)}>Nível {jogo.level}</span>
@@ -285,6 +334,7 @@ const JogosPanel = ({ autoCreate }: { autoCreate?: boolean }) => {
             {modal.open && (
                 <JogoModal
                     currentFicheiroUrl={modal.jogo?.ficheiro_url}
+                    disciplinas={disciplinas}
                     initial={modal.jogo ? {
                         titulo: modal.jogo.titulo,
                         subjectId: modal.jogo.subjectId ?? 'matematica',
@@ -294,6 +344,9 @@ const JogosPanel = ({ autoCreate }: { autoCreate?: boolean }) => {
                         videoUrl: modal.jogo.videoUrl ?? '',
                         ficheiro: null,
                         publicado: modal.jogo.publicado,
+                        faixaEtaria: modal.jogo.faixa_etaria ?? '',
+                        urlExterna: modal.jogo.url_externa ?? '',
+                        disciplina: modal.jogo.disciplina ?? '',
                     } : EMPTY}
                     onSave={handleSave}
                     onClose={() => setModal({ open: false, jogo: null })}
