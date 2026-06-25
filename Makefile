@@ -225,7 +225,7 @@ logs-pytest-prod: ## Pytest logs in production environment
 	docker compose -f compose.prod.yaml exec backend cat /app/logs/pytest.log
 
 populate-dev: ## Populate database with sample data in development environment
-	docker compose -f compose.dev.yaml exec backend python /scripts/seed_db.py
+	docker compose -f compose.dev.yaml exec backend python /scripts/seed_db2.py
 
 #populate-prod: ## Populate database with main pages data in production environment
 #	docker compose -f compose.prod.yaml exec backend python /scripts/seed_db_prod.py
