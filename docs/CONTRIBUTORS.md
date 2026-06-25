@@ -1,6 +1,6 @@
 # Contributors — INTEGRA-TE
 
-> **Project II · Web Programming · ETIC_Algarve · 2025/26**  
+> **Project II · Web Programming · ETIC_Algarve · 2025/26**
 > Client: **Fundação António Aleixo** · Group A
 
 ---
