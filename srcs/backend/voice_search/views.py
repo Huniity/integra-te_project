@@ -22,8 +22,14 @@ from integrate.models import (
 
 
 class SearchThrottle(AnonRateThrottle):
-    """Throttle anonymous search requests to reduce abuse."""
+    """
+    Throttle anonymous search requests to reduce abuse. Needs its own scope —
+    without it, AnonRateThrottle's default scope='anon' makes this share a
+    cache key with any other anon-scoped throttle (e.g. LoginThrottle), so
+    bursts of search traffic eat into the login rate limit for the same IP.
+    """
 
+    scope = "voice_search_anon"
     rate = "20/min"
 
 
