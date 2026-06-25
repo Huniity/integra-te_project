@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand
 from sentence_transformers import SentenceTransformer
 from voice_search.models import ObjectVector
-from integrate.models import Disciplina, Tema, Conteudo, Jogo, Livro, MaterialOriginal
+from integrate.models import Disciplina, Tema, Conteudo, Jogo, Livro
 
 
 MODEL_NAME = "paraphrase-multilingual-MiniLM-L12-v2"
@@ -69,17 +69,6 @@ def build_rows():
                 "label": obj.titulo,
                 "route": f"/ler/{obj.id}",
                 "text": f"{obj.titulo} {obj.autor or ''} {obj.resumo or ''} {obj.temas or ''}",
-            }
-        )
-
-    for obj in MaterialOriginal.objects.filter(publicado=True):
-        rows.append(
-            {
-                "model_type": "material",
-                "object_id": obj.id,
-                "label": obj.titulo,
-                "route": "/descarregar",
-                "text": f"{obj.titulo} {obj.autor or ''} {obj.descricao or ''}",
             }
         )
 
