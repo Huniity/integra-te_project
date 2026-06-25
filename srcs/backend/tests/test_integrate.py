@@ -6,7 +6,7 @@ is required — tests run in any environment without Docker.
 """
 
 from django.http import Http404
-from django.test import SimpleTestCase
+from django.test import SimpleTestCase, override_settings
 from unittest.mock import patch, MagicMock
 from integrate.models import Disciplina, Tema, Jogo, Livro, Exercicio, Aula
 from integrate.views import (
@@ -231,6 +231,13 @@ class AulaListTest(SimpleTestCase):
 
 # Auth — Logi
 
+@override_settings(
+    REST_FRAMEWORK={
+        "DEFAULT_THROTTLE_CLASSES": [],
+        "DEFAULT_THROTTLE_RATES": {},
+    },
+    RATELIMIT_ENABLE=False,
+)
 
 class LoginTest(SimpleTestCase):
     """Tests for POST /api/v1/login."""
