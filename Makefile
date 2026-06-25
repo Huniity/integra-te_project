@@ -35,6 +35,7 @@ env: ## Create .env file if it doesn't exist
 		printf "ALLOWED_HOSTS=localhost,127.0.0.1,backend, *\n" >> .env; \
 		printf "DJANGO_SETTINGS_MODULE=core.settings\n" >> .env; \
 		printf "SECRET_KEY=?\n" >> .env; \
+		printf "RATELIMIT_ENABLE=True\n" >> .env; \
 		printf "\n" >> .env; \
 		printf "# Default superuser (auto-created by make superuser-auto-dev)\n" >> .env; \
 		printf "DJANGO_SUPERUSER_USERNAME=admin_integrate2026\n" >> .env; \
