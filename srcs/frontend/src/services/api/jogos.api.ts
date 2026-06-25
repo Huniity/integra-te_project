@@ -12,6 +12,9 @@ function toFormData(p: JogoPayload): FormData {
   if (p.thumbnail)    fd.append('thumbnail', p.thumbnail);
   if (p.videoUrl)     fd.append('videoUrl', p.videoUrl);
   if (p.ficheiro)     fd.append('ficheiro', p.ficheiro);
+  if (p.faixaEtaria)  fd.append('faixa_etaria', p.faixaEtaria);
+  if (p.urlExterna)   fd.append('url_externa', p.urlExterna);
+  if (p.disciplina)   fd.append('disciplina', p.disciplina);
   return fd;
 }
 
@@ -25,6 +28,9 @@ function toJson(p: JogoPayload): string {
   if (p.descricao)    body.descricao         = p.descricao;
   if (p.thumbnailUrl) body.thumbnailUrlInput = p.thumbnailUrl;
   if (p.videoUrl)     body.videoUrl          = p.videoUrl;
+  if (p.faixaEtaria)  body.faixa_etaria      = p.faixaEtaria;
+  if (p.urlExterna)   body.url_externa       = p.urlExterna;
+  if (p.disciplina)   body.disciplina        = p.disciplina;
   return JSON.stringify(body);
 }
 

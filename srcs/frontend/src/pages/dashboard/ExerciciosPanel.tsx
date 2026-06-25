@@ -25,7 +25,7 @@ const PAGE_SIZE = 8
 const EMPTY: ExercicioPayload = {
     title: '', subjectId: 'matematica', level: 1,
     description: '', thumbnailUrl: '', videoUrl: '', ficheiro: null,
-    publicado: false,
+    publicado: false, pdfUrl: '',
 }
 
 function ExercicioModal({ initial, currentFicheiroUrl, onSave, onClose }: {
@@ -148,10 +148,22 @@ function ExercicioModal({ initial, currentFicheiroUrl, onSave, onClose }: {
                                 <FileText size={13} /> PDF atual
                             </a>
                         )}
+                        <input type="url" value={form.pdfUrl ?? ''}
+                            onChange={e => {
+                                set('pdfUrl', e.target.value || undefined)
+                                if (e.target.value) set('ficheiro', null)
+                            }}
+                            placeholder="https://exemplo.com/ficha.pdf"
+                            className={th.input} />
                         <input ref={fileRef} type="file" accept="application/pdf"
-                            onChange={e => set('ficheiro', e.target.files?.[0] ?? null)}
-                            className={th.fileInput} />
+                            onChange={e => {
+                                const file = e.target.files?.[0] ?? null
+                                set('ficheiro', file)
+                                if (file) set('pdfUrl', undefined)
+                            }}
+                            className={`${th.fileInput} mt-2`} />
                         {form.ficheiro && <p className={`mt-1 ${th.inputHint}`}>{(form.ficheiro as File).name}</p>}
+                        <p className={th.inputHint}>URL de um PDF já existente, ou envia um ficheiro novo.</p>
                     </div>
 
                     <label className="flex items-center gap-2 cursor-pointer select-none">
@@ -292,6 +304,7 @@ const ExerciciosPanel = ({ autoCreate }: { autoCreate?: boolean }) => {
                         videoUrl: modal.exercicio.videoUrl ?? '',
                         ficheiro: null,
                         publicado: modal.exercicio.publicado,
+                        pdfUrl: modal.exercicio.pdfUrl ?? '',
                     } : EMPTY}
                     onSave={handleSave}
                     onClose={() => setModal({ open: false, exercicio: null })}

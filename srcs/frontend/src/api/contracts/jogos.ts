@@ -9,7 +9,6 @@ export interface Jogo {
   ficheiro_url?: string;
   publicado: boolean;
   criado_em: string;
-  // legacy
   faixa_etaria?: string;
   url_externa?: string;
   disciplina?: string;
@@ -27,4 +26,7 @@ export interface JogoPayload {
   videoUrl?: string;
   ficheiro?: File | null;
   publicado: boolean;
+  faixaEtaria?: string;
+  urlExterna?: string;
+  disciplina?: string;
 }
