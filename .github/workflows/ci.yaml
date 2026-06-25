@@ -61,12 +61,19 @@ jobs:
       POSTGRES_PASSWORD: test_password
       POSTGRES_HOST: localhost
       POSTGRES_PORT: "5432"
+      RATELIMIT_ENABLE: "False"
 
     steps:
       - uses: actions/checkout@v4
+
       - uses: astral-sh/setup-uv@v5
         with:
           python-version: "3.14"
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
 
       - name: Install dependencies
         run: uv sync --all-groups
@@ -75,4 +82,4 @@ jobs:
         run: uv run --active python manage.py migrate
 
       - name: Run pytest
-        run: uv run --active pytest
+        run: uv run --active pytest -o DJANGO_SETTINGS_MODULE=core.settings
