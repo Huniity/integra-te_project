@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import { NightModeBackground, useNightMode } from '../components/core/NightMode';
 import Aside from '../components/core/Aside';
 import type { SubjectId } from '../components/core/Aside';
@@ -94,23 +95,32 @@ function AprenderContent() {
       className="relative min-h-screen lg:h-screen w-full px-3 md:px-5 py-2 font-['Nunito',sans-serif] overflow-x-hidden overflow-y-auto lg:overflow-y-hidden flex flex-col"
     >
       {/* Decorative Elements */}
-      <img src="/src/assets/bush.webp" alt="" aria-hidden="true"
+      <motion.img src="/src/assets/bush.webp" alt="" aria-hidden="true"
+        initial={{ y: 60 }} animate={{ y: 0 }} transition={{ duration: 0.6, ease: 'easeOut' }}
         className={`pointer-events-none fixed bottom-[-1%] left-[-2%] z-2 w-28 sm:w-36 md:w-44 lg:w-62 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-0' : 'opacity-100'}`} />
-      <img src="/src/assets/bush_night.webp" alt="" aria-hidden="true"
+      <motion.img src="/src/assets/bush_night.webp" alt="" aria-hidden="true"
+        initial={{ y: 60 }} animate={{ y: 0 }} transition={{ duration: 0.6, ease: 'easeOut' }}
         className={`pointer-events-none fixed bottom-[-1%] left-[-3%] z-2 w-28 sm:w-36 md:w-44 lg:w-70 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-100' : 'opacity-0'}`} />
-      <img src="/src/assets/bush2.webp" alt="" aria-hidden="true"
+      <motion.img src="/src/assets/bush2.webp" alt="" aria-hidden="true"
+        initial={{ y: 60 }} animate={{ y: 0 }} transition={{ duration: 0.6, delay: 0.08, ease: 'easeOut' }}
         className={`pointer-events-none fixed bottom-[-1%] right-[-2%] z-2 w-28 sm:w-36 md:w-44 lg:w-62 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-0' : 'opacity-100'}`} />
-      <img src="/src/assets/bush2_night.webp" alt="" aria-hidden="true"
+      <motion.img src="/src/assets/bush2_night.webp" alt="" aria-hidden="true"
+        initial={{ y: 60 }} animate={{ y: 0 }} transition={{ duration: 0.6, delay: 0.08, ease: 'easeOut' }}
         className={`pointer-events-none fixed bottom-[-1%] right-[-2%] z-2 w-28 sm:w-36 md:w-44 lg:w-62 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-100' : 'opacity-0'}`} />
-      <img src="/src/assets/books.webp" alt="" aria-hidden="true"
+      <motion.img src="/src/assets/books.webp" alt="" aria-hidden="true"
+        initial={{ y: 60 }} animate={{ y: 0 }} transition={{ duration: 0.6, delay: 0.15, ease: 'easeOut' }}
         className={`pointer-events-none fixed bottom-[2%] left-[3%] z-1 w-28 sm:w-36 md:w-44 lg:w-46 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-0' : 'opacity-100'}`} />
-      <img src="/src/assets/books_night.webp" alt="" aria-hidden="true"
+      <motion.img src="/src/assets/books_night.webp" alt="" aria-hidden="true"
+        initial={{ y: 60 }} animate={{ y: 0 }} transition={{ duration: 0.6, delay: 0.15, ease: 'easeOut' }}
         className={`pointer-events-none fixed bottom-[2%] left-[3%] z-1 w-28 sm:w-36 md:w-44 lg:w-46 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-100' : 'opacity-0'}`} />
-      <img
+      <motion.img
         src="/src/assets/rainbow.webp"
         alt=""
         aria-hidden="true"
-        className={`pointer-events-none fixed top-[14%] left-[-5%] z-1 w-28 sm:w-36 md:w-44 lg:w-100 object-contain rotate-24 transition-opacity duration-700 ${isNightMode ? 'opacity-0' : 'opacity-100'
+        initial={{ y: -40, rotate: 10, scale: 0.9 }}
+        animate={{ y: 0, rotate: 24, scale: 1 }}
+        transition={{ duration: 0.6, delay: 0.2, ease: 'easeOut' }}
+        className={`pointer-events-none fixed top-[14%] left-[-5%] z-1 w-28 sm:w-36 md:w-44 lg:w-100 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-0' : 'opacity-100'
           }`}
       />
 

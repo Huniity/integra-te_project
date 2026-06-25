@@ -1,5 +1,6 @@
 import { useState, useEffect, type FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { motion } from 'framer-motion'
 import { Loader2, AlertCircle } from 'lucide-react'
 import { NightModeBackground, useNightMode } from '../components/core/NightMode'
 import Footer from '../components/core/Footer'
@@ -60,20 +61,29 @@ function LoginContent() {
       style={{ scrollbarWidth: 'none' }}
     >
       {/* Decorative bushes */}
-      <img src="/src/assets/bush.webp" alt="" aria-hidden="true"
+      <motion.img src="/src/assets/bush.webp" alt="" aria-hidden="true"
+        initial={{ y: 60 }} animate={{ y: 0 }} transition={{ duration: 0.6, ease: 'easeOut' }}
         className={`pointer-events-none fixed bottom-[-1%] left-[-2%] z-2 w-28 sm:w-36 md:w-44 lg:w-48 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-0' : 'opacity-100'}`} />
-      <img src="/src/assets/bush_night.webp" alt="" aria-hidden="true"
+      <motion.img src="/src/assets/bush_night.webp" alt="" aria-hidden="true"
+        initial={{ y: 60 }} animate={{ y: 0 }} transition={{ duration: 0.6, ease: 'easeOut' }}
         className={`pointer-events-none fixed bottom-[-1%] left-[-3%] z-2 w-28 sm:w-36 md:w-44 lg:w-48 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-100' : 'opacity-0'}`} />
-      <img src="/src/assets/bush2.webp" alt="" aria-hidden="true"
+      <motion.img src="/src/assets/bush2.webp" alt="" aria-hidden="true"
+        initial={{ y: 60 }} animate={{ y: 0 }} transition={{ duration: 0.6, delay: 0.08, ease: 'easeOut' }}
         className={`pointer-events-none fixed bottom-[-1%] right-[-2%] z-2 w-28 sm:w-36 md:w-44 lg:w-48 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-0' : 'opacity-100'}`} />
-      <img src="/src/assets/bush2_night.webp" alt="" aria-hidden="true"
+      <motion.img src="/src/assets/bush2_night.webp" alt="" aria-hidden="true"
+        initial={{ y: 60 }} animate={{ y: 0 }} transition={{ duration: 0.6, delay: 0.08, ease: 'easeOut' }}
         className={`pointer-events-none fixed bottom-[-1%] right-[-2%] z-2 w-28 sm:w-36 md:w-44 lg:w-48 object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-100' : 'opacity-0'}`} />
 
       <NightModeBackground dayImage="/src/assets/bg_day.webp" nightImage="/src/assets/bg_night.webp" />
 
       {/* Centred cloud card */}
       <div className="flex flex-1 items-center justify-center relative z-10 py-8">
-        <div className="relative w-full max-w-md flex items-center justify-center">
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, ease: 'easeOut' }}
+          className="relative w-full max-w-md flex items-center justify-center"
+        >
 
           {/* Cloud background image — same technique as the Aside sidebar */}
           <img
@@ -147,7 +157,7 @@ function LoginContent() {
             </form>
           </div>
 
-        </div>
+        </motion.div>
       </div>
 
       <Footer />
