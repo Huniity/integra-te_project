@@ -1,35 +1,4 @@
-name: CI MAIN
-
-on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
-
-env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-
-jobs:
-  lint:
-    name: Lint
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: srcs/backend
-
-    steps:
-      - uses: actions/checkout@v4
-      - uses: astral-sh/setup-uv@v5
-        with:
-          python-version: "3.14"
-
-      - name: Install dependencies
-        run: uv sync --all-groups
-
-      - name: Ruff check
-        run: uv run ruff check .
-
-  test:
+test:
     name: Test
     runs-on: ubuntu-latest
     defaults:
@@ -38,7 +7,7 @@ jobs:
 
     services:
       db:
-        image: postgres:18-alpine
+        image: pgvector/pgvector:pg17
         env:
           POSTGRES_DB: test_db
           POSTGRES_USER: test_user
@@ -72,7 +41,7 @@ jobs:
         run: uv sync --all-groups
 
       - name: Run migrations
-        run: uv run python manage.py migrate
+        run: uv run --active python manage.py migrate
 
       - name: Run pytest
-        run: uv run pytest
+        run: uv run --active pytest

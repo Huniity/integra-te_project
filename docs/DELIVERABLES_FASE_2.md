@@ -23,6 +23,6 @@
 ---
 
 ## Initial repository structure with README, contribution guide and CI-ready configuration.
-[CI URL](https://github.com/Huniity/integra-te_project/blob/main/.github/workflows/ci.yaml)  
-[README URL](https://github.com/Huniity/integra-te_project/blob/main/README.md)  
-[CONTRIBUTORS.MD URL](https://github.com/Huniity/integra-te_project/blob/main/CONTRIBUTORS.md)  
+[CI URL](https://github.com/Huniity/integra-te_project/blob/main/.github/workflows/ci.yaml)
+[README URL](https://github.com/Huniity/integra-te_project/blob/main/README.md)
+[CONTRIBUTORS.MD URL](https://github.com/Huniity/integra-te_project/blob/main/CONTRIBUTORS.md)

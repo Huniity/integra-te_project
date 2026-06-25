@@ -5,7 +5,6 @@ from .models import (
     Conteudo,
     Jogo,
     Livro,
-    MaterialOriginal,
     Exercicio,
     Aula,
 )
@@ -112,6 +111,12 @@ class JogosSerializers(serializers.ModelSerializer):
     videoUrl = serializers.URLField(source="video_url", allow_null=True, required=False)
     ficheiro_url = serializers.SerializerMethodField()
     ficheiro = serializers.FileField(required=False, allow_null=True, write_only=True)
+    createdBy = serializers.CharField(
+        source="created_by.username", read_only=True, default=None
+    )
+    updatedBy = serializers.CharField(
+        source="updated_by.username", read_only=True, default=None
+    )
 
     def get_thumbnailUrl(self, obj):
         if obj.thumbnail:
@@ -144,6 +149,8 @@ class JogosSerializers(serializers.ModelSerializer):
             "disciplina_nome",
             "disciplina_slug",
             "ficheiro_url",
+            "createdBy",
+            "updatedBy",
         )
         extra_kwargs = {
             "disciplina": {"allow_null": True, "required": False},
@@ -162,6 +169,12 @@ class LivroSerializers(serializers.ModelSerializer):
     ficheiro_url = serializers.SerializerMethodField()
     capa = serializers.ImageField(required=False, allow_null=True, write_only=True)
     ficheiro = serializers.FileField(required=False, allow_null=True, write_only=True)
+    createdBy = serializers.CharField(
+        source="created_by.username", read_only=True, default=None
+    )
+    updatedBy = serializers.CharField(
+        source="updated_by.username", read_only=True, default=None
+    )
 
     def get_capa_url(self, obj):
         """
@@ -201,47 +214,14 @@ class LivroSerializers(serializers.ModelSerializer):
             "capa_url",
             "ficheiro",
             "ficheiro_url",
+            "createdBy",
+            "updatedBy",
         )
         extra_kwargs = {
             "autor": {"required": False, "allow_blank": True},
             "resumo": {"required": False, "allow_blank": True},
             "temas": {"required": False, "allow_blank": True},
         }
-
-
-class MaterialOriginalSerializers(serializers.ModelSerializer):
-    """
-    Serializer for MaterialOriginal model.
-    """
-
-    ficheiro_url = serializers.SerializerMethodField()
-
-    def get_ficheiro_url(self, obj):
-        """
-        Returns the URL of the file associated with the MaterialOriginal instance.
-        If the file exists, its URL is returned; otherwise, None is returned.
-        """
-        if obj.ficheiro:
-            return obj.ficheiro.url
-        return None
-
-    class Meta:
-        """
-        Meta class for the MaterialOriginalSerializers.
-        Specifies the model and fields to be serialized.
-        """
-
-        model = MaterialOriginal
-        fields = (
-            "id",
-            "titulo",
-            "autor",
-            "descricao",
-            "url_externa",
-            "descarregavel",
-            "publicado",
-            "ficheiro_url",
-        )
 
 
 class ConteudoItemSerializer(serializers.ModelSerializer):
@@ -260,6 +240,12 @@ class ConteudoItemSerializer(serializers.ModelSerializer):
     tema_titulo = serializers.CharField(source="tema.titulo", read_only=True)
     ficheiro = serializers.FileField(required=False, allow_null=True, write_only=True)
     thumbnail = serializers.ImageField(required=False, allow_null=True, write_only=True)
+    createdBy = serializers.CharField(
+        source="created_by.username", read_only=True, default=None
+    )
+    updatedBy = serializers.CharField(
+        source="updated_by.username", read_only=True, default=None
+    )
 
     def get_ficheiro_url(self, obj):
         """
@@ -300,6 +286,8 @@ class ConteudoItemSerializer(serializers.ModelSerializer):
             "disciplina_slug",
             "disciplina_nome",
             "tema_titulo",
+            "createdBy",
+            "updatedBy",
         )
         extra_kwargs = {
             "url_externa": {"allow_null": True, "required": False, "allow_blank": True},
@@ -338,6 +326,12 @@ class ExercicioSerializer(serializers.ModelSerializer):
     videoUrl = serializers.URLField(source="video_url", allow_null=True, required=False)
     ficheiro = serializers.FileField(required=False, allow_null=True, write_only=True)
     ficheiro_url = serializers.SerializerMethodField()
+    createdBy = serializers.CharField(
+        source="created_by.username", read_only=True, default=None
+    )
+    updatedBy = serializers.CharField(
+        source="updated_by.username", read_only=True, default=None
+    )
 
     def get_thumbnailUrl(self, obj):
         if obj.thumbnail:
@@ -368,6 +362,8 @@ class ExercicioSerializer(serializers.ModelSerializer):
             "ficheiro",
             "ficheiro_url",
             "publicado",
+            "createdBy",
+            "updatedBy",
         )
         extra_kwargs = {
             "path": {"required": False, "allow_blank": True},
@@ -390,6 +386,12 @@ class AulaSerializer(serializers.ModelSerializer):
     createdAt = serializers.DateTimeField(source="created_at", read_only=True)
     ficheiro = serializers.FileField(required=False, allow_null=True, write_only=True)
     ficheiro_url = serializers.SerializerMethodField()
+    createdBy = serializers.CharField(
+        source="created_by.username", read_only=True, default=None
+    )
+    updatedBy = serializers.CharField(
+        source="updated_by.username", read_only=True, default=None
+    )
 
     def get_thumbnailUrl(self, obj):
         if obj.thumbnail:
@@ -417,4 +419,6 @@ class AulaSerializer(serializers.ModelSerializer):
             "ficheiro_url",
             "createdAt",
             "publicado",
+            "createdBy",
+            "updatedBy",
         )

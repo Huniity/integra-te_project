@@ -1,3 +1,5 @@
+import { motion } from 'framer-motion';
+
 export type SubjectId = string;
 
 export interface Subject {
@@ -20,7 +22,12 @@ export default function Aside({ subjects, activeSubject, onSelectSubject, title 
   return (
     <>
       {/* Mobile + Tablet*/}
-      <section className="mt-50 lg:hidden bg-white/90 rounded-2xl p-2.5 shadow-lg border border-white/60 backdrop-blur-sm">
+      <motion.section
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, ease: 'easeOut' }}
+        className="mt-50 lg:hidden bg-white/90 rounded-2xl p-2.5 shadow-lg border border-white/60 backdrop-blur-sm"
+      >
         <h2 className="font-['Fredoka',sans-serif] text-sm font-black text-[#1e3a8a] mb-2 flex items-center justify-center gap-1 text-center">
           {title}
         </h2>
@@ -46,10 +53,15 @@ export default function Aside({ subjects, activeSubject, onSelectSubject, title 
             </button>
           ))}
         </div>
-      </section>
+      </motion.section>
 
       {/* Desktop */}
-      <aside className="hidden lg:flex flex-col justify-center items-center gap-2.5 w-64 shrink-0">
+      <motion.aside
+        initial={{ opacity: 0, x: -30 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.4, ease: 'easeOut' }}
+        className="hidden lg:flex flex-col justify-center items-center gap-2.5 w-64 shrink-0"
+      >
         <div className="relative w-full overflow-visible px-2 py-2">
           <img
             src="/src/assets/cloud_menu.webp"
@@ -85,7 +97,7 @@ export default function Aside({ subjects, activeSubject, onSelectSubject, title 
             </div>
           </div>
         </div>
-      </aside>
+      </motion.aside>
     </>
   );
 }
