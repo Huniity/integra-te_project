@@ -22,7 +22,8 @@
 			"version": "latest"
 		}
 	},
-"forwardPorts":[8000, 8080, 80, 5173, 5174]
+// "forwardPorts":[8000, 8080, 80, 5173, 5174],
+"forwardPorts": [8050, 8088, 88, 5178, 5179]
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],

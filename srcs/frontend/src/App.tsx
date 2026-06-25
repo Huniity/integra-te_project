@@ -1,122 +1,73 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
+import { Routes, Route, useLocation } from 'react-router-dom'
+import { AnimatePresence } from 'framer-motion'
+import Navbar from './components/core/Navbar'
+import { NightModeProvider } from './components/core/NightMode'
+import { AccessibilityProvider } from './components/core/Accessibility'
+import { QuickLinkButtons } from './components/core/QuickLinkButtons'
+import PageTransition from './components/core/PageTransition'
+import Home from './pages/Homepage'
+import About from './pages/About'
+import Faq from './pages/Faq'
+import Privacy from './pages/Privacy'
+import Contact from './pages/Contactos'
+import Aprender from './pages/Aprender'
+import Resolver from './pages/Resolver'
+import Jogos from './pages/Jogos'
+import Descarregar from './pages/Descarregar'
+import Videos from './pages/Videos'
+import Ler from './pages/Ler'
+import Dashboard from './pages/Dashboard'
+import RequireAuth from './components/core/RequireAuth'
 import './App.css'
+import Login from './pages/Login'
+import Rgpd from './pages/Rgpd'
 
-function App() {
-  const [count, setCount] = useState(0)
-
+function PageStub({ title }: { title: string }) {
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
-
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
+    <main className="flex min-h-[80vh] flex-col items-center justify-center gap-4 px-6">
+      <h1 className="font-display text-4xl font-black text-neutral-700">{title}</h1>
+      <p className="font-body text-neutral-400">Página em construção</p>
+    </main>
   )
 }
 
-export default App
+function wrap(el: React.ReactNode) {
+  return <PageTransition>{el}</PageTransition>
+}
+
+export default function App() {
+  const location = useLocation()
+  const baseKey = location.pathname.split('/')[1] || 'home'
+
+  return (
+    <NightModeProvider>
+      <AccessibilityProvider>
+        <QuickLinkButtons />
+        <Navbar />
+        <AnimatePresence mode="wait">
+          <Routes location={location} key={baseKey}>
+            <Route path="/"            element={wrap(<Home />)} />
+            <Route path="/login"       element={wrap(<Login />)} />
+            <Route path="/aprender"    element={wrap(<Aprender />)} />
+            <Route path="/aprender/:id" element={wrap(<Aprender />)} />
+            <Route path="/resolver"    element={wrap(<Resolver />)} />
+            <Route path="/resolver/:id" element={wrap(<Resolver />)} />
+            <Route path="/jogos"       element={wrap(<Jogos />)} />
+            <Route path="/jogar/:id"   element={wrap(<Jogos />)} />
+            <Route path="/ler"         element={wrap(<Ler />)} />
+            <Route path="/ler/:id"     element={wrap(<Ler />)} />
+            <Route path="/descarregar" element={wrap(<Descarregar />)} />
+            <Route path="/videos"      element={wrap(<Videos />)} />
+            <Route path="/sobre"       element={wrap(<About />)} />
+            <Route path="/faq"         element={wrap(<Faq />)} />
+            <Route path="/privacidade" element={wrap(<Privacy />)} />
+            <Route path="/rgpd"        element={wrap(<Rgpd />)} />
+            <Route path="/contactar"   element={wrap(<Contact />)} />
+            <Route path="/dashboard"   element={wrap(<RequireAuth><Dashboard /></RequireAuth>)} />
+            <Route path="*"            element={wrap(<PageStub title="Página não encontrada" />)} />
+          </Routes>
+        </AnimatePresence>
+      </AccessibilityProvider>
+    </NightModeProvider>
+  )
+}

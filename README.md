@@ -11,7 +11,10 @@ Official Repo for Integra-te ONG from Loulé
 [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 [![uv](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/uv/main/assets/badge/v0.json)](https://github.com/astral-sh/uv)
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit)](https://pre-commit.com/)
-
+[![SentenceTransformers](https://img.shields.io/badge/Sentence--Transformers-Hugging%20Face-yellow?logo=huggingface)](https://huggingface.co/sentence-transformers)
+[![pgvector](https://img.shields.io/badge/pgvector-PostgreSQL-4169E1?logo=postgresql)](https://github.com/pgvector/pgvector)
+[![Cosine Distance](https://img.shields.io/badge/Distance-Cosine-orange)](https://en.wikipedia.org/wiki/Cosine_similarity)
+[![OpenAI Whisper](https://img.shields.io/badge/Whisper-OpenAI-412991?logo=openai)](https://github.com/openai/whisper)
 
 ## Prerequisites
 
@@ -105,7 +108,7 @@ make start-dev
 | Command | Description |
 |---|---|
 | `make purge` | Stop containers and delete all volumes (data lost) |
-| `make convert` | Convert PNG/JPG assets to WebP |
+| `make convert` | Convert webp/webp assets to WebP |
 
 > Run `make help` to see all available commands in the terminal.
 
