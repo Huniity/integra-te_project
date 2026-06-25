@@ -17,7 +17,6 @@ from integrate.models import (
     Livro,
     Exercicio,
     Aula,
-    MaterialOriginal,
 )
 
 
@@ -246,11 +245,6 @@ def search(request):
 
     for obj in Aula.objects.filter(title__icontains=q, publicado=True)[:top]:
         results.append({"label": obj.title, "route": f"/aprender/{obj.id}"})
-
-    for obj in MaterialOriginal.objects.filter(titulo__icontains=q, publicado=True)[
-        :top
-    ]:
-        results.append({"label": obj.titulo, "route": "/descarregar"})
 
     return Response({"results": results[:top]})
 

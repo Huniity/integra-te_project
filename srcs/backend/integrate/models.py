@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 import uuid
 
@@ -84,6 +85,20 @@ class Conteudo(models.Model):
     descarregavel = models.BooleanField(default=False)
     publicado = models.BooleanField(default=False)
     criado_em = models.DateTimeField(auto_now_add=True)
+    created_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+    )
+    updated_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+    )
 
     def __str__(self):
         return self.titulo
@@ -110,6 +125,20 @@ class Jogo(models.Model):
     ficheiro = models.FileField(upload_to="jogos/", null=True, blank=True)
     publicado = models.BooleanField(default=False)
     criado_em = models.DateTimeField(auto_now_add=True)
+    created_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+    )
+    updated_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+    )
 
     def __str__(self):
         return self.titulo
@@ -130,6 +159,20 @@ class Livro(models.Model):
     ficheiro = models.FileField(upload_to="livros/", null=True, blank=True)
     publicado = models.BooleanField(default=False)
     criado_em = models.DateTimeField(auto_now_add=True)
+    created_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+    )
+    updated_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+    )
 
     def __str__(self):
         return self.titulo
@@ -156,6 +199,20 @@ class Exercicio(models.Model):
     video_url = models.URLField(max_length=500, null=True, blank=True)
     ficheiro = models.FileField(upload_to="exercicios/", null=True, blank=True)
     publicado = models.BooleanField(default=False)
+    created_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+    )
+    updated_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+    )
 
     def __str__(self):
         return self.title
@@ -177,27 +234,20 @@ class Aula(models.Model):
     ficheiro = models.FileField(upload_to="aulas/", null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     publicado = models.BooleanField(default=False)
+    created_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+    )
+    updated_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+    )
 
     def __str__(self):
         return self.title
-
-
-class MaterialOriginal(models.Model):
-    """
-    Model representing original material.
-    """
-
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    titulo = models.CharField(max_length=200)
-    autor = models.CharField(max_length=200)
-    descricao = models.TextField()
-    ficheiro = models.FileField(upload_to="materiais_originais/", null=True, blank=True)
-    url_externa = models.URLField(max_length=500, null=True, blank=True)
-    descarregavel = models.BooleanField(default=False)
-    publicado = models.BooleanField(default=False)
-
-    def __str__(self):
-        """
-        Return the title of the original material.
-        """
-        return self.titulo
