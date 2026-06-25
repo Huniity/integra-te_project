@@ -390,13 +390,13 @@ export function Navbar() {
           </div>
 
           {/* Lock — always visible */}
-          <a
-            href="/login"
+          <NavLink
+            to="/login"
             aria-label="Login — aceder à área de administração"
             className="w-9 h-9 sm:w-10 sm:h-10 bg-white/15 rounded-full flex items-center justify-center shadow-[0_14px_36px_rgba(31,38,135,0.22)] border border-white/40 ring-1 ring-white/20 hover:scale-110 active:scale-95 transition-transform cursor-pointer backdrop-blur-xs"
           >
             <img src="/src/assets/lock.webp" alt="login" className="w-5 h-5 object-contain" />
-          </a>
+          </NavLink>
 
           <NightModeNavButton />
 

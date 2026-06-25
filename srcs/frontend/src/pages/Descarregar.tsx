@@ -196,7 +196,6 @@ function DescarregarContent() {
       </div>
 
       {selected && <PdfModal item={selected} onClose={() => setSelected(null)} />}
-      <Footer />
     </main>
   );
 }
