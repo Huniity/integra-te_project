@@ -8,7 +8,23 @@ import { getCookie, setCookie } from '../../utils/cookies';
 const MIC_CONSENT_COOKIE = 'mic_consent';
 const MIC_CONSENT_DAYS = 180;
 
-interface SearchResult { route: string; label: string; distance: number }
+interface SearchResult { route: string; label: string; distance: number; type?: string }
+
+const RESULT_TYPE_LABELS: Record<string, string> = {
+  disciplina: 'Disciplina',
+  jogo: 'Jogo',
+  livro: 'Livro',
+  exercicio: 'Exercício',
+  aula: 'Aula',
+};
+
+const SEARCH_CATEGORIES: { key: string; label: string }[] = [
+  { key: 'aula', label: 'Aulas' },
+  { key: 'exercicio', label: 'Exercícios' },
+  { key: 'jogo', label: 'Jogos' },
+  { key: 'livro', label: 'Livros' },
+  { key: 'disciplina', label: 'Disciplinas' },
+];
 
 export function SearchBar({ className }: { className?: string }) {
   const navigate = useNavigate();
@@ -16,6 +32,7 @@ export function SearchBar({ className }: { className?: string }) {
   const [searchText, setSearchText] = useState('');
   const [results, setResults]       = useState<SearchResult[]>([]);
   const [showDrop, setShowDrop]     = useState(false);
+  const [excludedTypes, setExcludedTypes] = useState<Set<string>>(new Set());
   const [isRecording, setIsRecording] = useState(false);
   const [isTranscribing, setIsTranscribing] = useState(false);
   const [showConsent, setShowConsent] = useState(false);
@@ -39,15 +56,24 @@ export function SearchBar({ className }: { className?: string }) {
     if (q.length < 2) { setResults([]); setShowDrop(false); return; }
     const t = setTimeout(async () => {
       try {
+        const exclude = excludedTypes.size > 0 ? `&exclude=${[...excludedTypes].join(',')}` : '';
         const data = await fetchWithConfig<{ results: SearchResult[] }>(
-          `/v1/voice/search/?q=${encodeURIComponent(q)}&top=5`,
+          `/v1/voice/search/?q=${encodeURIComponent(q)}&top=5${exclude}`,
         );
         setResults(data.results ?? []);
         setShowDrop(true);
       } catch { setResults([]); setShowDrop(false); }
     }, 300);
     return () => clearTimeout(t);
-  }, [searchText]);
+  }, [searchText, excludedTypes]);
+
+  function toggleCategory(key: string) {
+    setExcludedTypes((prev) => {
+      const next = new Set(prev);
+      if (next.has(key)) next.delete(key); else next.add(key);
+      return next;
+    });
+  }
 
 
   useEffect(() => {
@@ -205,15 +231,36 @@ export function SearchBar({ className }: { className?: string }) {
           </div>
         )}
 
-        {showDrop && results.length > 0 && (
+        {showDrop && (
           <div className="absolute top-[calc(100%+6px)] left-0 right-0 z-[60] rounded-2xl bg-white/95 backdrop-blur-md shadow-[0_8px_32px_rgba(31,38,135,0.18)] border border-white/40 overflow-hidden">
-            {results.map((r, i) => (
+            <div className="flex flex-wrap gap-1.5 px-3 pt-2.5 pb-2 border-b border-neutral-100">
+              {SEARCH_CATEGORIES.map((c) => (
+                <button
+                  key={c.key}
+                  type="button"
+                  onMouseDown={(e) => { e.preventDefault(); toggleCategory(c.key); }}
+                  className={`px-2.5 py-1 rounded-full text-[11px] font-bold font-['Fredoka',sans-serif] transition-colors cursor-pointer ${
+                    excludedTypes.has(c.key)
+                      ? 'bg-neutral-100 text-neutral-400 line-through'
+                      : 'bg-blue-100 text-[#1e3a8a]'
+                  }`}
+                >
+                  {c.label}
+                </button>
+              ))}
+            </div>
+            {results.length === 0 ? (
+              <p className="px-4 py-3 text-sm text-neutral-400 font-semibold">Sem resultados.</p>
+            ) : results.map((r, i) => (
               <button
                 key={i}
                 type="button"
                 onMouseDown={() => pick(r.route)}
                 className="w-full text-left px-4 py-2.5 font-['Fredoka',sans-serif] font-bold text-sm text-[#1e3a8a] hover:bg-blue-50 transition-colors border-b border-neutral-100 last:border-0 cursor-pointer"
               >
+                {r.type && RESULT_TYPE_LABELS[r.type] && (
+                  <span className="text-neutral-400 font-semibold">{RESULT_TYPE_LABELS[r.type]}: </span>
+                )}
                 {r.label}
               </button>
             ))}

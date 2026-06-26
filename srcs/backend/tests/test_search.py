@@ -3,7 +3,6 @@ from rest_framework.test import APIClient
 
 from integrate.models import (
     Disciplina,
-    Tema,
     Jogo,
     Livro,
     Exercicio,
@@ -20,23 +19,9 @@ def make_disciplina(nome="Matemática", slug="matematica"):
     return Disciplina.objects.create(nome=nome, slug=slug, desc="")
 
 
-def make_tema(disciplina, titulo="Adição", seccao="resolver", slug="adicao"):
-    """
-    Helper function to create a Tema instance with default values.
-    """
-    return Tema.objects.create(
-        disciplina=disciplina,
-        titulo=titulo,
-        desc="",
-        ano_escolar="1º Ano",
-        seccao=seccao,
-        slug=slug,
-    )
-
-
 class SearchEndpointTests(TestCase):
     """
-    Test suite for the search endpoint, which allows users to search for content based on a query string. The tests cover various scenarios including protocol compliance, result shape, and searching across different models (Disciplina, Tema, Jogo, Livro, Exercicio, Aula).
+    Test suite for the search endpoint, which allows users to search for content based on a query string. The tests cover various scenarios including protocol compliance, result shape, and searching across different models (Disciplina, Jogo, Livro, Exercicio, Aula).
     """
 
     def setUp(self):
@@ -114,27 +99,6 @@ class SearchEndpointTests(TestCase):
         response = self.client.get(SEARCH_URL, {"q": "matemática"})
         labels = [r["label"] for r in response.json()["results"]]
         self.assertIn("Matemática", labels)
-
-    # Tema
-
-    def test_finds_tema(self):
-        """
-        Test that searching for a Tema by title returns the correct result.
-        """
-        make_tema(self.disc, titulo="Subtração", slug="subtracao")
-        response = self.client.get(SEARCH_URL, {"q": "Sub"})
-        labels = [r["label"] for r in response.json()["results"]]
-        self.assertIn("Subtração", labels)
-
-    def test_tema_route(self):
-        """
-        Test that the route for a Tema search result is "/{seccao}", since there is no
-        dedicated per-tema page to deep-link into.
-        """
-        make_tema(self.disc, titulo="Adição", seccao="resolver", slug="adicao")
-        response = self.client.get(SEARCH_URL, {"q": "Adição"})
-        routes = [r["route"] for r in response.json()["results"]]
-        self.assertIn("/resolver", routes)
 
     # Jogo
 

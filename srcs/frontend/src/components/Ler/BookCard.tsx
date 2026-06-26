@@ -28,7 +28,7 @@ export default function BookCard({ livro, onSelect, index = 0 }: BookCardProps) 
     >
       <div className={`w-full flex-shrink-0 lg:flex-1 h-40 sm:h-44 lg:h-auto lg:min-h-[110px] lg:max-h-[150px] xl:max-h-[160px] rounded-2xl overflow-hidden mb-2 flex items-center justify-center p-3 transition-transform duration-300 group-hover:scale-[1.02] ${isNightMode ? 'bg-slate-800' : 'bg-slate-50'}`}>
         <img
-          src={livro.capa_url ?? './src/assets/blue_book.webp'}
+          src={livro.capa_url ?? '/src/assets/blue_book.webp'}
           alt={livro.titulo}
           className="w-full h-full object-contain"
         />

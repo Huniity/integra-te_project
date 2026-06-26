@@ -27,65 +27,65 @@ function HomeContent() {
       id: 'resolver',
       label: 'Resolver',
       hint: 'Treina e diverte-te',
-      bgImg: './src/assets/purple_dot.webp',
-      iconImg: './src/assets/weight.webp',
+      bgImg: '/src/assets/purple_dot.webp',
+      iconImg: '/src/assets/weight.webp',
       path: '/resolver'
     },
     {
       id: 'jogos',
       label: 'Jogos',
       hint: 'Joga e aprende novas coisas',
-      bgImg: './src/assets/green_dot.webp',
-      iconImg: './src/assets/controller.webp',
+      bgImg: '/src/assets/green_dot.webp',
+      iconImg: '/src/assets/controller.webp',
       path: '/jogos'
     },
     {
       id: 'aprender',
       label: 'Aprender',
       hint: 'Explora os temas',
-      bgImg: './src/assets/red_dot.webp',
-      iconImg: './src/assets/blackboard.webp',
+      bgImg: '/src/assets/red_dot.webp',
+      iconImg: '/src/assets/blackboard.webp',
       path: '/aprender'
     },
     {
       id: 'ler',
       label: 'Ler',
       hint: 'Descobre livros',
-      bgImg: './src/assets/salmon_dot.webp',
-      iconImg: './src/assets/blue_book.webp',
+      bgImg: '/src/assets/salmon_dot.webp',
+      iconImg: '/src/assets/blue_book.webp',
       path: '/ler'
     },
     {
       id: 'videos',
       label: 'Vídeos',
       hint: 'Vê vídeos educativos',
-      bgImg: './src/assets/blue_dot.webp',
-      iconImg: './src/assets/video.webp',
+      bgImg: '/src/assets/blue_dot.webp',
+      iconImg: '/src/assets/video.webp',
       path: '/videos'
     },
     {
       id: 'descarregar',
       label: 'Descarregar',
       hint: 'Descarrega recursos',
-      bgImg: './src/assets/darkb_dot.webp',
-      iconImg: './src/assets/download.webp',
+      bgImg: '/src/assets/darkb_dot.webp',
+      iconImg: '/src/assets/download.webp',
       path: '/descarregar'
     },
     {
       id: 'contactar',
       label: 'Contactos',
       hint: 'Contacta-nos ou envia-nos uma mensagem',
-      bgImg: './src/assets/yellow_dot.webp',
-      iconImg: './src/assets/user.webp',
+      bgImg: '/src/assets/yellow_dot.webp',
+      iconImg: '/src/assets/user.webp',
       path: '/contactar'
     },
     {
       id: 'sobre',
       label: 'Sobre',
       hint: 'Sabe mais sobre nós',
-      bgImg: './src/assets/pink_dot.webp',
-      iconImg: './src/assets/info.webp',
-      cloudImg: './src/assets/info_cloud.webp',
+      bgImg: '/src/assets/pink_dot.webp',
+      iconImg: '/src/assets/info.webp',
+      cloudImg: '/src/assets/info_cloud.webp',
       path: '/sobre'
     }
   ];
@@ -101,7 +101,7 @@ function HomeContent() {
       className="relative h-screen w-full px-3 md:px-6 pt-3 md:pt-14 pb-2 font-['Nunito',sans-serif] overflow-hidden flex flex-col"
     >
 
-      <NightModeBackground dayImage='./src/assets/bg_day.webp' nightImage='./src/assets/bg_night.webp' />
+      <NightModeBackground dayImage='/src/assets/bg_day.webp' nightImage='/src/assets/bg_night.webp' />
 
       <img src="/src/assets/bottom_cloud.webp" alt="" aria-hidden="true"
         className={`pointer-events-none fixed bottom-[-29%] left-0 z-10 w-full object-contain transition-opacity duration-700 ${isNightMode ? 'opacity-0' : 'opacity-100'}`} />
@@ -159,7 +159,7 @@ function HomeContent() {
 
                 <div className="mt-[-8%] lg:mt-[-20%] relative w-[clamp(6.6rem,16vw,12.8rem)] h-[clamp(4rem,10vw,7.4rem)] flex items-center justify-center z-10">
                   <img
-                    src="./src/assets/under_cloud.webp"
+                    src="/src/assets/under_cloud.webp"
                     alt=""
                     className="absolute inset-0 w-full h-full object-contain drop-shadow-md max-w-none scale-200"
                   />

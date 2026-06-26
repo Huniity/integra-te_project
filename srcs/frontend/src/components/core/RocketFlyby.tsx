@@ -100,7 +100,7 @@ export default function RocketFlyby() {
         <div className="flame-right-outer" />
         <div className="flame-right-inner" />
         <img
-          src="./src/assets/rocket.webp"
+          src="/src/assets/rocket.webp"
           alt=""
           className="w-25 h-25 object-contain relative z-3 rotate-[-25deg] drop-shadow-[0_10px_15px_rgba(0,0,0,0.2)]"
         />
