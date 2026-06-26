@@ -5,6 +5,7 @@ import { NightModeProvider } from './components/core/NightMode'
 import { AccessibilityProvider } from './components/core/Accessibility'
 import { QuickLinkButtons } from './components/core/QuickLinkButtons'
 import PageTransition from './components/core/PageTransition'
+import RouteSeo from './components/core/Seo'
 import Home from './pages/Homepage'
 import About from './pages/About'
 import Faq from './pages/Faq'
@@ -42,6 +43,7 @@ export default function App() {
   return (
     <NightModeProvider>
       <AccessibilityProvider>
+        <RouteSeo />
         <QuickLinkButtons />
         <Navbar />
         <AnimatePresence mode="wait">
