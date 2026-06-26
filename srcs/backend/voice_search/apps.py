@@ -26,7 +26,9 @@ class VoiceSearchConfig(AppConfig):
             return
 
         is_runserver = len(sys.argv) > 1 and sys.argv[1] == "runserver"
-        if is_runserver and os.environ.get("RUN_MAIN") != "true":
+        if not is_runserver:
+            return
+        if os.environ.get("RUN_MAIN") != "true":
             return
 
         from voice_search.views import load_embedder, load_whisper
