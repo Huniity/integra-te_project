@@ -2,6 +2,7 @@ from django.core.management.base import BaseCommand
 from sentence_transformers import SentenceTransformer
 from voice_search.models import ObjectVector
 from integrate.models import Disciplina, Tema, Conteudo, Jogo, Livro
+from voice_search.views import load_embedder, load_whisper
 
 
 MODEL_NAME = "paraphrase-multilingual-MiniLM-L12-v2"
@@ -84,8 +85,16 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         """
+        Load the embedder and whisper models to cache them.
         Load the embedding model, build rows of content, compute embeddings, and store them in the database.
         """
+
+        self.stdout.write("Caching embedder model...")
+        load_embedder()
+        self.stdout.write("Caching whisper model...")
+        load_whisper()
+        self.stdout.write(self.style.SUCCESS("Models cached successfully."))
+
         self.stdout.write(f"Loading model {MODEL_NAME}")
         model = SentenceTransformer(MODEL_NAME)
 

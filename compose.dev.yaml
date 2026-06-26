@@ -39,6 +39,7 @@ services:
       - ./scripts:/scripts
       - django_logs:/app/logs
       - media_files:/app/staticfiles/media
+      - huggingface_cache:/root/.cache/huggingface
       - whisper_cache:/root/.cache/whisper
     ports:
       - "8050:8050"
@@ -64,4 +65,5 @@ volumes:
   django_logs:
   frontend_logs:
   media_files:
+  huggingface_cache:
   whisper_cache:

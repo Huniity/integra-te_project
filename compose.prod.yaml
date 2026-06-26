@@ -27,6 +27,7 @@ services:
       - django_logs:/app/logs
       - static_files:/app/staticfiles
       - media_files:/app/staticfiles/media
+      - huggingface_cache:/root/.cache/huggingface
       - ./scripts:/scripts
     expose:
       - "8000"
@@ -58,3 +59,4 @@ volumes:
   django_logs:
   static_files:
   media_files:
+  huggingface_cache:

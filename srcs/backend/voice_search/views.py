@@ -50,7 +50,7 @@ def load_whisper():
     """
     import whisper
 
-    return whisper.load_model("base")
+    return whisper.load_model("turbo")
 
 
 KEYWORD_ROUTES = [
